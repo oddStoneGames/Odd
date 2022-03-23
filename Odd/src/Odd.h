@@ -1,8 +1,12 @@
 #pragma once
 
 //For use by Odd Engine Applications.
-#include "Odd/Application.h"
+#include "Odd/Core/Application.h"
 
 //----Entry Point--------------------------
-#include "Odd/EntryPoint.h"
+#include "Odd/Core/EntryPoint.h"
+//-----------------------------------------
+
+//----Logger--------------------------
+#include "Odd/Core/Log.h"
 //-----------------------------------------

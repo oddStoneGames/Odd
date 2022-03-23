@@ -1,36 +1,55 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Odd">
+      <UniqueIdentifier>{3C10880B-A819-887C-3195-9E7C9D9D937C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Odd\Core">
+      <UniqueIdentifier>{14BA8062-0087-DB6D-29A0-C91515CC10FC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Odd\Events">
+      <UniqueIdentifier>{A0A0B90A-8C58-FB57-F55F-D4B3E1369648}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Odd\Core.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Odd.h" />
+    <ClInclude Include="src\Odd\Core\Application.h">
+      <Filter>Odd\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Odd\Application.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Odd\Core\Core.h">
+      <Filter>Odd\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Odd.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Odd\Core\EntryPoint.h">
+      <Filter>Odd\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Odd\EntryPoint.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Odd\Core\KeyCodes.h">
+      <Filter>Odd\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Core\Log.h">
+      <Filter>Odd\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Core\MouseCodes.h">
+      <Filter>Odd\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Events\ApplicationEvent.h">
+      <Filter>Odd\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Events\Event.h">
+      <Filter>Odd\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Events\KeyEvent.h">
+      <Filter>Odd\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Events\MouseEvent.h">
+      <Filter>Odd\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Odd\Application.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\Odd\Core\Application.cpp">
+      <Filter>Odd\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Core\Log.cpp">
+      <Filter>Odd\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

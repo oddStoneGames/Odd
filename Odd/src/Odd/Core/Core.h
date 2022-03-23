@@ -9,3 +9,5 @@
 #else 
 	#error Odd Engine Only Supports Windows
 #endif
+
+#define LEFTSHIFTBIT(x) (1 << x)

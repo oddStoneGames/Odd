@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core.h"
+#include "Odd/Events/Event.h"
 
 namespace Odd
 {
