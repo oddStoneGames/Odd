@@ -1,8 +1,8 @@
 #pragma once
 
+#include "oddpch.h"
 #include "Event.h"
 #include "Odd/Core/MouseCodes.h"
-#include <sstream>
 
 namespace Odd {
 

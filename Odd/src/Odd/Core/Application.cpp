@@ -1,23 +1,24 @@
+#include "oddpch.h"
 #include "Application.h"
-
 #include "Odd/Events/ApplicationEvent.h"
-#include "Odd/Core/Log.h"
 
 namespace Odd
 {
 	Application::Application()
 	{
-
+		//Initialize Logger.
+		Odd::Log::Init();
+		m_Window = std::unique_ptr<Window>(Window::Create());
 	}
 	Application::~Application()
 	{
 
 	}
-	void Application::Run() 
+	void Application::Run()
 	{
-		WindowResizeEvent e(1280, 720);
-		DEBUG_INFO(e);
-
-		while (true);
+		while (m_Running)
+		{
+			m_Window->OnUpdate();
+		}
 	}
 }

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <cstdint>
+#include "oddpch.h"
+
 namespace Odd
 {
 	using KeyCode = uint16_t;

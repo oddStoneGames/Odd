@@ -1,9 +1,7 @@
 #pragma once
 
+#include "oddpch.h"
 #include "Odd/Core/Core.h"
-
-#include <string>
-#include <functional>
 
 namespace Odd
 {

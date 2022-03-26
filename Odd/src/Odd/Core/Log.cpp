@@ -1,3 +1,4 @@
+#include "oddpch.h"
 #include "Log.h"
 
 namespace Odd

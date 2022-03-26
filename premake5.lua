@@ -10,6 +10,8 @@ workspace "Odd"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-x64"
 
+include "vendor/GLFW"
+
 project "Odd"
     location "Odd"
     kind "SharedLib"
@@ -17,6 +19,9 @@ project "Odd"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+    pchheader "oddpch.h"
+    pchsource "Odd/src/oddpch.cpp"
 
     files
     {
@@ -27,7 +32,14 @@ project "Odd"
     includedirs
     {
         "%{prj.name}/src",
-        "%{prj.name}/vendor"
+        "%{prj.name}/vendor",
+        "vendor/GLFW/include"
+    }
+
+    links
+    {
+        "GLFW",
+        "opengl32.lib"
     }
 
     filter "system:windows"

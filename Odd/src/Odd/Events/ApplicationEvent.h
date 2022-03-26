@@ -1,7 +1,7 @@
 #pragma once
 
+#include "oddpch.h"
 #include "Event.h"
-#include <sstream>
 
 namespace Odd {
 

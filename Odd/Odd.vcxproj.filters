@@ -10,6 +10,12 @@
     <Filter Include="Odd\Events">
       <UniqueIdentifier>{A0A0B90A-8C58-FB57-F55F-D4B3E1369648}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Odd.h" />
@@ -31,6 +37,9 @@
     <ClInclude Include="src\Odd\Core\MouseCodes.h">
       <Filter>Odd\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Odd\Core\Window.h">
+      <Filter>Odd\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Odd\Events\ApplicationEvent.h">
       <Filter>Odd\Events</Filter>
     </ClInclude>
@@ -43,6 +52,10 @@
     <ClInclude Include="src\Odd\Events\MouseEvent.h">
       <Filter>Odd\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oddpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Odd\Core\Application.cpp">
@@ -51,5 +64,9 @@
     <ClCompile Include="src\Odd\Core\Log.cpp">
       <Filter>Odd\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\oddpch.cpp" />
   </ItemGroup>
 </Project>
