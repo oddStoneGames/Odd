@@ -46,6 +46,7 @@ namespace Odd
 		{
 			return GetCategoryFlags() & category;
 		}
+		bool Handled() { return m_Handled; }
 	protected:
 		bool m_Handled = false;
 	};

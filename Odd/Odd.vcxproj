@@ -83,7 +83,7 @@
       <AdditionalIncludeDirectories>src;vendor;..\vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -149,6 +149,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Odd\Core\LayerStack.h" />
+    <ClInclude Include="src\Odd\Core\Layer.h" />
     <ClInclude Include="src\Odd.h" />
     <ClInclude Include="src\Odd\Core\Application.h" />
     <ClInclude Include="src\Odd\Core\Core.h" />
@@ -165,6 +167,8 @@
     <ClInclude Include="src\oddpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Odd\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Odd\Core\Layer.cpp" />
     <ClCompile Include="src\Odd\Core\Application.cpp" />
     <ClCompile Include="src\Odd\Core\Log.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />

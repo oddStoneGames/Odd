@@ -1,9 +1,9 @@
 #pragma once
 
-#include "oddpch.h"
 #include "Core.h"
-#include "Odd/Events/Event.h"
 #include "Window.h"
+#include "Odd/Events/Event.h"
+#include "Odd/Core/LayerStack.h"
 #include "Odd/Events/ApplicationEvent.h"
 
 namespace Odd
@@ -14,11 +14,17 @@ namespace Odd
 			Application();
 			virtual ~Application();
 			void Run();
+
 			void OnEvent(Event& e);
+
+			void PushLayer(Layer* layer);
+			void PushOverlay(Layer* overlay);
 	private:
-		std::unique_ptr<Window> m_Window;
 		bool OnWindowClose(WindowCloseEvent& e);
+
+		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
+		LayerStack m_LayerStack;
 	};
 
 	Application* CreateApplication();	//Defined By Client
