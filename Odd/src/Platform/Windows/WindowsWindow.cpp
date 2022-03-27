@@ -5,6 +5,8 @@
 #include "Odd/Events/MouseEvent.h"
 #include "Odd/Events/KeyEvent.h"
 
+#include "Glad/glad.h"
+
 namespace Odd {
 
 	static bool s_GLFWInitialized = false;
@@ -53,6 +55,11 @@ namespace Odd {
 		}
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
+		int gladStatus = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		if (gladStatus > 0)
+			DEBUG_CORE_INFO("Glad Initialized Successfully!");
+		else
+			DEBUG_CORE_ERROR("Failed to Initialized Glad!");
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 

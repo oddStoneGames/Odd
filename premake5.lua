@@ -10,7 +10,8 @@ workspace "Odd"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-x64"
 
-include "vendor/GLFW"
+include "Odd/vendor/GLFW"
+include "Odd/vendor/Glad"
 
 project "Odd"
     location "Odd"
@@ -33,12 +34,14 @@ project "Odd"
     {
         "%{prj.name}/src",
         "%{prj.name}/vendor",
-        "vendor/GLFW/include"
+        "Odd/vendor/GLFW/include",
+        "Odd/vendor/Glad/include"
     }
 
     links
     {
         "GLFW",
+        "Glad",
         "opengl32.lib"
     }
 
@@ -50,7 +53,8 @@ project "Odd"
         defines
         {
             "ODD_PLATFORM_WINDOWS",
-            "ODD_BUILD_DLL"
+            "ODD_BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
         }
 
         postbuildcommands

@@ -31,6 +31,12 @@
     <ClInclude Include="src\Odd\Core\KeyCodes.h">
       <Filter>Odd\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Odd\Core\Layer.h">
+      <Filter>Odd\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Core\LayerStack.h">
+      <Filter>Odd\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Odd\Core\Log.h">
       <Filter>Odd\Core</Filter>
     </ClInclude>
@@ -56,13 +62,15 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\oddpch.h" />
-    <ClInclude Include="src\Odd\Core\Layer.h">
-      <Filter>Odd\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Odd\Core\LayerStack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Odd\Core\Application.cpp">
+      <Filter>Odd\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Core\Layer.cpp">
+      <Filter>Odd\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Core\LayerStack.cpp">
       <Filter>Odd\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Odd\Core\Log.cpp">
@@ -72,9 +80,5 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\oddpch.cpp" />
-    <ClCompile Include="src\Odd\Core\Layer.cpp">
-      <Filter>Odd\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Odd\Core\LayerStack.cpp" />
   </ItemGroup>
 </Project>

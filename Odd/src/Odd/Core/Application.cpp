@@ -1,5 +1,6 @@
 #include "oddpch.h"
 #include "Application.h"
+#include "Glad/glad.h"
 
 namespace Odd
 {
@@ -11,6 +12,10 @@ namespace Odd
 		Odd::Log::Init();
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
+
+		unsigned int testVAO[10];
+		glGenVertexArrays(10, testVAO);
+		DEBUG_CORE_INFO("{0}", testVAO[5]);
 	}
 	Application::~Application()
 	{
