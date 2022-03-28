@@ -53,6 +53,12 @@ namespace Odd {
 			glfwSetErrorCallback(GLFWErrorCallback);
 			
 		}
+		
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
 		int gladStatus = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -81,6 +87,13 @@ namespace Odd {
 			data.EventCallback(event);
 		});
 
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			KeyTypedEvent event(keycode);
+			data.EventCallback(event);
+		});
+
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -89,7 +102,7 @@ namespace Odd {
 			{
 				case GLFW_PRESS:
 				{
-					KeyPressedEvent event(key, 0);
+					KeyPressedEvent event(key, 0, mods);
 					data.EventCallback(event);
 					break;
 				}
@@ -101,7 +114,7 @@ namespace Odd {
 				}
 				case GLFW_REPEAT:
 				{
-					KeyPressedEvent event(key, 1);
+					KeyPressedEvent event(key, 1, mods);
 					data.EventCallback(event);
 					break;
 				}
@@ -163,8 +176,8 @@ namespace Odd {
 		m_timeSinceStartup = glfwGetTime();
 		m_frameTime = m_timeSinceStartup - m_prevTimeSinceStartup;
 		m_prevTimeSinceStartup = m_timeSinceStartup;
-		glClearColor(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
+		//glClearColor(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1);
+		//glClear(GL_COLOR_BUFFER_BIT);
 		glfwSwapBuffers(m_Window);
 	}
 

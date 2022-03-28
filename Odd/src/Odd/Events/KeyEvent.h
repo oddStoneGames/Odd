@@ -22,10 +22,11 @@ namespace Odd {
 	class KeyPressedEvent : public KeyEvent
 	{
 	public:
-		KeyPressedEvent(const KeyCode keycode, const uint16_t repeatCount)
+		KeyPressedEvent(const KeyCode keycode, const uint16_t repeatCount, int mods)
 			: KeyEvent(keycode), m_RepeatCount(repeatCount) {}
 
 		uint16_t GetRepeatCount() const { return m_RepeatCount; }
+		int GetMods() const { return m_Mods; }
 
 		std::string ToString() const override
 		{
@@ -37,6 +38,7 @@ namespace Odd {
 		EVENT_CLASS_TYPE(KeyPressed)
 	private:
 		uint16_t m_RepeatCount;
+		int m_Mods;
 	};
 
 	class KeyReleasedEvent : public KeyEvent
@@ -58,7 +60,7 @@ namespace Odd {
 	class KeyTypedEvent : public KeyEvent
 	{
 	public:
-		KeyTypedEvent(const KeyCode keycode)
+		KeyTypedEvent(int keycode)
 			: KeyEvent(keycode) {}
 
 		std::string ToString() const override

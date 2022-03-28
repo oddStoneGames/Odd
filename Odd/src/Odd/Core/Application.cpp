@@ -4,18 +4,21 @@
 
 namespace Odd
 {
-#define BIND_EVENT_FUNC(x) std::bind(&x, this, std::placeholders::_1)
+	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
 	{
+		if (s_Instance)
+		{
+			DEBUG_CORE_ERROR("Application Already Exists!");
+			return;
+		}
+		s_Instance = this;
+
 		//Initialize Logger.
 		Odd::Log::Init();
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
-
-		unsigned int testVAO[10];
-		glGenVertexArrays(10, testVAO);
-		DEBUG_CORE_INFO("{0}", testVAO[5]);
 	}
 	Application::~Application()
 	{
@@ -25,18 +28,20 @@ namespace Odd
 	void Application::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
 		m_LayerStack.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNC(Application::OnWindowClose));
-		DEBUG_CORE_TRACE("{0}", e);
+		//DEBUG_CORE_TRACE("{0}", e);
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{

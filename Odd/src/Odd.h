@@ -5,6 +5,8 @@
 #include "Odd/Core/Layer.h"
 #include "Odd/Core/Log.h"
 
+#include "Odd/ImGui/ImGuiLayer.h"
+
 //----Entry Point--------------------------
 #include "Odd/Core/EntryPoint.h"
 //-----------------------------------------

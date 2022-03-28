@@ -12,6 +12,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-x64"
 
 include "Odd/vendor/GLFW"
 include "Odd/vendor/Glad"
+include "Odd/vendor/ImGui"
 
 project "Odd"
     location "Odd"
@@ -35,13 +36,15 @@ project "Odd"
         "%{prj.name}/src",
         "%{prj.name}/vendor",
         "Odd/vendor/GLFW/include",
-        "Odd/vendor/Glad/include"
+        "Odd/vendor/Glad/include",
+        "Odd/vendor/ImGui/include"
     }
 
     links
     {
         "GLFW",
         "Glad",
+        "ImGui",
         "opengl32.lib"
     }
 

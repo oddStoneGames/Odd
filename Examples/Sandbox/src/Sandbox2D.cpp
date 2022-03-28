@@ -7,19 +7,23 @@ public:
 
 	void OnUpdate() override
 	{
-		DEBUG_INFO("ExampleLayer::Update");
+		//DEBUG_INFO("ExampleLayer::Update");
 	}
 
 	void OnEvent(Odd::Event& event) override
 	{
-		DEBUG_TRACE("{0}", event);
+		//DEBUG_TRACE("{0}", event);
 	}
 };
 
 class Sandbox2D : public Odd::Application
 {
 	public:
-		Sandbox2D() { PushLayer(new ExampleLayer()); }
+		Sandbox2D() 
+		{ 
+			PushLayer(new ExampleLayer()); 
+			PushOverlay(new Odd::ImGuiLayer());
+		}
 		~Sandbox2D() {}
 };
  
