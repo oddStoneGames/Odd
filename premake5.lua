@@ -1,4 +1,5 @@
 workspace "Odd"
+    startproject "Sandbox"
     architecture "x64"
 
     configurations
@@ -18,6 +19,7 @@ project "Odd"
     location "Odd"
     kind "SharedLib"
     language "C++"
+    staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -37,7 +39,8 @@ project "Odd"
         "%{prj.name}/vendor",
         "Odd/vendor/GLFW/include",
         "Odd/vendor/Glad/include",
-        "Odd/vendor/ImGui/include"
+        "Odd/vendor/ImGui/include",
+        "Odd/vendor/glm"
     }
 
     links
@@ -50,7 +53,6 @@ project "Odd"
 
     filter "system:windows"
         cppdialect "C++latest"
-        staticruntime "On"
         systemversion "latest"
 
         defines
@@ -67,15 +69,15 @@ project "Odd"
 
     filter "configurations:Debug"
         defines "ODD_DEBUG"
-        buildoptions "/MDd"
+        runtime "Debug"
         symbols "On"
     filter "configurations:Release"
         defines "ODD_RELEASE"
-        buildoptions "/MD"
+        runtime "Release"
         optimize "On"
     filter "configurations:Distribution"
         defines "ODD_DISTRIBUTION"
-        buildoptions "/MD"
+        runtime "Release"
         optimize "On"
 
 
@@ -83,6 +85,7 @@ project "Sandbox"
     location "Examples/%{prj.name}"
     kind "ConsoleApp"
     language "C++"
+    staticruntime "off"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -96,7 +99,8 @@ project "Sandbox"
     includedirs
     {
         "Odd/vendor",
-        "Odd/src"
+        "Odd/src",
+        "Odd/vendor/glm"
     }
 
     links
@@ -106,7 +110,6 @@ project "Sandbox"
 
     filter "system:windows"
         cppdialect "C++latest"
-        staticruntime "On"
         systemversion "latest"
 
         defines
@@ -116,13 +119,13 @@ project "Sandbox"
 
     filter "configurations:Debug"
         defines "ODD_DEBUG"
-        buildoptions "/MDd"
+        runtime "Debug"
         symbols "On"
     filter "configurations:Release"
         defines "ODD_RELEASE"
-        buildoptions "/MD"
+        runtime "Release"
         optimize "On"
     filter "configurations:Distribution"
         defines "ODD_DISTRIBUTION"
-        buildoptions "/MD"
+        runtime "Release"
         optimize "On"

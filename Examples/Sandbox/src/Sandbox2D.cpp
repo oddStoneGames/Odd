@@ -7,11 +7,16 @@ public:
 
 	void OnUpdate() override
 	{
+		if (Odd::Input::IsKeyPressed(Odd::Key::Tab))
+			DEBUG_INFO("Tab key Pressed(poll)!");
+		glm::vec2 hi = glm::vec2(2, 3);
 		//DEBUG_INFO("ExampleLayer::Update");
 	}
 
 	void OnEvent(Odd::Event& event) override
 	{
+		if (Odd::Input::IsKeyPressed(Odd::Key::Tab))
+			DEBUG_INFO("Tab key Pressed(event)!");
 		//DEBUG_TRACE("{0}", event);
 	}
 };

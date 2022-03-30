@@ -1,6 +1,7 @@
 #include "oddpch.h"
 #include "Application.h"
 #include "Glad/glad.h"
+#include "Odd/Input/Input.h"
 
 namespace Odd
 {
@@ -57,6 +58,9 @@ namespace Odd
 		{
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
+
+			auto [x, y] = Input::GetMousePosition();
+			DEBUG_CORE_TRACE("{0}, {1}", x, y);
 			m_Window->OnUpdate();
 		}
 	}

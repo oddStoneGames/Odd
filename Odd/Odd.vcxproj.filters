@@ -10,8 +10,17 @@
     <Filter Include="Odd\Events">
       <UniqueIdentifier>{A0A0B90A-8C58-FB57-F55F-D4B3E1369648}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Odd\ImGui">
+      <UniqueIdentifier>{66C202B3-D22C-B729-1B6B-68CF8714957E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Odd\Input">
+      <UniqueIdentifier>{3BFD03B3-A767-B829-F0A5-69CF5C4F967E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
@@ -28,9 +37,6 @@
     <ClInclude Include="src\Odd\Core\EntryPoint.h">
       <Filter>Odd\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Odd\Core\KeyCodes.h">
-      <Filter>Odd\Core</Filter>
-    </ClInclude>
     <ClInclude Include="src\Odd\Core\Layer.h">
       <Filter>Odd\Core</Filter>
     </ClInclude>
@@ -38,9 +44,6 @@
       <Filter>Odd\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Core\Log.h">
-      <Filter>Odd\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Odd\Core\MouseCodes.h">
       <Filter>Odd\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Core\Window.h">
@@ -58,12 +61,28 @@
     <ClInclude Include="src\Odd\Events\MouseEvent.h">
       <Filter>Odd\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Odd\ImGui\ImGuiLayer.h">
+      <Filter>Odd\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Input\Input.h">
+      <Filter>Odd\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Input\KeyCodes.h">
+      <Filter>Odd\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Input\MouseCodes.h">
+      <Filter>Odd\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\oddpch.h" />
-    <ClInclude Include="src\Odd\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Odd\Core\Application.cpp">
@@ -78,11 +97,18 @@
     <ClCompile Include="src\Odd\Core\Log.cpp">
       <Filter>Odd\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Odd\ImGui\ImGuiLayer.cpp">
+      <Filter>Odd\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\oddpch.cpp" />
-    <ClCompile Include="src\Odd\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
   </ItemGroup>
 </Project>

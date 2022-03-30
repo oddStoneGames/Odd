@@ -2,7 +2,7 @@
 
 #include "oddpch.h"
 #include "Event.h"
-#include "Odd/Core/KeyCodes.h"
+#include "Odd/Input/KeyCodes.h"
 
 namespace Odd {
 
@@ -23,7 +23,7 @@ namespace Odd {
 	{
 	public:
 		KeyPressedEvent(const KeyCode keycode, const uint16_t repeatCount, int mods)
-			: KeyEvent(keycode), m_RepeatCount(repeatCount) {}
+			: KeyEvent(keycode), m_RepeatCount(repeatCount), m_Mods(mods) {}
 
 		uint16_t GetRepeatCount() const { return m_RepeatCount; }
 		int GetMods() const { return m_Mods; }
