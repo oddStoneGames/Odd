@@ -13,14 +13,14 @@
     <Filter Include="Odd\ImGui">
       <UniqueIdentifier>{66C202B3-D22C-B729-1B6B-68CF8714957E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Odd\ImGui\Windows">
+      <UniqueIdentifier>{A07247D2-0C89-4568-5500-D189C15516F0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Odd\Input">
       <UniqueIdentifier>{3BFD03B3-A767-B829-F0A5-69CF5C4F967E}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Platform\OpenGL">
-      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
@@ -64,6 +64,12 @@
     <ClInclude Include="src\Odd\ImGui\ImGuiLayer.h">
       <Filter>Odd\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Odd\ImGui\Windows\imgui_impl_glfw.h">
+      <Filter>Odd\ImGui\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\ImGui\Windows\imgui_impl_opengl3.h">
+      <Filter>Odd\ImGui\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Odd\Input\Input.h">
       <Filter>Odd\Input</Filter>
     </ClInclude>
@@ -72,9 +78,6 @@
     </ClInclude>
     <ClInclude Include="src\Odd\Input\MouseCodes.h">
       <Filter>Odd\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
-      <Filter>Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
       <Filter>Platform\Windows</Filter>
@@ -100,8 +103,11 @@
     <ClCompile Include="src\Odd\ImGui\ImGuiLayer.cpp">
       <Filter>Odd\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
-      <Filter>Platform\OpenGL</Filter>
+    <ClCompile Include="src\Odd\ImGui\Windows\imgui_impl_glfw.cpp">
+      <Filter>Odd\ImGui\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\ImGui\Windows\imgui_impl_opengl3.cpp">
+      <Filter>Odd\ImGui\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>Platform\Windows</Filter>

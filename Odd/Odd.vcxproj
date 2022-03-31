@@ -162,10 +162,11 @@
     <ClInclude Include="src\Odd\Events\KeyEvent.h" />
     <ClInclude Include="src\Odd\Events\MouseEvent.h" />
     <ClInclude Include="src\Odd\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Odd\ImGui\Windows\imgui_impl_glfw.h" />
+    <ClInclude Include="src\Odd\ImGui\Windows\imgui_impl_opengl3.h" />
     <ClInclude Include="src\Odd\Input\Input.h" />
     <ClInclude Include="src\Odd\Input\KeyCodes.h" />
     <ClInclude Include="src\Odd\Input\MouseCodes.h" />
-    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\oddpch.h" />
@@ -176,7 +177,8 @@
     <ClCompile Include="src\Odd\Core\LayerStack.cpp" />
     <ClCompile Include="src\Odd\Core\Log.cpp" />
     <ClCompile Include="src\Odd\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
+    <ClCompile Include="src\Odd\ImGui\Windows\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\Odd\ImGui\Windows\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\oddpch.cpp">

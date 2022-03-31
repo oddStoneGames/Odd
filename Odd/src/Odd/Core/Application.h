@@ -5,6 +5,7 @@
 #include "Odd/Events/Event.h"
 #include "Odd/Core/LayerStack.h"
 #include "Odd/Events/ApplicationEvent.h"
+#include "Odd/ImGui/ImGuiLayer.h"
 
 namespace Odd
 {
@@ -27,6 +28,7 @@ namespace Odd
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	};

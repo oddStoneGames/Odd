@@ -11,6 +11,8 @@ project "ImGui"
         "include/*.cpp"
     }
 
+    defines { "IMGUI_API=__declspec( dllexport )" }
+
     filter "system:windows"
     systemversion "latest"
     staticruntime "On"
@@ -18,9 +20,7 @@ project "ImGui"
 filter "configurations:Debug"
     runtime "Debug"
     symbols "on"
-    buildoptions "/MT"
 
 filter "configurations:Release"
     runtime "Release"
     optimize "on"
-    buildoptions "/MT"
