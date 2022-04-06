@@ -67,7 +67,7 @@ namespace Odd {
 		else
 			DEBUG_CORE_ERROR("Failed to Initialized Glad!");
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-		SetVSync(true);
+		SetVSync(false);
 
 		//Set GLFW Callbacks
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) 
@@ -145,7 +145,7 @@ namespace Odd {
 		glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-			MouseScrolledEvent event(xoffset, yoffset);
+			MouseScrolledEvent event((float)xoffset, (float)yoffset);
 			data.EventCallback(event);
 		});
 
@@ -173,7 +173,7 @@ namespace Odd {
 	{
 		glfwPollEvents();
 		m_frameCount++;
-		m_timeSinceStartup = glfwGetTime();
+		m_timeSinceStartup = (float)glfwGetTime();
 		m_frameTime = m_timeSinceStartup - m_prevTimeSinceStartup;
 		m_prevTimeSinceStartup = m_timeSinceStartup;
 		//glClearColor(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1);

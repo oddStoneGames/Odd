@@ -17,9 +17,10 @@ include "Odd/vendor/ImGui"
 
 project "Odd"
     location "Odd"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
-    staticruntime "off"
+    cppdialect "C++latest"
+    staticruntime "on"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -52,7 +53,6 @@ project "Odd"
     }
 
     filter "system:windows"
-        cppdialect "C++latest"
         systemversion "latest"
 
         defines
@@ -62,30 +62,28 @@ project "Odd"
             "GLFW_INCLUDE_NONE"
         }
 
-        postbuildcommands
-        {
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-        }
-
     filter "configurations:Debug"
         defines "ODD_DEBUG"
         runtime "Debug"
-        symbols "On"
+        symbols "on"
+
     filter "configurations:Release"
         defines "ODD_RELEASE"
         runtime "Release"
-        optimize "On"
+        optimize "on"
+
     filter "configurations:Distribution"
         defines "ODD_DISTRIBUTION"
         runtime "Release"
-        optimize "On"
+        optimize "on"
 
 
 project "Sandbox"
     location "Examples/%{prj.name}"
     kind "ConsoleApp"
     language "C++"
-    staticruntime "off"
+    cppdialect "C++latest"
+    staticruntime "on"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -109,7 +107,6 @@ project "Sandbox"
     }
 
     filter "system:windows"
-        cppdialect "C++latest"
         systemversion "latest"
 
         defines
@@ -120,12 +117,14 @@ project "Sandbox"
     filter "configurations:Debug"
         defines "ODD_DEBUG"
         runtime "Debug"
-        symbols "On"
+        symbols "on"
+
     filter "configurations:Release"
         defines "ODD_RELEASE"
         runtime "Release"
-        optimize "On"
+        optimize "on"
+
     filter "configurations:Distribution"
         defines "ODD_DISTRIBUTION"
         runtime "Release"
-        optimize "On"
+        optimize "on"
