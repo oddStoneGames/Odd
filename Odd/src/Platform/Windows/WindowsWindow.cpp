@@ -1,12 +1,6 @@
 #include "oddpch.h"
 #include "WindowsWindow.h"
 
-#include "Odd/Events/ApplicationEvent.h"
-#include "Odd/Events/MouseEvent.h"
-#include "Odd/Events/KeyEvent.h"
-
-#include "Glad/glad.h"
-
 namespace Odd {
 
 	static bool s_GLFWInitialized = false;
@@ -37,8 +31,6 @@ namespace Odd {
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
-		DEBUG_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
-
 		if (!s_GLFWInitialized)
 		{
 			int success = glfwInit();
@@ -57,15 +49,13 @@ namespace Odd {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 1);
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		int gladStatus = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		if (gladStatus > 0)
-			DEBUG_CORE_INFO("Glad Initialized Successfully!");
-		else
-			DEBUG_CORE_ERROR("Failed to Initialized Glad!");
+
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(false);
 
@@ -176,9 +166,12 @@ namespace Odd {
 		m_timeSinceStartup = (float)glfwGetTime();
 		m_frameTime = m_timeSinceStartup - m_prevTimeSinceStartup;
 		m_prevTimeSinceStartup = m_timeSinceStartup;
-		//glClearColor(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1);
-		//glClear(GL_COLOR_BUFFER_BIT);
-		glfwSwapBuffers(m_Window);
+		glClearColor(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		((OpenGLContext*)m_Context)->RenderTriangle();
+		m_Context->SwapBuffers();
+		
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)

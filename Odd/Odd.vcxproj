@@ -140,6 +140,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Odd.h" />
     <ClInclude Include="src\Odd\Core\Application.h" />
     <ClInclude Include="src\Odd\Core\Core.h" />
@@ -158,11 +159,13 @@
     <ClInclude Include="src\Odd\Input\Input.h" />
     <ClInclude Include="src\Odd\Input\KeyCodes.h" />
     <ClInclude Include="src\Odd\Input\MouseCodes.h" />
+    <ClInclude Include="src\Odd\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\oddpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Odd\Core\Application.cpp" />
     <ClCompile Include="src\Odd\Core\Layer.cpp" />
     <ClCompile Include="src\Odd\Core\LayerStack.cpp" />

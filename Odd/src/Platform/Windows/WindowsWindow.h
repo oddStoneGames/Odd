@@ -1,6 +1,12 @@
 #pragma once
+
 #include "oddpch.h"
 #include "Odd/Core/Window.h"
+#include "Odd/Renderer/GraphicsContext.h"
+#include "Platform/OpenGL/OpenGLContext.h"
+#include "Odd/Events/ApplicationEvent.h"
+#include "Odd/Events/MouseEvent.h"
+#include "Odd/Events/KeyEvent.h"
 #include <GLFW/glfw3.h>
 
 namespace Odd {
@@ -27,6 +33,7 @@ namespace Odd {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 		int m_frameCount;
 		float m_frameTime;
 		float m_timeSinceStartup;
