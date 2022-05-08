@@ -8,7 +8,7 @@ namespace Odd {
 		if (windowHandle == nullptr)
 			DEBUG_CORE_ERROR("Window Handle is Null");
 
-		m_TriangleVAO = m_TriangleVBO = m_TriangleShaderID = 0;
+		m_TriangleVAO = m_TriangleShaderID = 0;
 	}
 
 	void OpenGLContext::Init()
@@ -52,8 +52,7 @@ namespace Odd {
 			};
 
 			//Generate Vertex Buffer Object.
-			glGenBuffers(1, &m_TriangleVBO);
-			glBindBuffer(GL_ARRAY_BUFFER, m_TriangleVBO);
+			m_TriangleVBO.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
 			//Send Data to GPU
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);

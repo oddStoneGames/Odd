@@ -2,6 +2,7 @@
 #include "Odd/Renderer/GraphicsContext.h"
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
+#include "Odd/Renderer/Buffer.h"
 
 namespace Odd {
 
@@ -14,7 +15,8 @@ namespace Odd {
 		virtual void SwapBuffers() override;
 		void RenderTriangle();
 	private:
-		unsigned int m_TriangleVAO, m_TriangleVBO, m_TriangleShaderID;
+		unsigned int m_TriangleVAO, m_TriangleShaderID;
+		std::unique_ptr<VertexBuffer> m_TriangleVBO;
 		GLFWwindow* m_WindowHandle;
 	};
 

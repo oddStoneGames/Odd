@@ -167,7 +167,7 @@ namespace Odd {
 		m_frameTime = m_timeSinceStartup - m_prevTimeSinceStartup;
 		m_prevTimeSinceStartup = m_timeSinceStartup;
 		glClearColor(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT);
 
 		((OpenGLContext*)m_Context)->RenderTriangle();
 		m_Context->SwapBuffers();

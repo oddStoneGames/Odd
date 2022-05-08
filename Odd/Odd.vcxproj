@@ -140,6 +140,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Odd\Renderer\Buffer.h" />
+    <ClInclude Include="src\Odd\Renderer\Renderer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Odd.h" />
     <ClInclude Include="src\Odd\Core\Application.h" />
@@ -165,6 +168,9 @@
     <ClInclude Include="src\oddpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Odd\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Odd\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Odd\Core\Application.cpp" />
     <ClCompile Include="src\Odd\Core\Layer.cpp" />
