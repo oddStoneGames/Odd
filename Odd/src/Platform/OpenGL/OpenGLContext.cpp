@@ -28,6 +28,28 @@ namespace Odd {
 		glfwSwapBuffers(m_WindowHandle);
 	}
 
+	static GLenum ShaderDataTypeToOpenGLType(ShaderDataType type)
+	{
+		switch (type)
+		{
+			case Odd::ShaderDataType::None:		return 0;
+			case Odd::ShaderDataType::Bool:		return GL_BOOL;
+			case Odd::ShaderDataType::Int:		return GL_INT;
+			case Odd::ShaderDataType::Int2:		return GL_INT;
+			case Odd::ShaderDataType::Int3:		return GL_INT;
+			case Odd::ShaderDataType::Int4:		return GL_INT;
+			case Odd::ShaderDataType::Float:	return GL_FLOAT;
+			case Odd::ShaderDataType::Float2:	return GL_FLOAT;
+			case Odd::ShaderDataType::Float3:	return GL_FLOAT;
+			case Odd::ShaderDataType::Float4:	return GL_FLOAT;
+			case Odd::ShaderDataType::Mat3:		return GL_FLOAT;
+			case Odd::ShaderDataType::Mat4:		return GL_FLOAT;
+		}
+
+		DEBUG_CORE_ERROR("Shader Data Type Unknown!");
+		return 0;
+	}
+
 	/// <summary>
 	/// Renders A Default Traingle With Some Color at Vertices.
 	/// </summary>
@@ -45,19 +67,42 @@ namespace Odd {
 
 			float vertices[] = 
 			{
-				//Vertices
-				-0.1f, -0.15f, 0.0f,
-				 0.1f, -0.15f, 0.0f,
-				 0.0f,  0.15f, 0.0f
+				//Vertices				//Colors
+				-0.1f, -0.15f, 0.0f,	1.0f, 1.0f, 0.0f,
+				 0.1f, -0.15f, 0.0f,	0.0f, 1.0f, 1.0f,
+				 0.0f,  0.15f, 0.0f,	1.0f, 0.0f, 1.0f
 			};
 
 			//Generate Vertex Buffer Object.
 			m_TriangleVBO.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
+			{
+				//Generate Vertex Buffer Layout For All The Buffer Elements.
+				BufferLayout layout = {
+					{ ShaderDataType::Float3, "pos"},
+					{ ShaderDataType::Float3, "color"}
+				};
+
+				//Set The Layout For The Vertex Buffer.
+				m_TriangleVBO->SetLayout(layout);
+			}
+
 			//Send Data to GPU
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * 3, (void*)0);
-			glEnableVertexAttribArray(0);
+			uint32_t index = 0;
+			
+			// Cached Layout
+			const auto& layout = m_TriangleVBO->GetLayout();
+
+			for (const auto& element : layout)
+			{
+				glEnableVertexAttribArray(index);
+				glVertexAttribPointer(index, element.GetElementCount(), 
+					ShaderDataTypeToOpenGLType(element.Type), 
+					element.Normalized ? GL_TRUE : GL_FALSE, 
+					layout.GetStride(),
+					(const void*)element.Offset);
+				index++;
+			}
 
 			//UnBind Vertex Array Object.
 			glBindVertexArray(0);
@@ -70,11 +115,12 @@ namespace Odd {
 			const char* vertexShaderCode = 
 				R"(#version 460 core
 				   layout(location = 0)in vec3 pos;
+				   layout(location = 1)in vec3 color;
 				   out vec3 FragColor;
 				   void main() 
 				   {
 						gl_Position = vec4(pos, 1.0f);
-						FragColor = pos.x < 0.0f ? vec3(1, 0, 0) : (pos.x > 0.0f ? vec3(0, 1, 0) : vec3(0, 0, 1));
+						FragColor = color;
 				   })";
 
 			//Fragment Shader Code
