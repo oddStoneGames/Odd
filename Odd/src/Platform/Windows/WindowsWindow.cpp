@@ -170,6 +170,7 @@ namespace Odd {
 		//glClear(GL_COLOR_BUFFER_BIT);
 
 		((OpenGLContext*)m_Context)->RenderTriangle();
+		((OpenGLContext*)m_Context)->RenderSquare();
 		m_Context->SwapBuffers();
 		
 	}

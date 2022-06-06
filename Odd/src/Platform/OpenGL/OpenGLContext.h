@@ -3,6 +3,7 @@
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
 #include "Odd/Renderer/Buffer.h"
+#include "Odd/Renderer/VertexArray.h"
 
 namespace Odd {
 
@@ -14,9 +15,14 @@ namespace Odd {
 		virtual void Init() override;
 		virtual void SwapBuffers() override;
 		void RenderTriangle();
+		void RenderSquare();
 	private:
-		unsigned int m_TriangleVAO, m_TriangleShaderID;
-		std::unique_ptr<VertexBuffer> m_TriangleVBO;
+		unsigned int m_TriangleShaderID;
+		std::shared_ptr<VertexArray>  m_TriangleVAO;
+
+		unsigned int m_SquareShaderID;
+		std::shared_ptr<VertexArray>  m_SquareVAO;
+
 		GLFWwindow* m_WindowHandle;
 	};
 

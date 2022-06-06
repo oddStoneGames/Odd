@@ -8,7 +8,11 @@ namespace Odd {
 		if (windowHandle == nullptr)
 			DEBUG_CORE_ERROR("Window Handle is Null");
 
-		m_TriangleVAO = m_TriangleShaderID = 0;
+		m_TriangleShaderID = 0;
+		m_TriangleVAO = nullptr;
+
+		m_SquareShaderID = 0;
+		m_SquareVAO = nullptr;
 	}
 
 	void OpenGLContext::Init()
@@ -55,15 +59,15 @@ namespace Odd {
 	/// </summary>
 	void OpenGLContext::RenderTriangle()
 	{
-		if (m_TriangleVAO == 0)
+		if (m_TriangleVAO == nullptr)
 		{
 			//Initialized Everything For The First Time.
 
 			#pragma region VAO & VBO Initialization
 
 			//Generate Vertex Array Object.
-			glGenVertexArrays(1, &m_TriangleVAO);
-			glBindVertexArray(m_TriangleVAO);
+			m_TriangleVAO.reset(VertexArray::Create());
+			m_TriangleVAO->Bind();
 
 			float vertices[] = 
 			{
@@ -74,6 +78,7 @@ namespace Odd {
 			};
 
 			//Generate Vertex Buffer Object.
+			std::shared_ptr<VertexBuffer> m_TriangleVBO;
 			m_TriangleVBO.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
 			{
@@ -87,25 +92,7 @@ namespace Odd {
 				m_TriangleVBO->SetLayout(layout);
 			}
 
-			//Send Data to GPU
-			uint32_t index = 0;
-			
-			// Cached Layout
-			const auto& layout = m_TriangleVBO->GetLayout();
-
-			for (const auto& element : layout)
-			{
-				glEnableVertexAttribArray(index);
-				glVertexAttribPointer(index, element.GetElementCount(), 
-					ShaderDataTypeToOpenGLType(element.Type), 
-					element.Normalized ? GL_TRUE : GL_FALSE, 
-					layout.GetStride(),
-					(const void*)element.Offset);
-				index++;
-			}
-
-			//UnBind Vertex Array Object.
-			glBindVertexArray(0);
+			m_TriangleVAO->AddVertexBuffer(m_TriangleVBO);
 
 			#pragma endregion
 
@@ -184,7 +171,7 @@ namespace Odd {
 		}
 
 		//Bind VAO
-		glBindVertexArray(m_TriangleVAO);
+		m_TriangleVAO->Bind();
 
 		//Bind Shader
 		glUseProgram(m_TriangleShaderID);
@@ -193,7 +180,151 @@ namespace Odd {
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		//Unbind VAO
-		glBindVertexArray(0);
+		m_TriangleVAO->Unbind();
 	}
 
+
+	/// <summary>
+	/// Renders A Default Square With Some Color at Vertices.
+	/// </summary>
+	void OpenGLContext::RenderSquare()
+	{
+		if (m_SquareVAO == nullptr)
+		{
+			//Initialized Everything For The First Time.
+
+			#pragma region VAO & VBO Initialization
+
+			//Generate Vertex Array Object.
+			m_SquareVAO.reset(VertexArray::Create());
+			m_SquareVAO->Bind();
+
+			float vertices[] =
+			{
+				//Vertices				//Colors
+				-0.5f, -0.15f, 0.0f,	1.0f, 1.0f, 0.0f,
+				-0.3f, -0.15f, 0.0f,	0.0f, 1.0f, 1.0f,
+				-0.3f,  0.15f, 0.0f,	1.0f, 0.0f, 1.0f,
+				-0.5f,  0.15f, 0.0f,	1.0f, 1.0f, 1.0f
+			};
+
+			uint32_t indices[] =
+			{
+				0, 1, 2,
+				2, 3, 0
+			};
+
+			std::shared_ptr<VertexBuffer> m_SquareVBO;
+
+			//Generate Vertex Buffer Object.
+			m_SquareVBO.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+
+			std::shared_ptr<IndexBuffer> m_SquareEBO;
+
+			//Generate Element Buffer Object.
+			m_SquareEBO.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+
+			{
+				//Generate Vertex Buffer Layout For All The Buffer Elements.
+				BufferLayout layout = {
+					{ ShaderDataType::Float3, "pos"},
+					{ ShaderDataType::Float3, "color"}
+				};
+
+				//Set The Layout For The Vertex Buffer.
+				m_SquareVBO->SetLayout(layout);
+			}
+
+			m_SquareVAO->AddVertexBuffer(m_SquareVBO);
+			m_SquareVAO->SetIndexBuffer(m_SquareEBO);
+
+
+			#pragma endregion
+
+			#pragma region Shader Initialization
+
+			//Vertex Shader Code
+			const char* vertexShaderCode =
+				R"(#version 460 core
+				   layout(location = 0)in vec3 pos;
+				   layout(location = 1)in vec3 color;
+				   out vec3 FragColor;
+				   void main() 
+				   {
+						gl_Position = vec4(pos, 1.0f);
+						FragColor = color;
+				   })";
+
+			//Fragment Shader Code
+			const char* fragmentShaderCode =
+				R"(#version 460 core
+				   in vec3 FragColor;
+				   out vec4 Color;
+				   void main() 
+				   {
+						Color = vec4(FragColor, 1.0f);
+				   })";
+
+			//Create Vertex Shader.
+			unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+			//Insert Code.
+			glShaderSource(vertexShader, 1, &vertexShaderCode, nullptr);
+			//Compile Shader.
+			glCompileShader(vertexShader);
+			//Log Compilation Error.
+			int success;
+			char infoLog[512];
+			glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+				DEBUG_CORE_ERROR("Square Vertex Shader Failed To Compile!\n\t{0}", infoLog);
+			}
+
+			//Create Fragment Shader.
+			unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+			//Insert Code.
+			glShaderSource(fragmentShader, 1, &fragmentShaderCode, nullptr);
+			//Compile Shader.
+			glCompileShader(fragmentShader);
+			//Log Compilation Error.
+			glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+				DEBUG_CORE_ERROR("Square Fragment Shader Failed To Compile!\n\t{0}", infoLog);
+			}
+
+			//Create Shader Program.
+			m_SquareShaderID = glCreateProgram();
+			glAttachShader(m_SquareShaderID, vertexShader);
+			glAttachShader(m_SquareShaderID, fragmentShader);
+			glLinkProgram(m_SquareShaderID);
+			// check for linking errors
+			glGetProgramiv(m_SquareShaderID, GL_LINK_STATUS, &success);
+			if (!success) {
+				glGetProgramInfoLog(m_SquareShaderID, 512, NULL, infoLog);
+				DEBUG_CORE_ERROR("Square Shader Program Failed To Link!\n\t{0}", infoLog);
+			}
+
+			//Cleanup
+			glDeleteShader(vertexShader);
+			glDeleteShader(fragmentShader);
+
+			#pragma endregion
+
+		}
+
+		//Bind VAO
+		m_SquareVAO->Bind();
+
+		//Bind Shader
+		glUseProgram(m_SquareShaderID);
+
+		//Draw Square
+		glDrawElements(GL_TRIANGLES, m_SquareVAO->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
+		//Unbind VAO
+		m_SquareVAO->Unbind();
+	}
 }
