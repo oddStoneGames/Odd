@@ -2,6 +2,7 @@
 #include "Odd/Renderer/GraphicsContext.h"
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
+#include "Odd/Renderer/Renderer.h"
 #include "Odd/Renderer/Buffer.h"
 #include "Odd/Renderer/VertexArray.h"
 

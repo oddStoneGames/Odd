@@ -10,8 +10,8 @@ namespace Odd {
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None:		DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;
-			case RendererAPI::OpenGL:	return new OpenGLVertexBuffer(vertices, size);
+			case RendererAPI::API::None:	DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;
+			case RendererAPI::API::OpenGL:	return new OpenGLVertexBuffer(vertices, size);
 		}
 		
 		DEBUG_CORE_ERROR("Unknown Renderer API!");
@@ -22,8 +22,8 @@ namespace Odd {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:		DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;
-		case RendererAPI::OpenGL:	return new OpenGLIndexBuffer(indices, size);
+			case RendererAPI::API::None:	DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;
+			case RendererAPI::API::OpenGL:	return new OpenGLIndexBuffer(indices, size);
 		}
 
 		DEBUG_CORE_ERROR("Unknown Renderer API!");

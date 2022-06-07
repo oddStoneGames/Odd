@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include "Renderer.h"
 #include "Odd/Renderer/Buffer.h"
 
 namespace Odd {

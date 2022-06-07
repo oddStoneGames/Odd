@@ -166,11 +166,16 @@ namespace Odd {
 		m_timeSinceStartup = (float)glfwGetTime();
 		m_frameTime = m_timeSinceStartup - m_prevTimeSinceStartup;
 		m_prevTimeSinceStartup = m_timeSinceStartup;
-		glClearColor(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1);
-		//glClear(GL_COLOR_BUFFER_BIT);
+
+		RenderCommand::SetClearColor(glm::vec4(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1));
+
+		Renderer::BeginScene();
 
 		((OpenGLContext*)m_Context)->RenderTriangle();
 		((OpenGLContext*)m_Context)->RenderSquare();
+
+		Renderer::EndScene();
+
 		m_Context->SwapBuffers();
 		
 	}

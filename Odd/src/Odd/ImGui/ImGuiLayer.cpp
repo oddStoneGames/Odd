@@ -8,6 +8,8 @@
 #include "Glad/glad.h"
 #include "GLFW/glfw3.h"
 
+#include "Odd/Renderer/Renderer.h"
+
 namespace Odd {
 
 	ImGuiLayer::ImGuiLayer(): Layer("ImGuiLayer") {}
@@ -68,8 +70,8 @@ namespace Odd {
 		ImGuiIO& io = ImGui::GetIO();
 		Window& window = Application::Get().GetWindow();
 		io.DisplaySize = ImVec2((float)window.GetWidth(), (float)window.GetHeight());
-
-		glClear(GL_COLOR_BUFFER_BIT);
+		
+		RenderCommand::Clear();
 
 		// Rendering
 		ImGui::Render();

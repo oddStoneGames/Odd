@@ -77,9 +77,20 @@ namespace Odd {
 				 0.0f,  0.15f, 0.0f,	1.0f, 0.0f, 1.0f
 			};
 
+			uint32_t indices[] =
+			{
+				0, 1, 2
+			};
+
 			//Generate Vertex Buffer Object.
 			std::shared_ptr<VertexBuffer> m_TriangleVBO;
 			m_TriangleVBO.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+
+			//Generate Element Buffer Object.
+			std::shared_ptr<IndexBuffer> m_TriangleEBO;
+
+			//Generate Element Buffer Object.
+			m_TriangleEBO.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
 			{
 				//Generate Vertex Buffer Layout For All The Buffer Elements.
@@ -93,6 +104,7 @@ namespace Odd {
 			}
 
 			m_TriangleVAO->AddVertexBuffer(m_TriangleVBO);
+			m_TriangleVAO->SetIndexBuffer(m_TriangleEBO);
 
 			#pragma endregion
 
@@ -170,17 +182,11 @@ namespace Odd {
 			
 		}
 
-		//Bind VAO
-		m_TriangleVAO->Bind();
-
 		//Bind Shader
 		glUseProgram(m_TriangleShaderID);
 
 		//Draw Triangle
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-		//Unbind VAO
-		m_TriangleVAO->Unbind();
+		Renderer::Submit(m_TriangleVAO);
 	}
 
 
@@ -315,16 +321,10 @@ namespace Odd {
 
 		}
 
-		//Bind VAO
-		m_SquareVAO->Bind();
-
 		//Bind Shader
 		glUseProgram(m_SquareShaderID);
 
 		//Draw Square
-		glDrawElements(GL_TRIANGLES, m_SquareVAO->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-
-		//Unbind VAO
-		m_SquareVAO->Unbind();
+		Renderer::Submit(m_SquareVAO);
 	}
 }

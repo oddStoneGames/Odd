@@ -140,6 +140,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Odd\Renderer\RenderCommand.h" />
+    <ClInclude Include="src\Odd\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Odd\Renderer\Buffer.h" />
     <ClInclude Include="src\Odd\Renderer\Renderer.h" />
@@ -170,6 +173,9 @@
     <ClInclude Include="src\oddpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Odd\Renderer\RenderCommand.cpp" />
+    <ClCompile Include="src\Odd\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Odd\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Odd\Renderer\Renderer.cpp" />
