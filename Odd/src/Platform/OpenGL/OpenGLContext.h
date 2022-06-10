@@ -1,10 +1,13 @@
 #pragma once
-#include "Odd/Renderer/GraphicsContext.h"
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
+
+#include "Odd/Renderer/GraphicsContext.h"
 #include "Odd/Renderer/Renderer.h"
+#include "Odd/Renderer/Shader.h"
 #include "Odd/Renderer/Buffer.h"
 #include "Odd/Renderer/VertexArray.h"
+#include "Odd/Renderer/OrthographicCamera.h"
 
 namespace Odd {
 
@@ -18,10 +21,11 @@ namespace Odd {
 		void RenderTriangle();
 		void RenderSquare();
 	private:
-		unsigned int m_TriangleShaderID;
+
+		std::shared_ptr<Shader> m_TriangleShader;
 		std::shared_ptr<VertexArray>  m_TriangleVAO;
 
-		unsigned int m_SquareShaderID;
+		std::shared_ptr<Shader> m_SquareShader;
 		std::shared_ptr<VertexArray>  m_SquareVAO;
 
 		GLFWwindow* m_WindowHandle;

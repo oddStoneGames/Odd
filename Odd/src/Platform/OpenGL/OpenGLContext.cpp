@@ -8,10 +8,10 @@ namespace Odd {
 		if (windowHandle == nullptr)
 			DEBUG_CORE_ERROR("Window Handle is Null");
 
-		m_TriangleShaderID = 0;
+		m_TriangleShader = nullptr;
 		m_TriangleVAO = nullptr;
 
-		m_SquareShaderID = 0;
+		m_SquareShader = nullptr;
 		m_SquareVAO = nullptr;
 	}
 
@@ -109,84 +109,15 @@ namespace Odd {
 			#pragma endregion
 
 			#pragma region Shader Initialization
-
-			//Vertex Shader Code
-			const char* vertexShaderCode = 
-				R"(#version 460 core
-				   layout(location = 0)in vec3 pos;
-				   layout(location = 1)in vec3 color;
-				   out vec3 FragColor;
-				   void main() 
-				   {
-						gl_Position = vec4(pos, 1.0f);
-						FragColor = color;
-				   })";
-
-			//Fragment Shader Code
-			const char* fragmentShaderCode =
-				R"(#version 460 core
-				   in vec3 FragColor;
-				   out vec4 Color;
-				   void main() 
-				   {
-						Color = vec4(FragColor, 1.0f);
-				   })";
-
-			//Create Vertex Shader.
-			unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-			//Insert Code.
-			glShaderSource(vertexShader, 1, &vertexShaderCode, nullptr);
-			//Compile Shader.
-			glCompileShader(vertexShader);
-			//Log Compilation Error.
-			int success;
-			char infoLog[512];
-			glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-			if (!success)
-			{
-				glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-				DEBUG_CORE_ERROR("Triangle Vertex Shader Failed To Compile!\n\t{0}", infoLog);
-			}
-
-			//Create Fragment Shader.
-			unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-			//Insert Code.
-			glShaderSource(fragmentShader, 1, &fragmentShaderCode, nullptr);
-			//Compile Shader.
-			glCompileShader(fragmentShader);
-			//Log Compilation Error.
-			glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-			if (!success)
-			{
-				glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-				DEBUG_CORE_ERROR("Triangle Fragment Shader Failed To Compile!\n\t{0}", infoLog);
-			}
-
-			//Create Shader Program.
-			m_TriangleShaderID = glCreateProgram();
-			glAttachShader(m_TriangleShaderID, vertexShader);
-			glAttachShader(m_TriangleShaderID, fragmentShader);
-			glLinkProgram(m_TriangleShaderID);
-			// check for linking errors
-			glGetProgramiv(m_TriangleShaderID, GL_LINK_STATUS, &success);
-			if (!success) {
-				glGetProgramInfoLog(m_TriangleShaderID, 512, NULL, infoLog);
-				DEBUG_CORE_ERROR("Triangle Shader Program Failed To Link!\n\t{0}", infoLog);
-			}
-
-			//Cleanup
-			glDeleteShader(vertexShader);
-			glDeleteShader(fragmentShader);
+			
+			m_TriangleShader.reset(Shader::Create("D:/OddStoneGames/Odd/Odd/src/Platform/OpenGL/Shaders/DefaultTriangle.vs", "D:/OddStoneGames/Odd/Odd/src/Platform/OpenGL/Shaders/DefaultTriangle.fs"));
 
 			#pragma endregion
 			
 		}
 
-		//Bind Shader
-		glUseProgram(m_TriangleShaderID);
-
 		//Draw Triangle
-		Renderer::Submit(m_TriangleVAO);
+		Renderer::Submit(m_TriangleShader, m_TriangleVAO);
 	}
 
 
@@ -249,82 +180,13 @@ namespace Odd {
 
 			#pragma region Shader Initialization
 
-			//Vertex Shader Code
-			const char* vertexShaderCode =
-				R"(#version 460 core
-				   layout(location = 0)in vec3 pos;
-				   layout(location = 1)in vec3 color;
-				   out vec3 FragColor;
-				   void main() 
-				   {
-						gl_Position = vec4(pos, 1.0f);
-						FragColor = color;
-				   })";
-
-			//Fragment Shader Code
-			const char* fragmentShaderCode =
-				R"(#version 460 core
-				   in vec3 FragColor;
-				   out vec4 Color;
-				   void main() 
-				   {
-						Color = vec4(FragColor, 1.0f);
-				   })";
-
-			//Create Vertex Shader.
-			unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-			//Insert Code.
-			glShaderSource(vertexShader, 1, &vertexShaderCode, nullptr);
-			//Compile Shader.
-			glCompileShader(vertexShader);
-			//Log Compilation Error.
-			int success;
-			char infoLog[512];
-			glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-			if (!success)
-			{
-				glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-				DEBUG_CORE_ERROR("Square Vertex Shader Failed To Compile!\n\t{0}", infoLog);
-			}
-
-			//Create Fragment Shader.
-			unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-			//Insert Code.
-			glShaderSource(fragmentShader, 1, &fragmentShaderCode, nullptr);
-			//Compile Shader.
-			glCompileShader(fragmentShader);
-			//Log Compilation Error.
-			glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-			if (!success)
-			{
-				glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-				DEBUG_CORE_ERROR("Square Fragment Shader Failed To Compile!\n\t{0}", infoLog);
-			}
-
-			//Create Shader Program.
-			m_SquareShaderID = glCreateProgram();
-			glAttachShader(m_SquareShaderID, vertexShader);
-			glAttachShader(m_SquareShaderID, fragmentShader);
-			glLinkProgram(m_SquareShaderID);
-			// check for linking errors
-			glGetProgramiv(m_SquareShaderID, GL_LINK_STATUS, &success);
-			if (!success) {
-				glGetProgramInfoLog(m_SquareShaderID, 512, NULL, infoLog);
-				DEBUG_CORE_ERROR("Square Shader Program Failed To Link!\n\t{0}", infoLog);
-			}
-
-			//Cleanup
-			glDeleteShader(vertexShader);
-			glDeleteShader(fragmentShader);
+			m_SquareShader.reset(Shader::Create("D:/OddStoneGames/Odd/Odd/src/Platform/OpenGL/Shaders/DefaultSquare.vs", "D:/OddStoneGames/Odd/Odd/src/Platform/OpenGL/Shaders/DefaultSquare.fs"));
 
 			#pragma endregion
 
 		}
 
-		//Bind Shader
-		glUseProgram(m_SquareShaderID);
-
 		//Draw Square
-		Renderer::Submit(m_SquareVAO);
+		Renderer::Submit(m_SquareShader, m_SquareVAO);
 	}
 }

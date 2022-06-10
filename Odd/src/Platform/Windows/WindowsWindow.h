@@ -9,6 +9,8 @@
 #include "Odd/Events/KeyEvent.h"
 #include <GLFW/glfw3.h>
 
+#include "Odd/Renderer/OrthographicCamera.h"
+
 namespace Odd {
 
 	class WindowsWindow : public Window
@@ -32,6 +34,7 @@ namespace Odd {
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
 	private:
+		OrthographicCamera m_Camera;
 		GLFWwindow* m_Window;
 		GraphicsContext* m_Context;
 		int m_frameCount;
