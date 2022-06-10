@@ -140,6 +140,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Odd\Core\Timestep.h" />
     <ClInclude Include="src\Odd\Renderer\ShaderDataTypes.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Odd\Renderer\Shader.h" />

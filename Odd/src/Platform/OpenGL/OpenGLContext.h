@@ -3,10 +3,7 @@
 #include "glad/glad.h"
 
 #include "Odd/Renderer/GraphicsContext.h"
-#include "Odd/Renderer/Renderer.h"
-#include "Odd/Renderer/Shader.h"
-#include "Odd/Renderer/Buffer.h"
-#include "Odd/Renderer/VertexArray.h"
+#include "Odd/Renderer/ShaderDataTypes.h"
 
 namespace Odd {
 

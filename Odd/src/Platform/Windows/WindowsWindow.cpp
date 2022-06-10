@@ -145,9 +145,6 @@ namespace Odd {
 			MouseMovedEvent event((float)xpos, (float)ypos);
 			data.EventCallback(event);
 		});
-
-		m_frameCount = 0;
-		m_frameTime = 0.0f;
 	}
 
 	void WindowsWindow::Shutdown()
@@ -155,22 +152,12 @@ namespace Odd {
 		glfwDestroyWindow(m_Window);
 		s_GLFWInitialized = false;
 		glfwTerminate();
-		m_frameCount = 0;
-		m_frameTime = 0.0f;
 	}
 
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		m_frameCount++;
-		m_timeSinceStartup = (float)glfwGetTime();
-		m_frameTime = m_timeSinceStartup - m_prevTimeSinceStartup;
-		m_prevTimeSinceStartup = m_timeSinceStartup;
-
-		//RenderCommand::SetClearColor(glm::vec4(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1));
-
 		m_Context->SwapBuffers();
-		
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)

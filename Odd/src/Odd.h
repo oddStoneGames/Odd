@@ -4,6 +4,9 @@
 #include "Odd/Core/Application.h"
 #include "Odd/Core/Layer.h"
 #include "Odd/Core/Log.h"
+
+#include "Odd/Core/Timestep.h"
+
 #include "Odd/Input/Input.h"
 #include "Odd/Input/KeyCodes.h"
 #include "Odd/Input/MouseCodes.h"

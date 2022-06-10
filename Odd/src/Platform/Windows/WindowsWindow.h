@@ -34,10 +34,6 @@ namespace Odd {
 	private:
 		GLFWwindow* m_Window;
 		GraphicsContext* m_Context;
-		int m_frameCount;
-		float m_frameTime;
-		float m_timeSinceStartup;
-		float m_prevTimeSinceStartup;
 		struct WindowData
 		{
 			std::string Title;

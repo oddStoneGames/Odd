@@ -6,6 +6,7 @@
 #include "Odd/Core/LayerStack.h"
 #include "Odd/Events/ApplicationEvent.h"
 #include "Odd/ImGui/ImGuiLayer.h"
+#include "Odd/Core/Timestep.h"
 
 namespace Odd
 {
@@ -24,6 +25,7 @@ namespace Odd
 			inline static Application& Get() { return *s_Instance; }
 			inline Window& GetWindow() { return *m_Window; }
 	private:
+		float m_LastFrameTime = 0.0f;
 		static Application* s_Instance;
 		bool OnWindowClose(WindowCloseEvent& e);
 

@@ -5,7 +5,7 @@ class ExampleLayer : public Odd::Layer
 {
 public:
 	ExampleLayer() 
-		: Layer("Example"), m_Camera(-4.0f, 4.0f, -4.0f, 4.0f)
+		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		//Initialized Everything For The First Time.
 		InitializeTriangle();
@@ -14,21 +14,25 @@ public:
 		m_CameraRotation = m_Camera.GetRotation();
 	}
 
-	void OnUpdate() override
+	void OnUpdate(Odd::Timestep timestep) override
 	{
+		m_timeSinceStartup += timestep;
+
 		if (Odd::Input::IsKeyPressed(Odd::Key::Left))
-			m_CameraPosition.x -= m_CameraSpeed;
+			m_CameraPosition.x -= m_CameraMovementSpeed * timestep;
 		if (Odd::Input::IsKeyPressed(Odd::Key::Right))
-			m_CameraPosition.x += m_CameraSpeed;
+			m_CameraPosition.x += m_CameraMovementSpeed * timestep;
 		if (Odd::Input::IsKeyPressed(Odd::Key::Up))
-			m_CameraPosition.y += m_CameraSpeed;
+			m_CameraPosition.y += m_CameraMovementSpeed * timestep;
 		if (Odd::Input::IsKeyPressed(Odd::Key::Down))
-			m_CameraPosition.y -= m_CameraSpeed;
+			m_CameraPosition.y -= m_CameraMovementSpeed * timestep;
 
-		if (Odd::Input::IsKeyPressed(Odd::Key::Space))
-			m_CameraRotation += m_CameraSpeed * 10.0f;
+		if (Odd::Input::IsKeyPressed(Odd::Key::A))
+			m_CameraRotation += m_CameraRotationSpeed * timestep;
+		if (Odd::Input::IsKeyPressed(Odd::Key::D))
+			m_CameraRotation -= m_CameraRotationSpeed * timestep;
 
-		Odd::RenderCommand::SetClearColor(glm::vec4(0.2f, 0.3f, 0.4f, 1.0f));
+		Odd::RenderCommand::SetClearColor(glm::vec4(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1));
 		Odd::RenderCommand::Clear();
 
 		m_Camera.SetPosition(m_CameraPosition);
@@ -42,7 +46,7 @@ public:
 		//Draw Square
 		Odd::Renderer::Submit(m_SquareShader, m_SquareVAO);
 
-		Odd::Renderer::EndScene();
+		Odd::Renderer::EndScene(); 
 	}
 
 	virtual void OnImGuiRender() override
@@ -66,10 +70,10 @@ private:
 
 		float vertices[] =
 		{
-			//Vertices				//Colors
-			-0.1f, -0.15f, 0.0f,	1.0f, 1.0f, 0.0f,
-			 0.1f, -0.15f, 0.0f,	0.0f, 1.0f, 1.0f,
-			 0.0f,  0.15f, 0.0f,	1.0f, 0.0f, 1.0f
+			//Vertices					//Colors
+			 0.05f, -0.08f,  0.0f,		1.0f, 1.0f, 0.0f,
+			 0.21f, -0.08f,  0.0f,		0.0f, 1.0f, 1.0f,
+			 0.13f,  0.08f,  0.0f,		1.0f, 0.0f, 1.0f
 		};
 
 		uint32_t indices[] =
@@ -105,7 +109,9 @@ private:
 
 		#pragma region Shader Initialization
 
-		m_TriangleShader.reset(Odd::Shader::Create("D:/OddStoneGames/Odd/Odd/src/Platform/OpenGL/Shaders/DefaultTriangle.vs", "D:/OddStoneGames/Odd/Odd/src/Platform/OpenGL/Shaders/DefaultTriangle.fs"));
+		m_TriangleShader.reset(
+			Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultTriangle.vs",
+				"D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultTriangle.fs"));
 
 		#pragma endregion
 	}
@@ -120,11 +126,11 @@ private:
 
 		float vertices[] =
 		{
-			//Vertices				//Colors
-			-0.5f, -0.15f, 0.0f,	1.0f, 1.0f, 0.0f,
-			-0.3f, -0.15f, 0.0f,	0.0f, 1.0f, 1.0f,
-			-0.3f,  0.15f, 0.0f,	1.0f, 0.0f, 1.0f,
-			-0.5f,  0.15f, 0.0f,	1.0f, 1.0f, 1.0f
+			//Vertices					//Colors
+			-0.21f, -0.08f,  0.0f,		1.0f, 1.0f, 0.0f,
+			-0.05f, -0.08f,  0.0f,		0.0f, 1.0f, 1.0f,
+			-0.05f,  0.08f,  0.0f,		1.0f, 0.0f, 1.0f,
+			-0.21f,  0.08f,  0.0f,		1.0f, 1.0f, 1.0f
 		};
 
 		uint32_t indices[] =
@@ -162,7 +168,8 @@ private:
 
 		#pragma region Shader Initialization
 
-		m_SquareShader.reset(Odd::Shader::Create("D:/OddStoneGames/Odd/Odd/src/Platform/OpenGL/Shaders/DefaultSquare.vs", "D:/OddStoneGames/Odd/Odd/src/Platform/OpenGL/Shaders/DefaultSquare.fs"));
+		m_SquareShader.reset(Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultSquare.vs", 
+			"D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultSquare.fs"));
 
 		#pragma endregion
 	}
@@ -176,7 +183,9 @@ private:
 	Odd::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
 	float m_CameraRotation;
-	float m_CameraSpeed = 0.01f;
+	float m_CameraMovementSpeed = 5.0f;
+	float m_CameraRotationSpeed = 180.0f;
+	float m_timeSinceStartup = 0.0f;
 };
 
 class Sandbox2D : public Odd::Application
