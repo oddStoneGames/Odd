@@ -15,7 +15,7 @@ namespace Odd {
 		return new WindowsWindow(props);
 	}
 
-	WindowsWindow::WindowsWindow(const WindowProps& props) : m_Camera(-4.0f, 4.0f, -4.0f, 4.0f)
+	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
 		Init(props);
 	}
@@ -167,17 +167,7 @@ namespace Odd {
 		m_frameTime = m_timeSinceStartup - m_prevTimeSinceStartup;
 		m_prevTimeSinceStartup = m_timeSinceStartup;
 
-		RenderCommand::SetClearColor(glm::vec4(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1));
-
-		m_Camera.SetPosition({ 0.5f, 0.5f, 0.5f });
-		m_Camera.SetRotation(80.0f);
-
-		Renderer::BeginScene(m_Camera);
-
-		((OpenGLContext*)m_Context)->RenderTriangle();
-		((OpenGLContext*)m_Context)->RenderSquare();
-
-		Renderer::EndScene();
+		//RenderCommand::SetClearColor(glm::vec4(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1));
 
 		m_Context->SwapBuffers();
 		

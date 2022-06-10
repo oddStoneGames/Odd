@@ -70,8 +70,6 @@ namespace Odd {
 		ImGuiIO& io = ImGui::GetIO();
 		Window& window = Application::Get().GetWindow();
 		io.DisplaySize = ImVec2((float)window.GetWidth(), (float)window.GetHeight());
-		
-		RenderCommand::Clear();
 
 		// Rendering
 		ImGui::Render();
