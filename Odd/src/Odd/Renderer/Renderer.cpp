@@ -14,13 +14,14 @@ namespace Odd {
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray)
+	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
 	{
 		// Bind Shader.
 		shader->Bind();
 
 		//Upload Scene Data To The Shader.
 		shader->SetMat4("viewProjection", m_SceneData->viewProjectionMatrix);
+		shader->SetMat4("transform", transform);
 
 		// Bind Vertex Array.
 		vertexArray->Bind();

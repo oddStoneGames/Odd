@@ -1,147 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Odd">
-      <UniqueIdentifier>{3C10880B-A819-887C-3195-9E7C9D9D937C}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Odd\Core">
-      <UniqueIdentifier>{14BA8062-0087-DB6D-29A0-C91515CC10FC}</UniqueIdentifier>
+    <Filter Include="src\Odd">
+      <UniqueIdentifier>{D39C2FA9-3F7C-AE44-4894-391BB4F214A6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Odd\Events">
-      <UniqueIdentifier>{A0A0B90A-8C58-FB57-F55F-D4B3E1369648}</UniqueIdentifier>
+    <Filter Include="src\Odd\Core">
+      <UniqueIdentifier>{0BBDFA92-F71F-8A37-A0A5-C2ED8CE755BA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Odd\ImGui">
-      <UniqueIdentifier>{66C202B3-D22C-B729-1B6B-68CF8714957E}</UniqueIdentifier>
+    <Filter Include="src\Odd\Events">
+      <UniqueIdentifier>{573DC041-430B-B447-2C9F-246E180C90AC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Odd\ImGui\Windows">
-      <UniqueIdentifier>{A07247D2-0C89-4568-5500-D189C15516F0}</UniqueIdentifier>
+    <Filter Include="src\Odd\ImGui">
+      <UniqueIdentifier>{3D24BDF2-A9E4-3829-721F-82A6DE9E7D05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Odd\Input">
-      <UniqueIdentifier>{3BFD03B3-A767-B829-F0A5-69CF5C4F967E}</UniqueIdentifier>
+    <Filter Include="src\Odd\ImGui\Windows">
+      <UniqueIdentifier>{77BB5527-E327-1122-AC1B-A97F1847338A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform">
-      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    <Filter Include="src\Odd\Input">
+      <UniqueIdentifier>{125FBEF2-7E1F-3A29-475A-83A6B3D97E05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\Windows">
-      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    <Filter Include="src\Odd\Renderer">
+      <UniqueIdentifier>{D9FDBFA9-C5F6-DEFB-EE28-C480DA80BE07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform">
+      <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\OpenGL">
+      <UniqueIdentifier>{35A49437-A105-7245-2A73-B8F796D3A804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\Windows">
+      <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor">
+      <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\stb_image">
+      <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Odd.h" />
+    <ClInclude Include="src\Odd.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Odd\Core\Application.h">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Core\Core.h">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Core\EntryPoint.h">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Core\Layer.h">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Core\LayerStack.h">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Core\Log.h">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Core\Timestep.h">
+      <Filter>src\Odd\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Core\Window.h">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Events\ApplicationEvent.h">
-      <Filter>Odd\Events</Filter>
+      <Filter>src\Odd\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Events\Event.h">
-      <Filter>Odd\Events</Filter>
+      <Filter>src\Odd\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Events\KeyEvent.h">
-      <Filter>Odd\Events</Filter>
+      <Filter>src\Odd\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Events\MouseEvent.h">
-      <Filter>Odd\Events</Filter>
+      <Filter>src\Odd\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\ImGui\ImGuiLayer.h">
-      <Filter>Odd\ImGui</Filter>
+      <Filter>src\Odd\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\ImGui\Windows\imgui_impl_glfw.h">
-      <Filter>Odd\ImGui\Windows</Filter>
+      <Filter>src\Odd\ImGui\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\ImGui\Windows\imgui_impl_opengl3.h">
-      <Filter>Odd\ImGui\Windows</Filter>
+      <Filter>src\Odd\ImGui\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Input\Input.h">
-      <Filter>Odd\Input</Filter>
+      <Filter>src\Odd\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Input\KeyCodes.h">
-      <Filter>Odd\Input</Filter>
+      <Filter>src\Odd\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\Input\MouseCodes.h">
-      <Filter>Odd\Input</Filter>
+      <Filter>src\Odd\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\Buffer.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\GraphicsContext.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\OrthographicCamera.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\RenderCommand.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\Renderer.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\RendererAPI.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\Shader.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\ShaderDataTypes.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\Texture.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\VertexArray.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
+      <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\oddpch.h" />
-    <ClInclude Include="src\Odd\Renderer\GraphicsContext.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
-    <ClInclude Include="src\Odd\Renderer\Buffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\Odd\Renderer\Renderer.h" />
-    <ClInclude Include="src\Odd\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Odd\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\Odd\Renderer\RenderCommand.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="src\Odd\Renderer\OrthographicCamera.h" />
-    <ClInclude Include="src\Odd\Renderer\Shader.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
-    <ClInclude Include="src\Odd\Renderer\ShaderDataTypes.h" />
-    <ClInclude Include="src\Odd\Core\Timestep.h" />
+    <ClInclude Include="src\oddpch.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\stb_image\stb_image.h">
+      <Filter>vendor\stb_image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Odd\Core\Application.cpp">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Odd\Core\Layer.cpp">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Odd\Core\LayerStack.cpp">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Odd\Core\Log.cpp">
-      <Filter>Odd\Core</Filter>
+      <Filter>src\Odd\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Odd\ImGui\ImGuiLayer.cpp">
-      <Filter>Odd\ImGui</Filter>
+      <Filter>src\Odd\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Odd\ImGui\Windows\imgui_impl_glfw.cpp">
-      <Filter>Odd\ImGui\Windows</Filter>
+      <Filter>src\Odd\ImGui\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Odd\ImGui\Windows\imgui_impl_opengl3.cpp">
-      <Filter>Odd\ImGui\Windows</Filter>
+      <Filter>src\Odd\ImGui\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Renderer\Buffer.cpp">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Renderer\OrthographicCamera.cpp">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Renderer\RenderCommand.cpp">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Renderer\Renderer.cpp">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Renderer\RendererAPI.cpp">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Renderer\Shader.cpp">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Renderer\Texture.cpp">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Renderer\VertexArray.cpp">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\oddpch.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
-    <ClCompile Include="src\Odd\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\Odd\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Odd\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Odd\Renderer\RendererAPI.cpp" />
-    <ClCompile Include="src\Odd\Renderer\RenderCommand.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\Odd\Renderer\OrthographicCamera.cpp" />
-    <ClCompile Include="src\Odd\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\oddpch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\stb_image\stb_image.cpp">
+      <Filter>vendor\stb_image</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

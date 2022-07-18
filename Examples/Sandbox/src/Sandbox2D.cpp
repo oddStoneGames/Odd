@@ -1,5 +1,6 @@
 #include <Odd.h>
 #include "ImGui/include/imgui.h"
+#include "glm/gtc/matrix_transform.hpp"
 
 class ExampleLayer : public Odd::Layer
 {
@@ -39,12 +40,26 @@ public:
 		m_Camera.SetRotation(m_CameraRotation);
 
 		Odd::Renderer::BeginScene(m_Camera);
+		
+		m_Texture->Bind();
 
 		//Draw Triangle
 		Odd::Renderer::Submit(m_TriangleShader, m_TriangleVAO);
 
-		//Draw Square
-		Odd::Renderer::Submit(m_SquareShader, m_SquareVAO);
+		glm::mat4 squareTransform = glm::mat4(1.0f);
+
+		for (int i = 1; i <= 5; ++i)
+		{
+			squareTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.16f + 0.16f * i, 0.0f, 0.0f)); 
+			squareTransform = glm::scale(squareTransform, glm::vec3(0.2f * i));
+
+			m_SquareShader->Bind();
+
+			m_SquareShader->SetFloat("intensity", 1.0f -  (i - 1) * 0.25f );
+
+			//Draw Square
+			Odd::Renderer::Submit(m_SquareShader, m_SquareVAO, squareTransform);
+		}
 
 		Odd::Renderer::EndScene(); 
 	}
@@ -70,10 +85,10 @@ private:
 
 		float vertices[] =
 		{
-			//Vertices					//Colors
-			 0.05f, -0.08f,  0.0f,		1.0f, 1.0f, 0.0f,
-			 0.21f, -0.08f,  0.0f,		0.0f, 1.0f, 1.0f,
-			 0.13f,  0.08f,  0.0f,		1.0f, 0.0f, 1.0f
+			//Vertices					//Texture Coordinates
+			 0.05f, -0.08f,  0.0f,		0.0f, 0.0f,
+			 0.21f, -0.08f,  0.0f,		1.0f, 0.0f,
+			 0.13f,  0.08f,  0.0f,		0.5f, 0.5f
 		};
 
 		uint32_t indices[] =
@@ -82,11 +97,11 @@ private:
 		};
 
 		//Generate Vertex Buffer Object.
-		std::shared_ptr<Odd::VertexBuffer> m_TriangleVBO;
+		Odd::Ref<Odd::VertexBuffer> m_TriangleVBO;
 		m_TriangleVBO.reset(Odd::VertexBuffer::Create(vertices, sizeof(vertices)));
 
 		//Generate Element Buffer Object.
-		std::shared_ptr<Odd::IndexBuffer> m_TriangleEBO;
+		Odd::Ref<Odd::IndexBuffer> m_TriangleEBO;
 
 		//Generate Element Buffer Object.
 		m_TriangleEBO.reset(Odd::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
@@ -95,7 +110,7 @@ private:
 			//Generate Vertex Buffer Layout For All The Buffer Elements.
 			Odd::BufferLayout layout = {
 				{ Odd::ShaderDataType::Float3, "pos"},
-				{ Odd::ShaderDataType::Float3, "color"}
+				{ Odd::ShaderDataType::Float2, "texCoord"}
 			};
 
 			//Set The Layout For The Vertex Buffer.
@@ -113,6 +128,11 @@ private:
 			Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultTriangle.vs",
 				"D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultTriangle.fs"));
 
+		m_TriangleShader->Bind();
+		m_TriangleShader->SetInt("baseColorTexture", 0);
+	
+		m_Texture = Odd::Texture2D::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/textures/Logo.png");
+
 		#pragma endregion
 	}
 
@@ -126,11 +146,11 @@ private:
 
 		float vertices[] =
 		{
-			//Vertices					//Colors
-			-0.21f, -0.08f,  0.0f,		1.0f, 1.0f, 0.0f,
-			-0.05f, -0.08f,  0.0f,		0.0f, 1.0f, 1.0f,
-			-0.05f,  0.08f,  0.0f,		1.0f, 0.0f, 1.0f,
-			-0.21f,  0.08f,  0.0f,		1.0f, 1.0f, 1.0f
+			//Vertices					//Texture Coordinates
+			-0.21f, -0.08f,  0.0f,		0.3f, 0.2f,
+			-0.05f, -0.08f,  0.0f,		0.6f, 0.2f,
+			-0.05f,  0.08f,  0.0f,		0.6f, 0.8f,
+			-0.21f,  0.08f,  0.0f,		0.3f, 0.8f
 		};
 
 		uint32_t indices[] =
@@ -139,12 +159,12 @@ private:
 			2, 3, 0
 		};
 
-		std::shared_ptr<Odd::VertexBuffer> m_SquareVBO;
+		Odd::Ref<Odd::VertexBuffer> m_SquareVBO;
 
 		//Generate Vertex Buffer Object.
 		m_SquareVBO.reset(Odd::VertexBuffer::Create(vertices, sizeof(vertices)));
 
-		std::shared_ptr<Odd::IndexBuffer> m_SquareEBO;
+		Odd::Ref<Odd::IndexBuffer> m_SquareEBO;
 
 		//Generate Element Buffer Object.
 		m_SquareEBO.reset(Odd:: IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
@@ -153,7 +173,7 @@ private:
 			//Generate Vertex Buffer Layout For All The Buffer Elements.
 			Odd::BufferLayout layout = {
 				{ Odd::ShaderDataType::Float3, "pos"},
-				{ Odd::ShaderDataType::Float3, "color"}
+				{ Odd::ShaderDataType::Float2, "texCoord"}
 			};
 
 			//Set The Layout For The Vertex Buffer.
@@ -170,15 +190,20 @@ private:
 
 		m_SquareShader.reset(Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultSquare.vs", 
 			"D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultSquare.fs"));
+		
+		m_SquareShader->Bind();
+		m_SquareShader->SetInt("baseColorTexture", 0);
 
 		#pragma endregion
 	}
 private:
-	std::shared_ptr<Odd::Shader>	   m_TriangleShader;
-	std::shared_ptr<Odd::VertexArray>  m_TriangleVAO;
+	Odd::Ref<Odd::Shader>	   m_TriangleShader;
+	Odd::Ref<Odd::VertexArray>  m_TriangleVAO;
+	
+	Odd::Ref<Odd::Shader>       m_SquareShader;
+	Odd::Ref<Odd::VertexArray>  m_SquareVAO;
 
-	std::shared_ptr<Odd::Shader>       m_SquareShader;
-	std::shared_ptr<Odd::VertexArray>  m_SquareVAO;
+	Odd::Ref<Odd::Texture2D> m_Texture;
 
 	Odd::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;

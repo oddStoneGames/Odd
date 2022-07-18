@@ -31,7 +31,9 @@ project "Odd"
     files
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.cpp",
+        "%{prj.name}/vendor/stb_image/**.h",
+        "%{prj.name}/vendor/stb_image/**.cpp"
     }
 
     includedirs
@@ -41,7 +43,8 @@ project "Odd"
         "Odd/vendor/GLFW/include",
         "Odd/vendor/Glad/include",
         "Odd/vendor/ImGui/include",
-        "Odd/vendor/glm"
+        "Odd/vendor/glm",
+        "Odd/vendor/stb_image"
     }
 
     links

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef ODD_PLATFORM_WINDOWS
 #if ODD_DYNAMIC_LINK
 	#ifdef ODD_BUILD_DLL
@@ -17,3 +19,12 @@
 #define LEFTSHIFTBIT(x) (1 << x)
 
 #define BIND_EVENT_FUNC(fn) std::bind(&fn, this, std::placeholders::_1)
+
+namespace Odd
+{
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}

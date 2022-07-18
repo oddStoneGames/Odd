@@ -22,7 +22,7 @@ namespace Odd
 		virtual void SetInt3(const char* name, const glm::ivec3& value) = 0;
 		virtual void SetInt4(const char* name, const glm::ivec4& value) = 0;
 		
-		virtual void SetFloat (const char* name, const glm::float32_t& value) = 0;
+		virtual void SetFloat (const char* name, const float& value) = 0;
 		virtual void SetFloat2(const char* name, const glm::vec2& value) = 0;
 		virtual void SetFloat3(const char* name, const glm::vec3& value) = 0;
 		virtual void SetFloat4(const char* name, const glm::vec4& value) = 0;

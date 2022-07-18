@@ -19,7 +19,7 @@ namespace Odd
 
 		//Initialize Logger.
 		Odd::Log::Init();
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window = Scope<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
 		
 		m_ImGuiLayer = new ImGuiLayer();
