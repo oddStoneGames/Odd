@@ -88,7 +88,7 @@ private:
 			//Vertices					//Texture Coordinates
 			 0.05f, -0.08f,  0.0f,		0.0f, 0.0f,
 			 0.21f, -0.08f,  0.0f,		1.0f, 0.0f,
-			 0.13f,  0.08f,  0.0f,		0.5f, 0.5f
+			 0.13f,  0.08f,  0.0f,		0.5f, 1.0f
 		};
 
 		uint32_t indices[] =
@@ -147,10 +147,10 @@ private:
 		float vertices[] =
 		{
 			//Vertices					//Texture Coordinates
-			-0.21f, -0.08f,  0.0f,		0.3f, 0.2f,
-			-0.05f, -0.08f,  0.0f,		0.6f, 0.2f,
-			-0.05f,  0.08f,  0.0f,		0.6f, 0.8f,
-			-0.21f,  0.08f,  0.0f,		0.3f, 0.8f
+			-0.21f, -0.08f,  0.0f,		0.0f, 0.0f,
+			-0.05f, -0.08f,  0.0f,		1.0f, 0.0f,
+			-0.05f,  0.08f,  0.0f,		1.0f, 1.0f,
+			-0.21f,  0.08f,  0.0f,		0.0f, 1.0f
 		};
 
 		uint32_t indices[] =
