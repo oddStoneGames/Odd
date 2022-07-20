@@ -9,13 +9,13 @@ namespace Odd {
 	{
 	public:
 		OpenGLShader() {}
-		OpenGLShader(const char* shaderPath)
+		OpenGLShader(const std::string& shaderPath)
 		{
 			CreateShader(shaderPath);
 		}
-		OpenGLShader(const char* vShaderSource, const char* fShaderSource, const char* gShaderSource = nullptr) 
+		OpenGLShader(const std::string& name, const char* vShaderSource, const char* fShaderSource, const char* gShaderSource = nullptr) 
 		{
-			CreateShader(vShaderSource, fShaderSource, gShaderSource);
+			CreateShader(name, vShaderSource, fShaderSource, gShaderSource);
 		}
 		~OpenGLShader() 
 		{
@@ -25,8 +25,10 @@ namespace Odd {
 		virtual void Bind() override;
 		virtual void Unbind() override;
 
-		virtual void CreateShader(const char* shaderPath) override;
-		virtual void CreateShader(const char* vShaderSource, const char* fShaderSource, const char* gShaderSource = nullptr) override;
+		virtual const std::string& GetName() const override { return m_Name; }
+
+		virtual void CreateShader(const std::string& shaderPath) override;
+		virtual void CreateShader(const std::string& name, const char* vShaderSource, const char* fShaderSource, const char* gShaderSource = nullptr) override;
 		virtual void DestroyShader() override;
 		
 		virtual void SetBool(const char* name, const bool& value) override;
@@ -46,7 +48,8 @@ namespace Odd {
 		virtual void SetMat3(const char* name, const glm::mat3& value) override;
 		virtual void SetMat4(const char* name, const glm::mat4& value) override;
 	private:
-		std::string ReadFile(const char* filePath);
+		std::string m_Name;
+		std::string ReadFile(const std::string& filePath);
 		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
 		void Compile(std::unordered_map<GLenum, std::string>& shaderSources);
 		bool CheckError(const uint32_t& ID, bool shader);

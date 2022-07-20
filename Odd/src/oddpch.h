@@ -3,6 +3,7 @@
 #include <functional>
 #include <sstream>
 #include <cstdint>
+#include <array>
 #include <string>
 #include "Odd/Core/Log.h"
 

@@ -26,7 +26,7 @@ namespace Odd {
 		glUseProgram(0);
 	}
 
-	std::string OpenGLShader::ReadFile(const char* filePath)
+	std::string OpenGLShader::ReadFile(const std::string& filePath)
 	{
 		std::string source;
 
@@ -92,7 +92,11 @@ namespace Odd {
 	void OpenGLShader::Compile(std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIDs(shaderSources.size());
+		
+		if (shaderSources.size() > 2)
+			DEBUG_CORE_ERROR("We Only Support 2 Shaders at the moment.");
+		std::array<GLenum, 2> glShaderIDs;
+		int glShaderIDIndex = 0;
 
 		for (auto& kv : shaderSources)
 		{
@@ -112,7 +116,7 @@ namespace Odd {
 			}
 
 			glAttachShader(program, shader);
-			glShaderIDs.push_back(shader);
+			glShaderIDs[glShaderIDIndex++] = shader;
 		}
 
 		glLinkProgram(program);
@@ -131,7 +135,7 @@ namespace Odd {
 		m_RendererID = program;
 	}
 
-	void OpenGLShader::CreateShader(const char* shaderPath)
+	void OpenGLShader::CreateShader(const std::string& shaderPath)
 	{
 		// Retrieve the Raw Shader Source Code from shader file path.
 		std::string rawShaderCode = ReadFile(shaderPath);
@@ -141,9 +145,17 @@ namespace Odd {
 
 		// Compile The Shader Finally.
 		Compile(shaderSourceCodes);
+
+		// Extract Name From ShaderPath
+		// Example: src/Shaders/DefaultTriangle.glsl
+		auto lastSlash = shaderPath.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		auto lastDot = shaderPath.rfind(".");  
+		auto count = lastDot == std::string::npos ? shaderPath.size() - lastSlash : lastDot - lastSlash;
+		m_Name = shaderPath.substr(lastSlash, count);
 	}
 
-	void OpenGLShader::CreateShader(const char* vShaderSource, const char* fShaderSource, const char* gShaderSource)
+	void OpenGLShader::CreateShader(const std::string& name, const char* vShaderSource, const char* fShaderSource, const char* gShaderSource)
 	{
 		if (vShaderSource == nullptr || fShaderSource == nullptr)
 		{
@@ -161,6 +173,8 @@ namespace Odd {
 
 		// Compile Shaders
 		Compile(sources);
+
+		m_Name = name;
 	}
 
 	void OpenGLShader::DestroyShader()
