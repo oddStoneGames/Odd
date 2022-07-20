@@ -11,7 +11,8 @@ namespace Odd
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 
-		virtual void CreateShader(const char* vShaderPath, const char* fShaderPath, const char* gShaderPath = nullptr) = 0;
+		virtual void CreateShader(const char* shaderPath) = 0;
+		virtual void CreateShader(const char* vShaderSource, const char* fShaderSource, const char* gShaderSource = nullptr) = 0;
 		virtual void DestroyShader() = 0;
 
 		virtual void SetBool(const char* name, const bool& value) = 0;
@@ -33,7 +34,8 @@ namespace Odd
 
 		uint32_t& GetID() { return m_RendererID; }
 		
-		static Shader* Create(const char* vShaderPath, const char* fShaderPath, const char* gShaderPath = nullptr);
+		static Ref<Shader> Create(const char* shaderPath);
+		static Ref<Shader> Create(const char* vShaderSource, const char* fShaderSource, const char* gShaderSource = nullptr);
 
 	protected:
 		uint32_t m_RendererID;

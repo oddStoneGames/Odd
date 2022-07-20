@@ -43,22 +43,23 @@ public:
 		
 		m_Texture->Bind();
 
-		//Draw Triangle
-		Odd::Renderer::Submit(m_TriangleShader, m_TriangleVAO);
+		glm::mat4 transform = glm::mat4(1.0f);
 
-		glm::mat4 squareTransform = glm::mat4(1.0f);
+		transform = glm::scale(transform, glm::vec3(2.0f));
+		//Draw Triangle
+		Odd::Renderer::Submit(m_TriangleShader, m_TriangleVAO, transform);
 
 		for (int i = 1; i <= 5; ++i)
 		{
-			squareTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.16f + 0.16f * i, 0.0f, 0.0f)); 
-			squareTransform = glm::scale(squareTransform, glm::vec3(0.2f * i));
+			transform = glm::translate(glm::mat4(1.0f), glm::vec3(0.32f + 0.32f * i, 0.0f, 0.0f)); 
+			transform = glm::scale(transform, glm::vec3(0.4f * i));
 
 			m_SquareShader->Bind();
 
 			m_SquareShader->SetFloat("intensity", 1.0f -  (i - 1) * 0.25f );
 
 			//Draw Square
-			Odd::Renderer::Submit(m_SquareShader, m_SquareVAO, squareTransform);
+			Odd::Renderer::Submit(m_SquareShader, m_SquareVAO, transform);
 		}
 
 		Odd::Renderer::EndScene(); 
@@ -80,7 +81,7 @@ private:
 		#pragma region VAO & VBO Initialization
 
 		//Generate Vertex Array Object.
-		m_TriangleVAO.reset(Odd::VertexArray::Create());
+		m_TriangleVAO = Odd::VertexArray::Create();
 		m_TriangleVAO->Bind();
 
 		float vertices[] =
@@ -124,9 +125,7 @@ private:
 
 		#pragma region Shader Initialization
 
-		m_TriangleShader.reset(
-			Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultTriangle.vs",
-				"D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultTriangle.fs"));
+		m_TriangleShader = Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultTriangle.glsl");
 
 		m_TriangleShader->Bind();
 		m_TriangleShader->SetInt("baseColorTexture", 0);
@@ -141,7 +140,7 @@ private:
 		#pragma region VAO & VBO Initialization
 
 		//Generate Vertex Array Object.
-		m_SquareVAO.reset(Odd::VertexArray::Create());
+		m_SquareVAO = Odd::VertexArray::Create();
 		m_SquareVAO->Bind();
 
 		float vertices[] =
@@ -188,9 +187,8 @@ private:
 
 		#pragma region Shader Initialization
 
-		m_SquareShader.reset(Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultSquare.vs", 
-			"D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultSquare.fs"));
-		
+		m_SquareShader = Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultSquare.glsl");
+
 		m_SquareShader->Bind();
 		m_SquareShader->SetInt("baseColorTexture", 0);
 

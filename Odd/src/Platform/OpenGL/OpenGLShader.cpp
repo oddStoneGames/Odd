@@ -6,6 +6,16 @@
 
 namespace Odd {
 
+	static GLenum ShaderTypeFromString(const std::string& type)
+	{
+		if (type == "vert") return GL_VERTEX_SHADER;
+		if (type == "frag") return GL_FRAGMENT_SHADER;
+		if (type == "geom") return GL_GEOMETRY_SHADER;
+
+		DEBUG_CORE_ERROR("Unknown Shader Type '{0}'", type);
+		return 0;
+	}
+
 	void OpenGLShader::Bind()
 	{
 		glUseProgram(m_RendererID);
@@ -16,90 +26,141 @@ namespace Odd {
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::CreateShader(const char* vShaderPath, const char* fShaderPath, const char* gShaderPath)
+	std::string OpenGLShader::ReadFile(const char* filePath)
 	{
-		// 1. retrieve the vertex/fragment source code from filePath
-		std::string vertexCode;
-		std::string fragmentCode;
-		std::string geometryCode;
-		std::ifstream vShaderFile;
-		std::ifstream fShaderFile;
-		std::ifstream gShaderFile;
-		// ensure ifstream objects can throw exceptions:
-		vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-		fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-		gShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+		std::string source;
 
-		bool isGeometryShaderPathNotNull = gShaderPath != nullptr;
+		std::ifstream File;
+
+		// ensure ifstream object can throw exceptions:
+		File.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
 		try
 		{
-			// open files
-			vShaderFile.open(vShaderPath);
-			fShaderFile.open(fShaderPath);
-			std::stringstream vShaderStream, fShaderStream;
+			// open file
+			File.open(filePath);
+			std::stringstream FileStream;
+
 			// read file's buffer contents into streams
-			vShaderStream << vShaderFile.rdbuf();
-			fShaderStream << fShaderFile.rdbuf();
-			// close file handlers
-			vShaderFile.close();
-			fShaderFile.close();
+			FileStream << File.rdbuf();
+			// close file handler
+			File.close();
+
 			// convert stream into string
-			vertexCode = vShaderStream.str();
-			fragmentCode = fShaderStream.str();
-			// if geometry shader path is present, also load a geometry shader
-			if (isGeometryShaderPathNotNull)
-			{
-				gShaderFile.open(gShaderPath);
-				std::stringstream gShaderStream;
-				gShaderStream << gShaderFile.rdbuf();
-				gShaderFile.close();
-				geometryCode = gShaderStream.str();
-			}
+			source = FileStream.str();
 		}
 		catch (std::ifstream::failure& e)
 		{
-			DEBUG_CORE_ERROR("File Not Successfully Read: {0}\n", e.what());
+			DEBUG_CORE_ERROR("File at {0} Not Successfully Read: {1}\n", filePath, e.what());
 		}
-		const char* vShaderCode = vertexCode.c_str();
-		const char* fShaderCode = fragmentCode.c_str();
 
-		// 2. compile shaders
-		unsigned int vertex, fragment;
-		// vertex shader
-		vertex = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertex, 1, &vShaderCode, NULL);
-		glCompileShader(vertex);
-		CheckError(vertex, true);
-		// fragment Shader
-		fragment = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragment, 1, &fShaderCode, NULL);
-		glCompileShader(fragment);
-		CheckError(fragment, true);
-		// if geometry shader is given, compile geometry shader
-		unsigned int geometry;
-		if (isGeometryShaderPathNotNull)
+		return source;
+	}
+
+	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
+	{
+		std::unordered_map<GLenum, std::string> shaderSources;
+
+		const char* typeToken = "#type";
+		size_t typeTokenLength = strlen(typeToken);
+		size_t pos = source.find(typeToken, 0);
+		while (pos != std::string::npos)
 		{
-			const char* gShaderCode = geometryCode.c_str();
-			geometry = glCreateShader(GL_GEOMETRY_SHADER);
-			glShaderSource(geometry, 1, &gShaderCode, NULL);
-			glCompileShader(geometry);
-			CheckError(geometry, true);
-		}
-		// shader Program
-		m_RendererID = glCreateProgram();
-		glAttachShader(m_RendererID, vertex);
-		glAttachShader(m_RendererID, fragment);
-		if (isGeometryShaderPathNotNull)
-			glAttachShader(m_RendererID, geometry);
-		glLinkProgram(m_RendererID);
-		CheckError(m_RendererID, false);
+			size_t eol = source.find_first_of("\r\n", pos);
+			if (eol == std::string::npos)
+			{
+				DEBUG_CORE_ERROR("Syntax Error");
+				return shaderSources;
+			}
 
-		// 3. Delete the shaders as they're linked into our program now and no longer necessery
-		glDeleteShader(vertex);
-		glDeleteShader(fragment);
-		if (isGeometryShaderPathNotNull)
-			glDeleteShader(geometry);
+			size_t begin = pos + typeTokenLength + 1;
+			std::string type = source.substr(begin, eol - begin);
+			if (!ShaderTypeFromString(type))
+			{
+				DEBUG_CORE_ERROR("Invalid Shader Type Specified!");
+				return shaderSources;
+			}
+
+			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+			pos = source.find(typeToken, nextLinePos);
+			shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
+		}
+		
+		return shaderSources;
+	}
+
+	void OpenGLShader::Compile(std::unordered_map<GLenum, std::string>& shaderSources)
+	{
+		GLuint program = glCreateProgram();
+		std::vector<GLenum> glShaderIDs(shaderSources.size());
+
+		for (auto& kv : shaderSources)
+		{
+			GLenum type = kv.first;
+			const std::string& source = kv.second;
+
+			GLuint shader = glCreateShader(type);
+			const GLchar* sourceCode = source.c_str();
+			glShaderSource(shader, 1, &sourceCode, 0);
+
+			glCompileShader(shader);
+			bool isCompiled = CheckError(shader, true);
+			if (!isCompiled)
+			{
+				glDeleteShader(shader);
+				break;
+			}
+
+			glAttachShader(program, shader);
+			glShaderIDs.push_back(shader);
+		}
+
+		glLinkProgram(program);
+		bool isLinked = CheckError(program, false);
+		if (!isLinked)
+		{
+			glDeleteProgram(program);
+			for (auto id : glShaderIDs)
+				glDeleteShader(id);
+
+		}
+
+		for (auto id : glShaderIDs)
+			glDetachShader(program, id);
+
+		m_RendererID = program;
+	}
+
+	void OpenGLShader::CreateShader(const char* shaderPath)
+	{
+		// Retrieve the Raw Shader Source Code from shader file path.
+		std::string rawShaderCode = ReadFile(shaderPath);
+
+		// Grab Vertex, Fragment & Geometry Code From Raw Shader Code.
+		auto shaderSourceCodes = PreProcess(rawShaderCode);
+
+		// Compile The Shader Finally.
+		Compile(shaderSourceCodes);
+	}
+
+	void OpenGLShader::CreateShader(const char* vShaderSource, const char* fShaderSource, const char* gShaderSource)
+	{
+		if (vShaderSource == nullptr || fShaderSource == nullptr)
+		{
+			DEBUG_CORE_ERROR("Vertex Shader Or Fragment Shader Can Never Be Null While Creating a Shader!");
+			return;
+		}
+
+		bool isGeometryShaderNotNull = gShaderSource != nullptr;
+
+		std::unordered_map<GLenum, std::string> sources;
+		sources[GL_VERTEX_SHADER] = vShaderSource;
+		sources[GL_FRAGMENT_SHADER] = fShaderSource;
+		if(isGeometryShaderNotNull)
+			sources[GL_GEOMETRY_SHADER] = gShaderSource;
+
+		// Compile Shaders
+		Compile(sources);
 	}
 
 	void OpenGLShader::DestroyShader()
@@ -172,7 +233,7 @@ namespace Odd {
 		glUniformMatrix4fv(glGetUniformLocation(m_RendererID, name), 1, GL_FALSE, &value[0][0]);
 	}
 
-	void OpenGLShader::CheckError(const uint32_t& ID, bool shader)
+	bool OpenGLShader::CheckError(const uint32_t& ID, bool shader)
 	{
 		GLint success;
 		GLchar infoLog[512];
@@ -183,6 +244,7 @@ namespace Odd {
 			{
 				glGetShaderInfoLog(ID, 512, NULL, infoLog);
 				DEBUG_CORE_ERROR("Compilation Failed For Shader: {0}\n", infoLog);
+				return false;
 			}
 		}
 		else
@@ -192,8 +254,10 @@ namespace Odd {
 			{
 				glGetProgramInfoLog(ID, 512, NULL, infoLog);
 				DEBUG_CORE_ERROR("Linking Failed For Shader Program: {0}\n", infoLog);
+				return false;
 			}
 		}
+		return true;
 	}
 
 }

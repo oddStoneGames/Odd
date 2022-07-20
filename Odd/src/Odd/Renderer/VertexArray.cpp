@@ -6,12 +6,12 @@
 
 namespace Odd {
 
-	VertexArray* VertexArray::Create()
+	Ref<VertexArray> VertexArray::Create()
 	{
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;
-			case RendererAPI::API::OpenGL:	return new OpenGLVertexArray();
+			case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLVertexArray>();
 		}
 
 		DEBUG_CORE_ERROR("Unknown Renderer API!");

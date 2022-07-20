@@ -3,6 +3,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "Odd/Input/Input.h"
+#include "Odd/Renderer/Renderer.h"
 
 namespace Odd
 {
@@ -22,6 +23,8 @@ namespace Odd
 		m_Window = Scope<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
 		
+		Renderer::Init();
+
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 	}
