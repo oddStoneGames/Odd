@@ -6,40 +6,25 @@ class ExampleLayer : public Odd::Layer
 {
 public:
 	ExampleLayer() 
-		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f)
+		: Layer("Example"), m_CameraController(1280.0f/720.0f, true)
 	{
 		//Initialized Everything For The First Time.
 		InitializeTriangle();
 		InitializeSquare();
-		m_CameraPosition = m_Camera.GetPosition();
-		m_CameraRotation = m_Camera.GetRotation();
 	}
 
 	void OnUpdate(Odd::Timestep timestep) override
 	{
+		// Update
+		m_CameraController.OnUpdate(timestep);
+
+		// Render
 		m_timeSinceStartup += timestep;
-
-		if (Odd::Input::IsKeyPressed(Odd::Key::Left))
-			m_CameraPosition.x -= m_CameraMovementSpeed * timestep;
-		if (Odd::Input::IsKeyPressed(Odd::Key::Right))
-			m_CameraPosition.x += m_CameraMovementSpeed * timestep;
-		if (Odd::Input::IsKeyPressed(Odd::Key::Up))
-			m_CameraPosition.y += m_CameraMovementSpeed * timestep;
-		if (Odd::Input::IsKeyPressed(Odd::Key::Down))
-			m_CameraPosition.y -= m_CameraMovementSpeed * timestep;
-
-		if (Odd::Input::IsKeyPressed(Odd::Key::A))
-			m_CameraRotation += m_CameraRotationSpeed * timestep;
-		if (Odd::Input::IsKeyPressed(Odd::Key::D))
-			m_CameraRotation -= m_CameraRotationSpeed * timestep;
 
 		Odd::RenderCommand::SetClearColor(glm::vec4(sin(m_timeSinceStartup), cos(m_timeSinceStartup), 1, 1));
 		Odd::RenderCommand::Clear();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		Odd::Renderer::BeginScene(m_Camera);
+		Odd::Renderer::BeginScene(m_CameraController.GetCamera());
 		
 		m_Texture->Bind();
 
@@ -72,7 +57,7 @@ public:
 
 	void OnEvent(Odd::Event& event) override
 	{
-
+		m_CameraController.OnEvent(event);
 	}
 
 private:
@@ -203,11 +188,8 @@ private:
 
 	Odd::Ref<Odd::Texture2D> m_Texture;
 
-	Odd::OrthographicCamera m_Camera;
-	glm::vec3 m_CameraPosition;
-	float m_CameraRotation;
-	float m_CameraMovementSpeed = 5.0f;
-	float m_CameraRotationSpeed = 180.0f;
+	Odd::OrthographicCameraController m_CameraController;
+
 	float m_timeSinceStartup = 0.0f;
 };
 

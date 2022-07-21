@@ -8,6 +8,7 @@ namespace Odd {
 	{
 	public:
 		virtual void Init() override;
+		virtual void SetViewport(uint32_t xOffset, uint32_t yOffset, uint32_t width, uint32_t height) override;
 		virtual void SetClearColor(const glm::vec4& color) override;
 		virtual void Clear() override;
 

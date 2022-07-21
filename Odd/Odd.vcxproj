@@ -159,6 +159,7 @@
     <ClInclude Include="src\Odd\Input\Input.h" />
     <ClInclude Include="src\Odd\Input\KeyCodes.h" />
     <ClInclude Include="src\Odd\Input\MouseCodes.h" />
+    <ClInclude Include="src\Odd\OrthographicCameraController.h" />
     <ClInclude Include="src\Odd\Renderer\Buffer.h" />
     <ClInclude Include="src\Odd\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Odd\Renderer\OrthographicCamera.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="src\Odd\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Odd\ImGui\Windows\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\Odd\ImGui\Windows\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\Odd\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Odd\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Odd\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Odd\Renderer\RenderCommand.cpp" />

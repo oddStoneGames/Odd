@@ -28,9 +28,11 @@ namespace Odd
 		float m_LastFrameTime = 0.0f;
 		static Application* s_Instance;
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
+		bool m_Minimized = false;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	};

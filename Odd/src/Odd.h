@@ -10,6 +10,7 @@
 #include "Odd/Input/Input.h"
 #include "Odd/Input/KeyCodes.h"
 #include "Odd/Input/MouseCodes.h"
+#include "Odd/OrthographicCameraController.h"
 #include "glm.hpp"
 
 #include "Odd/ImGui/ImGuiLayer.h"
