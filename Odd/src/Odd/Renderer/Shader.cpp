@@ -10,7 +10,7 @@ namespace Odd {
 		switch (Renderer::GetAPI())
 		{
 		case RendererAPI::API::None:	DEBUG_CORE_ERROR("Renderer API is None."); return nullptr;
-		case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLShader>(shaderPath);
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLShader>(shaderPath);
 		case RendererAPI::API::DirectX:	return nullptr;
 		case RendererAPI::API::Vulkan:	return nullptr;
 		}
@@ -24,7 +24,7 @@ namespace Odd {
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	DEBUG_CORE_ERROR("Renderer API is None."); return nullptr;
-			case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLShader>(name, vShaderSource, fShaderSource, gShaderSource);
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLShader>(name, vShaderSource, fShaderSource, gShaderSource);
 			case RendererAPI::API::DirectX:	return nullptr;
 			case RendererAPI::API::Vulkan:	return nullptr;
 		}

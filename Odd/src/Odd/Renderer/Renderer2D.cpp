@@ -10,10 +10,8 @@ namespace Odd
 	struct Renderer2DStorage
 	{
 		Ref<VertexArray> QuadVertexArray;
-		Ref<VertexArray> QuadTexturedVertexArray;
-		Ref<Shader> QuadColorShader;
 		Ref<Shader> QuadTextureShader;
-		Ref<Shader> QuadColoredTextureShader;
+		Ref<Texture2D> WhiteTexture;
 	};
 
 	static Renderer2DStorage* s_Data;
@@ -31,11 +29,11 @@ namespace Odd
 
 		float vertices[] =
 		{
-			//Vertices			  
-			-0.25f, -0.25f, 0.0f,
-			 0.25f, -0.25f, 0.0f,
-			 0.25f,  0.25f, 0.0f,
-			-0.25f,  0.25f, 0.0f
+			//Vertices				//Texture Coordinates
+			-0.25f, -0.25f, 0.0f,   0.0f, 0.0f,
+			 0.25f, -0.25f, 0.0f,	1.0f, 0.0f,
+			 0.25f,  0.25f, 0.0f,	1.0f, 1.0f,
+			-0.25f,  0.25f, 0.0f,	0.0f, 1.0f
 		};
 
 		uint32_t indices[] =
@@ -57,7 +55,8 @@ namespace Odd
 		{
 			//Generate Vertex Buffer Layout For All The Buffer Elements.
 			Odd::BufferLayout layout = {
-				{ Odd::ShaderDataType::Float3, "a_Pos"}
+				{ Odd::ShaderDataType::Float3, "a_Pos"},
+				{ Odd::ShaderDataType::Float2, "a_TexCoord"}
 			};
 
 			//Set The Layout For The Vertex Buffer.
@@ -69,46 +68,15 @@ namespace Odd
 		
 		#pragma endregion
 
-		#pragma region Generate Quad Textured Vertex Array
+		#pragma region Generate Shader Data & Texture Data
 
-		//Generate Vertex Array Object.
-		s_Data->QuadTexturedVertexArray = VertexArray::Create();
-					
-		s_Data->QuadTexturedVertexArray->Bind();
+		s_Data->WhiteTexture = Odd::Texture2D::Create(1, 1);
+		uint32_t whiteTextureData = 0xffffffff;
+		s_Data->WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
-		float texturedvertices[] =
-		{
-			//Vertices				//Texture Coordinates
-			-0.25f, -0.25f, 0.0f,   0.0f, 0.0f,
-			 0.25f, -0.25f, 0.0f,	1.0f, 0.0f,
-			 0.25f,  0.25f, 0.0f,	1.0f, 1.0f,
-			-0.25f,  0.25f, 0.0f,	0.0f, 1.0f
-		};
-
-		//Generate Vertex Buffer Object.
-		Odd::Ref<Odd::VertexBuffer> m_TexturedSquareVBO = Odd::VertexBuffer::Create(texturedvertices, sizeof(texturedvertices));
-
-		{
-			//Generate Vertex Buffer Layout For All The Buffer Elements.
-			Odd::BufferLayout layout = {
-				{ Odd::ShaderDataType::Float3, "a_Pos"},
-				{ Odd::ShaderDataType::Float2, "a_TexCoord"}
-			};
-
-			//Set The Layout For The Vertex Buffer.
-			m_TexturedSquareVBO->SetLayout(layout);
-		}
-
-		s_Data->QuadTexturedVertexArray->AddVertexBuffer(m_TexturedSquareVBO);
-		s_Data->QuadTexturedVertexArray->SetIndexBuffer(m_SquareEBO);
-
-		#pragma endregion
-
-		#pragma region Generate Shader Data
-
-		s_Data->QuadColorShader = Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/ColorQuad.glsl");
 		s_Data->QuadTextureShader = Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/TextureQuad.glsl");
-		s_Data->QuadColoredTextureShader = Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/ColoredTextureQuad.glsl");
+		s_Data->QuadTextureShader->Bind();
+		s_Data->QuadTextureShader->SetInt("u_Texture", 0);
 
 		#pragma endregion
 
@@ -121,16 +89,10 @@ namespace Odd
 	
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		s_Data->QuadColorShader->Bind();
-		s_Data->QuadColorShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-
 		s_Data->QuadTextureShader->Bind();
 		s_Data->QuadTextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 		s_Data->QuadTextureShader->SetInt("u_Texture", 0);
-
-		s_Data->QuadColoredTextureShader->Bind();
-		s_Data->QuadColoredTextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-		s_Data->QuadColoredTextureShader->SetInt("u_Texture", 0);
+		s_Data->QuadTextureShader->SetFloat2("u_TextureScale", glm::vec2(1.0f));
 	}
 	
 	void Renderer2D::EndScene()
@@ -146,15 +108,18 @@ namespace Odd
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4 color)
 	{
 		// Bind Shader.
-		s_Data->QuadColorShader->Bind();
+		s_Data->QuadTextureShader->Bind();
 
 		//Upload Data To The Shader.
 		glm::mat4 transform = glm::mat4(1.0f);
 		transform = glm::translate(transform, position);
 		transform = glm::scale(transform, glm::vec3(size, 1.0f));
 
-		s_Data->QuadColorShader->SetMat4("u_Transform", transform);
-		s_Data->QuadColorShader->SetFloat4("u_Color", color);
+		s_Data->QuadTextureShader->SetMat4("u_Transform", transform);
+		s_Data->QuadTextureShader->SetFloat4("u_Color", color);
+
+		// Bind Default White Texture.
+		s_Data->WhiteTexture->Bind();
 
 		// Bind Vertex Array.
 		s_Data->QuadVertexArray->Bind();
@@ -166,15 +131,15 @@ namespace Odd
 		s_Data->QuadVertexArray->Unbind();
 
 		// Unbind Shader.
-		s_Data->QuadColorShader->Unbind();
+		s_Data->QuadTextureShader->Unbind();
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture> texture)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture> texture, const glm::vec2 textureScale)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture);
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture, textureScale);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture> texture)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture> texture, const glm::vec2 textureScale)
 	{
 		// Bind Shader.
 		s_Data->QuadTextureShader->Bind();
@@ -185,54 +150,56 @@ namespace Odd
 		transform = glm::scale(transform, glm::vec3(size, 1.0f));
 
 		s_Data->QuadTextureShader->SetMat4("u_Transform", transform);
+		s_Data->QuadTextureShader->SetFloat2("u_TextureScale", textureScale);
 		
 		// Bind Texture.
 		texture->Bind();
 
 		// Bind Vertex Array.
-		s_Data->QuadTexturedVertexArray->Bind();
+		s_Data->QuadVertexArray->Bind();
 
 		// initiate a Draw Call.
-		RenderCommand::DrawIndexed(s_Data->QuadTexturedVertexArray);
+		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
 
 		// Unbind Vertex Array.
-		s_Data->QuadTexturedVertexArray->Unbind();
+		s_Data->QuadVertexArray->Unbind();
 
 		// Unbind Shader.
-		s_Data->QuadColorShader->Unbind();
+		s_Data->QuadTextureShader->Unbind();
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture> texture, const glm::vec4 color)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4 color, const Ref<Texture> texture, const glm::vec2 textureScale)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture, color);
+		DrawQuad({ position.x, position.y, 0.0f }, size, color, texture, textureScale);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture> texture, const glm::vec4 color)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4 color, const Ref<Texture> texture, const glm::vec2 textureScale)
 	{
 		// Bind Shader.
-		s_Data->QuadColoredTextureShader->Bind();
+		s_Data->QuadTextureShader->Bind();
 
 		//Upload Data To The Shader.
 		glm::mat4 transform = glm::mat4(1.0f);
 		transform = glm::translate(transform, position);
 		transform = glm::scale(transform, glm::vec3(size, 1.0f));
 
-		s_Data->QuadColoredTextureShader->SetMat4("u_Transform", transform);
-		s_Data->QuadColoredTextureShader->SetFloat4("u_Color", color);
+		s_Data->QuadTextureShader->SetMat4("u_Transform", transform);
+		s_Data->QuadTextureShader->SetFloat2("u_TextureScale", textureScale);
+		s_Data->QuadTextureShader->SetFloat4("u_Color", color);
 
 		// Bind Texture.
 		texture->Bind();
 
 		// Bind Vertex Array.
-		s_Data->QuadTexturedVertexArray->Bind();
+		s_Data->QuadVertexArray->Bind();
 
 		// initiate a Draw Call.
-		RenderCommand::DrawIndexed(s_Data->QuadTexturedVertexArray);
+		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
 
 		// Unbind Vertex Array.
-		s_Data->QuadTexturedVertexArray->Unbind();
+		s_Data->QuadVertexArray->Unbind();
 
 		// Unbind Shader.
-		s_Data->QuadColoredTextureShader->Unbind();
+		s_Data->QuadTextureShader->Unbind();
 	}
 }

@@ -11,7 +11,7 @@ namespace Odd {
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;
-			case RendererAPI::API::OpenGL:	return std::make_shared<OpenGLVertexArray>();
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexArray>();
 		}
 
 		DEBUG_CORE_ERROR("Unknown Renderer API!");

@@ -30,9 +30,9 @@ void Sandbox2D::OnUpdate(Odd::Timestep timestep)
 	
 	Odd::Renderer2D::DrawQuad({ -0.75f,  0.75f }, { 1.0f, 1.0f }, m_SquareColor1);
 	Odd::Renderer2D::DrawQuad({  0.75f,  0.75f }, { 1.0f, 1.0f }, m_SquareTexture);
-	Odd::Renderer2D::DrawQuad({ -0.75f, -0.75f }, { 1.0f, 1.0f }, m_SquareTexture, m_SquareColor3);
+	Odd::Renderer2D::DrawQuad({ -0.75f, -0.75f }, { 1.0f, 1.0f }, m_SquareColor3, m_SquareTexture);
 	Odd::Renderer2D::DrawQuad({  0.75f, -0.75f, -0.1f }, { 1.0f, 1.0f }, glm::vec4(1.0f));
-	Odd::Renderer2D::DrawQuad({  0.75f, -0.75f }, { 1.0f, 1.0f }, m_SquareTexture, m_SquareColor4);
+	Odd::Renderer2D::DrawQuad({  0.75f, -0.75f }, { 1.0f, 1.0f }, m_SquareColor4, m_SquareTexture, glm::vec2(2.0f));
 	
 	Odd::Renderer2D::EndScene();
 }

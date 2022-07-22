@@ -1,4 +1,4 @@
-// To Draw A Textured Quad
+// Color Square Shader
 
 #type vert
 #version 460 core
@@ -11,7 +11,7 @@ uniform mat4 u_Transform;
 
 out vec2 TexCoord;
 
-void main()
+void main() 
 {
 	gl_Position = u_ViewProjection * u_Transform * vec4(a_Pos, 1.0f);
 	TexCoord = a_TexCoord;
@@ -23,9 +23,11 @@ void main()
 in vec2 TexCoord;
 out vec4 Color;
 
+uniform vec4 u_Color;
 uniform sampler2D u_Texture;
+uniform vec2 u_TextureScale;
 
 void main() 
 {
-	Color = vec4(texture(u_Texture, TexCoord));
+	Color = vec4(texture(u_Texture, TexCoord * u_TextureScale)) * u_Color;
 }
