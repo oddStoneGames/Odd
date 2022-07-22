@@ -11,6 +11,7 @@ namespace Odd {
 	}
 	void OrthographicCameraController::OnUpdate(Timestep ts)
 	{
+		ODD_PROFILE_FUNCTION();
 		float zoomLevelTranslationSpeed = m_CameraTranslationSpeed * m_ZoomLevel;
 
 		if (Input::IsKeyPressed(Key::A))
@@ -35,12 +36,14 @@ namespace Odd {
 	}
 	void OrthographicCameraController::OnEvent(Event& e)
 	{
+		ODD_PROFILE_FUNCTION();
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FUNC(OrthographicCameraController::OnMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FUNC(OrthographicCameraController::OnWindowResized));
 	}
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
+		ODD_PROFILE_FUNCTION();
 		m_ZoomLevel -= e.GetYOffset() * 0.05f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.01f);
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
@@ -48,6 +51,7 @@ namespace Odd {
 	}
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
 	{
+		ODD_PROFILE_FUNCTION();
 		m_AspectRatio = (float) e.GetWidth() / (float) e.GetHeight();
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;

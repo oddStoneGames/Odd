@@ -9,8 +9,9 @@ namespace Odd
 {
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application() : m_ImGuiLayer(new ImGuiLayer())
 	{
+		ODD_PROFILE_FUNCTION();
 		if (s_Instance)
 		{
 			DEBUG_CORE_ERROR("Application Already Exists!");
@@ -25,7 +26,6 @@ namespace Odd
 		
 		Renderer::Init();
 
-		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 	}
 	Application::~Application()
@@ -35,18 +35,21 @@ namespace Odd
 
 	void Application::PushLayer(Layer* layer)
 	{
+		ODD_PROFILE_FUNCTION();
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
+		ODD_PROFILE_FUNCTION();
 		m_LayerStack.PushOverlay(overlay);
 		overlay->OnAttach();
 	}
 
 	void Application::OnEvent(Event& e)
 	{
+		ODD_PROFILE_FUNCTION();
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNC(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FUNC(Application::OnWindowResize));
@@ -61,22 +64,32 @@ namespace Odd
 
 	void Application::Run()
 	{
+		ODD_PROFILE_FUNCTION();
+
 		while (m_Running)
 		{
+			ODD_PROFILE_SCOPE("RunLoop");
+
 			float time = (float)glfwGetTime();	//Platform: GetTime()
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
 			if (!m_Minimized)
 			{
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(timestep);
+				{
+					ODD_PROFILE_SCOPE("LayerStack OnUpdate");
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep);
+				}
+
+				m_ImGuiLayer->Begin();
+				{
+					ODD_PROFILE_SCOPE("LayerStack OnImGuiRender");
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
 			}
-			
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
 		}
@@ -84,12 +97,14 @@ namespace Odd
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
+		ODD_PROFILE_FUNCTION();
 		m_Running = false;
 		return true;
 	}
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
+		ODD_PROFILE_FUNCTION();
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 		{
 			m_Minimized = true;

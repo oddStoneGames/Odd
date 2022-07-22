@@ -18,16 +18,19 @@ namespace Odd {
 
 	void OpenGLShader::Bind()
 	{
+		ODD_PROFILE_FUNCTION();
 		glUseProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Unbind()
 	{
+		ODD_PROFILE_FUNCTION();
 		glUseProgram(0);
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filePath)
 	{
+		ODD_PROFILE_FUNCTION();
 		std::string source;
 
 		std::ifstream File;
@@ -59,6 +62,7 @@ namespace Odd {
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		ODD_PROFILE_FUNCTION();
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -91,6 +95,7 @@ namespace Odd {
 
 	void OpenGLShader::Compile(std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		ODD_PROFILE_FUNCTION();
 		GLuint program = glCreateProgram();
 		
 		if (shaderSources.size() > 2)
@@ -137,6 +142,7 @@ namespace Odd {
 
 	void OpenGLShader::CreateShader(const std::string& shaderPath)
 	{
+		ODD_PROFILE_FUNCTION();
 		// Retrieve the Raw Shader Source Code from shader file path.
 		std::string rawShaderCode = ReadFile(shaderPath);
 
@@ -157,6 +163,7 @@ namespace Odd {
 
 	void OpenGLShader::CreateShader(const std::string& name, const char* vShaderSource, const char* fShaderSource, const char* gShaderSource)
 	{
+		ODD_PROFILE_FUNCTION();
 		if (vShaderSource == nullptr || fShaderSource == nullptr)
 		{
 			DEBUG_CORE_ERROR("Vertex Shader Or Fragment Shader Can Never Be Null While Creating a Shader!");
@@ -179,6 +186,7 @@ namespace Odd {
 
 	void OpenGLShader::DestroyShader()
 	{
+		ODD_PROFILE_FUNCTION();
 		glDeleteProgram(m_RendererID);
 	}
 
@@ -249,6 +257,7 @@ namespace Odd {
 
 	bool OpenGLShader::CheckError(const uint32_t& ID, bool shader)
 	{
+		ODD_PROFILE_FUNCTION();
 		GLint success;
 		GLchar infoLog[512];
 		if (shader)

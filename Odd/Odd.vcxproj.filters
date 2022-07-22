@@ -161,6 +161,7 @@
     </ClInclude>
     <ClInclude Include="src\Odd\OrthographicCameraController.h" />
     <ClInclude Include="src\Odd\Renderer\Renderer2D.h" />
+    <ClInclude Include="src\Odd\Debug\Instrumentor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Odd\Core\Application.cpp">

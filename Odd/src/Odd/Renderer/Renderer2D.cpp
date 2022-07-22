@@ -18,6 +18,7 @@ namespace Odd
 
 	void Renderer2D::Init()
 	{
+		ODD_PROFILE_FUNCTION();
 		s_Data = new Renderer2DStorage();
 
 		#pragma region Generate Quad Vertex Array
@@ -84,11 +85,13 @@ namespace Odd
 	
 	void Renderer2D::Shutdown()
 	{
+		ODD_PROFILE_FUNCTION();
 		delete s_Data;
 	}
 	
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
+		ODD_PROFILE_FUNCTION();
 		s_Data->QuadTextureShader->Bind();
 		s_Data->QuadTextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 		s_Data->QuadTextureShader->SetInt("u_Texture", 0);
@@ -151,7 +154,8 @@ namespace Odd
 
 		s_Data->QuadTextureShader->SetMat4("u_Transform", transform);
 		s_Data->QuadTextureShader->SetFloat2("u_TextureScale", textureScale);
-		
+		s_Data->QuadTextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
+
 		// Bind Texture.
 		texture->Bind();
 

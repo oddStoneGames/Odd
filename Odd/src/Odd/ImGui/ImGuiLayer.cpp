@@ -18,6 +18,7 @@ namespace Odd {
 
 	void ImGuiLayer::OnAttach()
 	{
+		ODD_PROFILE_FUNCTION();
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -52,6 +53,7 @@ namespace Odd {
 
 	void ImGuiLayer::OnDetach()
 	{
+		ODD_PROFILE_FUNCTION();
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
@@ -59,6 +61,7 @@ namespace Odd {
 
 	void ImGuiLayer::Begin()
 	{
+		ODD_PROFILE_FUNCTION();
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -67,6 +70,7 @@ namespace Odd {
 
 	void ImGuiLayer::End()
 	{
+		ODD_PROFILE_FUNCTION();
 		ImGuiIO& io = ImGui::GetIO();
 		Window& window = Application::Get().GetWindow();
 		io.DisplaySize = ImVec2((float)window.GetWidth(), (float)window.GetHeight());
@@ -89,8 +93,8 @@ namespace Odd {
 
 	void ImGuiLayer::OnImGuiRender()
 	{
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
+		//static bool show = false;
+		//ImGui::ShowDemoWindow(&show);
 
 		ImGui::Begin("FPS");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

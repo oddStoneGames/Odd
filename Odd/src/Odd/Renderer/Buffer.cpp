@@ -8,6 +8,7 @@ namespace Odd {
 
 	Ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
 	{
+		ODD_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;
@@ -20,6 +21,7 @@ namespace Odd {
 
 	Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t size)
 	{
+		ODD_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;

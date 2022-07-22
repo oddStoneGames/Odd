@@ -28,11 +28,13 @@ namespace Odd {
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
+		ODD_PROFILE_FUNCTION();
 		glCreateVertexArrays(1, &m_RendererID);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
 	{
+		ODD_PROFILE_FUNCTION();
 		glDeleteVertexArrays(1, &m_RendererID);
 	}
 
@@ -48,6 +50,7 @@ namespace Odd {
 
 	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
 	{
+		ODD_PROFILE_FUNCTION();
 		glBindVertexArray(m_RendererID);
 		vertexBuffer->Bind();
 
@@ -74,6 +77,7 @@ namespace Odd {
 
 	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 	{
+		ODD_PROFILE_FUNCTION();
 		glBindVertexArray(m_RendererID);
 		indexBuffer->Bind();
 

@@ -11,6 +11,7 @@ namespace Odd {
 
 	void OpenGLContext::Init()
 	{
+		ODD_PROFILE_FUNCTION();
 		glfwMakeContextCurrent(m_WindowHandle);
 		int gladStatus = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		if (gladStatus > 0)
@@ -23,6 +24,7 @@ namespace Odd {
 
 	void OpenGLContext::SwapBuffers()
 	{
+		ODD_PROFILE_FUNCTION();
 		glfwSwapBuffers(m_WindowHandle);
 	}
 

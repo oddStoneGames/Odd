@@ -27,6 +27,7 @@ namespace Odd {
 
 	void WindowsWindow::Init(const WindowProps& props)
 	{
+		ODD_PROFILE_FUNCTION();
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
@@ -51,8 +52,10 @@ namespace Odd {
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 1);
 
-		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-
+		{
+			ODD_PROFILE_SCOPE("glfwCreateWindow");
+			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		}
 		m_Context = new OpenGLContext(m_Window);
 		m_Context->Init();
 
@@ -149,6 +152,7 @@ namespace Odd {
 
 	void WindowsWindow::Shutdown()
 	{
+		ODD_PROFILE_FUNCTION();
 		glfwDestroyWindow(m_Window);
 		s_GLFWInitialized = false;
 		glfwTerminate();
@@ -156,6 +160,7 @@ namespace Odd {
 
 	void WindowsWindow::OnUpdate()
 	{
+		ODD_PROFILE_FUNCTION();
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}

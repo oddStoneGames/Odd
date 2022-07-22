@@ -8,6 +8,7 @@ namespace Odd {
 
 	Ref<VertexArray> VertexArray::Create()
 	{
+		ODD_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;
