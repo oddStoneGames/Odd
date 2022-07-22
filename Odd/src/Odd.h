@@ -18,6 +18,7 @@
 //----Renderer-----------------------------
 #include "Odd/Renderer/RenderCommand.h"
 #include "Odd/Renderer/Renderer.h"
+#include "Odd/Renderer/Renderer2D.h"
 
 #include "Odd/Renderer/Buffer.h"
 #include "Odd/Renderer/Shader.h"
@@ -25,9 +26,4 @@
 #include "Odd/Renderer/VertexArray.h"
 
 #include "Odd/Renderer/OrthographicCamera.h"
-//-----------------------------------------
-
-
-//----Entry Point--------------------------
-#include "Odd/Core/EntryPoint.h"
 //-----------------------------------------

@@ -160,6 +160,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\Odd\OrthographicCameraController.h" />
+    <ClInclude Include="src\Odd\Renderer\Renderer2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Odd\Core\Application.cpp">
@@ -238,5 +239,6 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Odd\OrthographicCameraController.cpp" />
+    <ClCompile Include="src\Odd\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

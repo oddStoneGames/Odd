@@ -140,6 +140,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Odd\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Odd.h" />
     <ClInclude Include="src\Odd\Core\Application.h" />
     <ClInclude Include="src\Odd\Core\Core.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Odd\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Odd\Core\Application.cpp" />
     <ClCompile Include="src\Odd\Core\Layer.cpp" />
     <ClCompile Include="src\Odd\Core\LayerStack.cpp" />
