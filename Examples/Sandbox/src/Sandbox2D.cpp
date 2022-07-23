@@ -37,9 +37,8 @@ void Sandbox2D::OnUpdate(Odd::Timestep timestep)
 		Odd::Renderer2D::DrawQuad({ -0.5f,  0.5f }, { 1.0f, 1.0f }, m_Square1Color);
 		Odd::Renderer2D::DrawQuad({ 0.5f,  0.5f }, { 1.0f, 1.0f }, m_SquareTexture);
 		Odd::Renderer2D::DrawQuad({ -0.5f, -0.5f }, { 1.0f, 1.0f }, m_Square3Color, m_SquareTexture);
-		Odd::Renderer2D::DrawQuad({ 0.5f, -0.5f, -0.1f }, { 1.0f, 1.0f }, glm::vec4(1.0f));
-		Odd::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 1.0f, 1.0f }, m_Square4Color, m_SquareTexture, m_Square4TextureSize);
-		Odd::Renderer2D::DrawRotatedQuad({ 0.0f,  0.0f, m_Square5Depth }, m_Square5Rotation, { 5.0f, 5.0f }, m_Square5Texture, m_Square5TextureSize);
+		Odd::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 1.0f, 1.0f }, m_Square4Color, m_SquareTexture, m_Square4TilingFactor);
+		Odd::Renderer2D::DrawRotatedQuad({ 0.0f,  0.0f, m_Square5Depth }, m_Square5Rotation, { 5.0f, 5.0f }, m_Square5Texture, m_Square5TilingFactor);
 
 		Odd::Renderer2D::EndScene();
 	}
@@ -52,8 +51,8 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::ColorEdit4("1st Square Color",  &m_Square1Color[0]);
 	ImGui::ColorEdit4("3rd Square Color",  &m_Square3Color[0]);
 	ImGui::ColorEdit4("4th Square Color", &m_Square4Color[0]);
-	ImGui::SliderFloat2("4th Square Texture Size", &m_Square4TextureSize[0], 0.0f, 10.0f);
-	ImGui::SliderFloat2("5th Square Texture Size", &m_Square5TextureSize[0], 0.0f, 10.0f);
+	ImGui::SliderFloat("4th Square Texture Size", &m_Square4TilingFactor, 0.0f, 10.0f);
+	ImGui::SliderFloat("5th Square Texture Size", &m_Square5TilingFactor, 0.0f, 10.0f);
 	ImGui::SliderFloat("5th Square Depth", &m_Square5Depth, -1.0f, 1.0f);
 	ImGui::SliderFloat("5th Square Rotation", &m_Square5Rotation, -360.0f, 360.0f);
 	ImGui::End();

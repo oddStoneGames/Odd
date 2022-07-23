@@ -5,6 +5,18 @@
 #include "Platform/OpenGL/OpenGLBuffer.h"
 
 namespace Odd {
+	Ref<VertexBuffer> VertexBuffer::Create(uint32_t size)
+	{
+		ODD_PROFILE_FUNCTION();
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:	DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;
+		case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(size);
+		}
+
+		DEBUG_CORE_ERROR("Unknown Renderer API!");
+		return nullptr;
+	}
 
 	Ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size)
 	{
@@ -19,13 +31,13 @@ namespace Odd {
 		return nullptr;
 	}
 
-	Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t size)
+	Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count)
 	{
 		ODD_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	DEBUG_CORE_INFO("RendererAPI::None is currently not supported!"); return nullptr;
-			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLIndexBuffer>(indices, size);
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLIndexBuffer>(indices, count);
 		}
 
 		DEBUG_CORE_ERROR("Unknown Renderer API!");

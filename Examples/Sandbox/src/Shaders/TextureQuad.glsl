@@ -4,30 +4,40 @@
 #version 460 core
 
 layout(location = 0)in vec3 a_Pos;
-layout(location = 1)in vec2 a_TexCoord;
+layout(location = 1)in vec4 a_Color;
+layout(location = 2)in vec2 a_TexCoord;
+layout(location = 3)in float a_TexIndex;
+layout(location = 4)in float a_TilingFactor;
 
 uniform mat4 u_ViewProjection;
-uniform mat4 u_Transform;
 
-out vec2 TexCoord;
+out vec4 v_Color;
+out vec2 v_TexCoord;
+out float v_TexIndex;
+out float v_TilingFactor;
 
 void main() 
 {
-	gl_Position = u_ViewProjection * u_Transform * vec4(a_Pos, 1.0f);
-	TexCoord = a_TexCoord;
+	v_Color = a_Color;
+	v_TexCoord = a_TexCoord;
+	v_TexIndex = a_TexIndex;
+	v_TilingFactor = a_TilingFactor;
+	gl_Position = u_ViewProjection * vec4(a_Pos, 1.0f);
 }
 
 #type frag
 #version 460 core
 
-in vec2 TexCoord;
+in vec4 v_Color;
+in vec2 v_TexCoord;
+in float v_TexIndex;
+in float v_TilingFactor;
+
 out vec4 Color;
 
-uniform vec4 u_Color;
-uniform sampler2D u_Texture;
-uniform vec2 u_TextureScale;
+uniform sampler2D u_Textures[32];
 
 void main() 
 {
-	Color = vec4(texture(u_Texture, TexCoord * u_TextureScale)) * u_Color;
+	Color = vec4(texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TilingFactor)) * v_Color;
 }

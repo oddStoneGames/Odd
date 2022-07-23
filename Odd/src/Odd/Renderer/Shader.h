@@ -25,6 +25,7 @@ namespace Odd
 		virtual void SetInt2(const char* name, const glm::ivec2& value) = 0;
 		virtual void SetInt3(const char* name, const glm::ivec3& value) = 0;
 		virtual void SetInt4(const char* name, const glm::ivec4& value) = 0;
+		virtual void SetIntArray(const char* name, int* values, uint32_t count) = 0;
 		
 		virtual void SetFloat (const char* name, const float& value) = 0;
 		virtual void SetFloat2(const char* name, const glm::vec2& value) = 0;

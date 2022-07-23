@@ -38,7 +38,8 @@ namespace Odd {
 		virtual void SetInt2(const char* name, const glm::ivec2& value)	 override;
 		virtual void SetInt3(const char* name, const glm::ivec3& value)	 override;
 		virtual void SetInt4(const char* name, const glm::ivec4& value)	 override;
-		
+		virtual void SetIntArray(const char* name, int* values, uint32_t count) override;
+
 		virtual void SetFloat(const char* name, const float& value) override;
 		virtual void SetFloat2(const char* name, const glm::vec2& value)	 override;
 		virtual void SetFloat3(const char* name, const glm::vec3& value)	 override;

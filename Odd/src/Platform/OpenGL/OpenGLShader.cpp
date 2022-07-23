@@ -220,6 +220,11 @@ namespace Odd {
 		glUniform4iv(glGetUniformLocation(m_RendererID, name), 1, &value[0]);
 	}
 
+	void OpenGLShader::SetIntArray(const char* name, int* values, uint32_t count)
+	{
+		glUniform1iv(glGetUniformLocation(m_RendererID, name), count, values);
+	}
+
 	void OpenGLShader::SetFloat(const char* name, const float& value)
 	{
 		glUniform1f(glGetUniformLocation(m_RendererID, name), value);
