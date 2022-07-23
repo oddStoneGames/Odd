@@ -103,6 +103,8 @@ namespace Odd
 
 	}
 
+	#pragma region Draw Quad
+
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4 color)
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, size, color);
@@ -115,8 +117,8 @@ namespace Odd
 
 		//Upload Data To The Shader.
 		glm::mat4 transform = glm::mat4(1.0f);
-		transform = glm::translate(transform, position);
-		transform = glm::scale(transform, glm::vec3(size, 1.0f));
+		transform = glm::translate(transform, position) *
+					glm::scale(transform, glm::vec3(size, 1.0f));
 
 		s_Data->QuadTextureShader->SetMat4("u_Transform", transform);
 		s_Data->QuadTextureShader->SetFloat4("u_Color", color);
@@ -149,8 +151,8 @@ namespace Odd
 
 		//Upload Data To The Shader.
 		glm::mat4 transform = glm::mat4(1.0f);
-		transform = glm::translate(transform, position);
-		transform = glm::scale(transform, glm::vec3(size, 1.0f));
+		transform = glm::translate(transform, position) *
+					glm::scale(transform, glm::vec3(size, 1.0f));
 
 		s_Data->QuadTextureShader->SetMat4("u_Transform", transform);
 		s_Data->QuadTextureShader->SetFloat2("u_TextureScale", textureScale);
@@ -184,8 +186,8 @@ namespace Odd
 
 		//Upload Data To The Shader.
 		glm::mat4 transform = glm::mat4(1.0f);
-		transform = glm::translate(transform, position);
-		transform = glm::scale(transform, glm::vec3(size, 1.0f));
+		transform = glm::translate(transform, position) *
+					glm::scale(transform, glm::vec3(size, 1.0f));
 
 		s_Data->QuadTextureShader->SetMat4("u_Transform", transform);
 		s_Data->QuadTextureShader->SetFloat2("u_TextureScale", textureScale);
@@ -206,4 +208,118 @@ namespace Odd
 		// Unbind Shader.
 		s_Data->QuadTextureShader->Unbind();
 	}
+
+	#pragma endregion
+
+	#pragma region Draw Rotated Quad
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const glm::vec4 color)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, rotation, size, color);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4 color)
+	{
+		// Bind Shader.
+		s_Data->QuadTextureShader->Bind();
+
+		//Upload Data To The Shader.
+		glm::mat4 transform = glm::mat4(1.0f);
+		transform = glm::translate(transform, position) *
+					glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)) *
+					glm::scale(transform, glm::vec3(size, 1.0f));
+
+		s_Data->QuadTextureShader->SetMat4("u_Transform", transform);
+		s_Data->QuadTextureShader->SetFloat4("u_Color", color);
+
+		// Bind Default White Texture.
+		s_Data->WhiteTexture->Bind();
+
+		// Bind Vertex Array.
+		s_Data->QuadVertexArray->Bind();
+
+		// initiate a Draw Call.
+		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+
+		// Unbind Vertex Array.
+		s_Data->QuadVertexArray->Unbind();
+
+		// Unbind Shader.
+		s_Data->QuadTextureShader->Unbind();
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const Ref<Texture> texture, const glm::vec2 textureScale)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, rotation, size, texture, textureScale);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const Ref<Texture> texture, const glm::vec2 textureScale)
+	{
+		// Bind Shader.
+		s_Data->QuadTextureShader->Bind();
+
+		//Upload Data To The Shader.
+		glm::mat4 transform = glm::mat4(1.0f);
+		transform = glm::translate(transform, position) *
+					glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)) *
+					glm::scale(transform, glm::vec3(size, 1.0f));
+
+		s_Data->QuadTextureShader->SetMat4("u_Transform", transform);
+		s_Data->QuadTextureShader->SetFloat2("u_TextureScale", textureScale);
+		s_Data->QuadTextureShader->SetFloat4("u_Color", glm::vec4(1.0f));
+
+		// Bind Texture.
+		texture->Bind();
+
+		// Bind Vertex Array.
+		s_Data->QuadVertexArray->Bind();
+
+		// initiate a Draw Call.
+		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+
+		// Unbind Vertex Array.
+		s_Data->QuadVertexArray->Unbind();
+
+		// Unbind Shader.
+		s_Data->QuadTextureShader->Unbind();
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, float rotation, const glm::vec2& size, const glm::vec4 color, const Ref<Texture> texture, const glm::vec2 textureScale)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, rotation, size, color, texture, textureScale);
+	}
+
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, float rotation, const glm::vec2& size, const glm::vec4 color, const Ref<Texture> texture, const glm::vec2 textureScale)
+	{
+		// Bind Shader.
+		s_Data->QuadTextureShader->Bind();
+
+		//Upload Data To The Shader.
+		glm::mat4 transform = glm::mat4(1.0f);
+		transform = glm::translate(transform, position) *
+					glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f)) *
+					glm::scale(transform, glm::vec3(size, 1.0f));
+
+		s_Data->QuadTextureShader->SetMat4("u_Transform", transform);
+		s_Data->QuadTextureShader->SetFloat2("u_TextureScale", textureScale);
+		s_Data->QuadTextureShader->SetFloat4("u_Color", color);
+
+		// Bind Texture.
+		texture->Bind();
+
+		// Bind Vertex Array.
+		s_Data->QuadVertexArray->Bind();
+
+		// initiate a Draw Call.
+		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+
+		// Unbind Vertex Array.
+		s_Data->QuadVertexArray->Unbind();
+
+		// Unbind Shader.
+		s_Data->QuadTextureShader->Unbind();
+	}
+
+	#pragma endregion
+
 }

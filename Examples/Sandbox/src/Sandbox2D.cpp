@@ -11,6 +11,7 @@ void Sandbox2D::OnAttach()
 {
 	ODD_PROFILE_FUNCTION();
 	m_SquareTexture = Odd::Texture2D::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/textures/Logo.jpg");
+	m_Square5Texture = Odd::Texture2D::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/textures/Background.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -33,11 +34,12 @@ void Sandbox2D::OnUpdate(Odd::Timestep timestep)
 		ODD_PROFILE_SCOPE("Renderer Draw");
 		Odd::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-		Odd::Renderer2D::DrawQuad({ -0.5f,  0.5f }, { 1.0f, 1.0f }, m_SquareColor1);
+		Odd::Renderer2D::DrawQuad({ -0.5f,  0.5f }, { 1.0f, 1.0f }, m_Square1Color);
 		Odd::Renderer2D::DrawQuad({ 0.5f,  0.5f }, { 1.0f, 1.0f }, m_SquareTexture);
-		Odd::Renderer2D::DrawQuad({ -0.5f, -0.5f }, { 1.0f, 1.0f }, m_SquareColor3, m_SquareTexture);
+		Odd::Renderer2D::DrawQuad({ -0.5f, -0.5f }, { 1.0f, 1.0f }, m_Square3Color, m_SquareTexture);
 		Odd::Renderer2D::DrawQuad({ 0.5f, -0.5f, -0.1f }, { 1.0f, 1.0f }, glm::vec4(1.0f));
-		Odd::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 1.0f, 1.0f }, m_SquareColor4, m_SquareTexture, glm::vec2(2.0f));
+		Odd::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 1.0f, 1.0f }, m_Square4Color, m_SquareTexture, m_Square4TextureSize);
+		Odd::Renderer2D::DrawRotatedQuad({ 0.0f,  0.0f, m_Square5Depth }, m_Square5Rotation, { 5.0f, 5.0f }, m_Square5Texture, m_Square5TextureSize);
 
 		Odd::Renderer2D::EndScene();
 	}
@@ -47,9 +49,13 @@ void Sandbox2D::OnImGuiRender()
 {
 	ODD_PROFILE_FUNCTION();
 	ImGui::Begin("Settings");
-	ImGui::ColorEdit4("First Square Color",  &m_SquareColor1[0]);
-	ImGui::ColorEdit4("Third Square Color",  &m_SquareColor3[0]);
-	ImGui::ColorEdit4("Fourth Square Color", &m_SquareColor4[0]);
+	ImGui::ColorEdit4("1st Square Color",  &m_Square1Color[0]);
+	ImGui::ColorEdit4("3rd Square Color",  &m_Square3Color[0]);
+	ImGui::ColorEdit4("4th Square Color", &m_Square4Color[0]);
+	ImGui::SliderFloat2("4th Square Texture Size", &m_Square4TextureSize[0], 0.0f, 10.0f);
+	ImGui::SliderFloat2("5th Square Texture Size", &m_Square5TextureSize[0], 0.0f, 10.0f);
+	ImGui::SliderFloat("5th Square Depth", &m_Square5Depth, -1.0f, 1.0f);
+	ImGui::SliderFloat("5th Square Rotation", &m_Square5Rotation, -360.0f, 360.0f);
 	ImGui::End();
 }
 

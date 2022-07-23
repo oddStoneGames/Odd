@@ -122,7 +122,7 @@ namespace Odd {
 	};
 }
 
-#define ODD_PROFILE 1
+#define ODD_PROFILE 0
 #if ODD_PROFILE
 	#define ODD_PROFILE_BEGIN_SESSION(name, filepath)  ::Odd::Instrumentor::Get().BeginSession(name, filepath)
 	#define ODD_PROFILE_END_SESSION()				   ::Odd::Instrumentor::Get().EndSession()
