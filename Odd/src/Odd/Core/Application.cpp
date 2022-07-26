@@ -9,7 +9,7 @@ namespace Odd
 {
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application() : m_ImGuiLayer(new ImGuiLayer())
+	Application::Application(const std::string& name) : m_ImGuiLayer(new ImGuiLayer())
 	{
 		ODD_PROFILE_FUNCTION();
 		if (s_Instance)
@@ -21,7 +21,7 @@ namespace Odd
 
 		//Initialize Logger.
 		Odd::Log::Init();
-		m_Window = Scope<Window>(Window::Create());
+		m_Window = Window::Create(WindowProps(name));
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
 		
 		Renderer::Init();
@@ -53,11 +53,11 @@ namespace Odd
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNC(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FUNC(Application::OnWindowResize));
-
+		
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
 			(*--it)->OnEvent(e);
-			if (e.Handled())
+			if (e.Handled)
 				break;
 		}
 	}
@@ -93,6 +93,11 @@ namespace Odd
 
 			m_Window->OnUpdate();
 		}
+	}
+
+	void Application::Close()
+	{
+		m_Running = false;
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

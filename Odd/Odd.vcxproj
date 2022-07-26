@@ -140,8 +140,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Odd\Debug\Instrumentor.h" />
-    <ClInclude Include="src\Odd\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Odd.h" />
     <ClInclude Include="src\Odd\Core\Application.h" />
     <ClInclude Include="src\Odd\Core\Core.h" />
@@ -151,6 +149,7 @@
     <ClInclude Include="src\Odd\Core\Log.h" />
     <ClInclude Include="src\Odd\Core\Timestep.h" />
     <ClInclude Include="src\Odd\Core\Window.h" />
+    <ClInclude Include="src\Odd\Debug\Instrumentor.h" />
     <ClInclude Include="src\Odd\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Odd\Events\Event.h" />
     <ClInclude Include="src\Odd\Events\KeyEvent.h" />
@@ -163,28 +162,30 @@
     <ClInclude Include="src\Odd\Input\MouseCodes.h" />
     <ClInclude Include="src\Odd\OrthographicCameraController.h" />
     <ClInclude Include="src\Odd\Renderer\Buffer.h" />
+    <ClInclude Include="src\Odd\Renderer\FrameBuffer.h" />
     <ClInclude Include="src\Odd\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Odd\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Odd\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Odd\Renderer\Renderer.h" />
+    <ClInclude Include="src\Odd\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Odd\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Odd\Renderer\Shader.h" />
     <ClInclude Include="src\Odd\Renderer\ShaderDataTypes.h" />
+    <ClInclude Include="src\Odd\Renderer\SubTexture2D.h" />
     <ClInclude Include="src\Odd\Renderer\Texture.h" />
     <ClInclude Include="src\Odd\Renderer\VertexArray.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\oddpch.h" />
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Odd\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Odd\Core\Application.cpp" />
     <ClCompile Include="src\Odd\Core\Layer.cpp" />
     <ClCompile Include="src\Odd\Core\LayerStack.cpp" />
@@ -194,15 +195,19 @@
     <ClCompile Include="src\Odd\ImGui\Windows\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\Odd\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Odd\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Odd\Renderer\FrameBuffer.cpp" />
     <ClCompile Include="src\Odd\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Odd\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Odd\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Odd\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Odd\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Odd\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Odd\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="src\Odd\Renderer\Texture.cpp" />
     <ClCompile Include="src\Odd\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp" />

@@ -1,28 +1,26 @@
 #include "oddpch.h"
-#include "WindowsInput.h"
+#include "Odd/Input/Input.h"
 
 #include "Odd/Core/Application.h"
 #include "GLFW/glfw3.h"
 
 namespace Odd {
 
-	Input* Input::s_Instance = new WindowsInput();
-
-	bool Odd::WindowsInput::IsKeyPressedImpl(int keycode)
+	bool Odd::Input::IsKeyPressed(int keycode)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		auto state = glfwGetKey(window, keycode);
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool Odd::WindowsInput::IsMouseButtonPressedImpl(int button)
+	bool Odd::Input::IsMouseButtonPressed(int button)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		auto state = glfwGetMouseButton(window, button);
 		return state == GLFW_PRESS;
 	}
 
-	std::pair<float, float> Odd::WindowsInput::GetMousePositionImpl()
+	std::pair<float, float> Odd::Input::GetMousePosition()
 	{
 
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
@@ -31,15 +29,15 @@ namespace Odd {
 		return std::pair<float, float>(xP, yP);
 	}
 
-	float Odd::WindowsInput::GetMouseXImpl()
+	float Odd::Input::GetMouseX()
 	{
-		auto [x, y] = GetMousePositionImpl();
+		auto [x, y] = GetMousePosition();
 		return (float)x;
 	}
 
-	float Odd::WindowsInput::GetMouseYImpl()
+	float Odd::Input::GetMouseY()
 	{
-		auto [x, y] = GetMousePositionImpl();
+		auto [x, y] = GetMousePosition();
 		return (float)y;
 	}
 

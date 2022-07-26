@@ -16,11 +16,14 @@ namespace Odd {
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
 
-		void SetZoomLevel(float level) { m_ZoomLevel = level; }
+		void OnResize(float width, float height);
+
+		void SetZoomLevel(float level) { m_ZoomLevel = level; CalculateView(); }
 		float GetZoomLevel() { return m_ZoomLevel; }
 		OrthographicCamera& GetCamera() { return m_Camera; }
 		const OrthographicCamera& GetCamera() const { return m_Camera; }
 	private:
+		void CalculateView();
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
 	private:
@@ -30,7 +33,7 @@ namespace Odd {
 		OrthographicCamera m_Camera;
 
 		glm::vec3 m_CameraPosition = glm::vec3(0.0f);
-		float m_CameraRotation = 0.0f;
+		float m_CameraRotation = 0.0f;	//In degrees, in the anti-clockwise direction
 		float m_CameraTranslationSpeed = 2.5f;
 		float m_CameraRotationSpeed = 90.0f;
 	};

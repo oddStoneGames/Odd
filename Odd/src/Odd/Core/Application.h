@@ -13,7 +13,7 @@ namespace Odd
 	class ODD_API Application
 	{
 		public:
-			Application();
+			Application(const std::string& name = "Odd App");
 			virtual ~Application();
 			void Run();
 
@@ -24,6 +24,10 @@ namespace Odd
 
 			inline static Application& Get() { return *s_Instance; }
 			inline Window& GetWindow() { return *m_Window; }
+
+			ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
+
+			void Close();
 	private:
 		float m_LastFrameTime = 0.0f;
 		static Application* s_Instance;

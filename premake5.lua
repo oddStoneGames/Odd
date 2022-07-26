@@ -81,6 +81,60 @@ project "Odd"
         optimize "on"
 
 
+
+project "Odd-Editor"
+    location "Odd-Editor"
+    kind "ConsoleApp"
+    language "C++"
+    cppdialect "C++latest"
+    staticruntime "on"
+
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+    files
+    {
+        "%{prj.name}/src/**.h",
+        "%{prj.name}/src/**.cpp"
+    }
+
+    includedirs
+    {
+        "Odd/vendor",
+        "Odd/src",
+        "Odd/vendor/glm"
+    }
+
+    links
+    {
+        "Odd"
+    }
+
+    filter "system:windows"
+        systemversion "latest"
+
+        defines
+        {
+            "ODD_PLATFORM_WINDOWS"
+        }
+
+    filter "configurations:Debug"
+        defines "ODD_DEBUG"
+        runtime "Debug"
+        symbols "on"
+
+    filter "configurations:Release"
+        defines "ODD_RELEASE"
+        runtime "Release"
+        optimize "on"
+
+    filter "configurations:Distribution"
+        defines "ODD_DISTRIBUTION"
+        runtime "Release"
+        optimize "on"
+
+
+
 project "Sandbox"
     location "Examples/%{prj.name}"
     kind "ConsoleApp"

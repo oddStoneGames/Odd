@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "Odd\vendor\ImGui\I
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Odd", "Odd\Odd.vcxproj", "{3C10880B-A819-887C-3195-9E7C9D9D937C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Odd-Editor", "Odd-Editor\Odd-Editor.vcxproj", "{70B8816F-5C70-C3BC-C577-9C18B14E5EAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,6 +50,12 @@ Global
 		{3C10880B-A819-887C-3195-9E7C9D9D937C}.Distribution|x64.Build.0 = Distribution|x64
 		{3C10880B-A819-887C-3195-9E7C9D9D937C}.Release|x64.ActiveCfg = Release|x64
 		{3C10880B-A819-887C-3195-9E7C9D9D937C}.Release|x64.Build.0 = Release|x64
+		{70B8816F-5C70-C3BC-C577-9C18B14E5EAD}.Debug|x64.ActiveCfg = Debug|x64
+		{70B8816F-5C70-C3BC-C577-9C18B14E5EAD}.Debug|x64.Build.0 = Debug|x64
+		{70B8816F-5C70-C3BC-C577-9C18B14E5EAD}.Distribution|x64.ActiveCfg = Distribution|x64
+		{70B8816F-5C70-C3BC-C577-9C18B14E5EAD}.Distribution|x64.Build.0 = Distribution|x64
+		{70B8816F-5C70-C3BC-C577-9C18B14E5EAD}.Release|x64.ActiveCfg = Release|x64
+		{70B8816F-5C70-C3BC-C577-9C18B14E5EAD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
