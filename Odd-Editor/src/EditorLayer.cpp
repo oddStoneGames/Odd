@@ -28,21 +28,31 @@ void EditorLayer::OnAttach()
 
     m_ActiveScene = CreateRef<Scene>();
 
-    m_SquareEntity = m_ActiveScene->CreateEntity("Square");
-    m_SquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4(0.348f, 0.123f, 0.000f, 1.000f));
+    auto greenSquare = m_ActiveScene->CreateEntity("Green Square");
+    greenSquare.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 1.0f, 0.0f, 0.588f));
+    auto& greenSquareTransform = greenSquare.GetComponent<TransformComponent>();
+    greenSquareTransform.Translation = { 0.0f, 0.7f, 0.8f };
 
-    m_PrimaryCamera = m_ActiveScene->CreateEntity("Main Camera");
-    m_PrimaryCamera.AddComponent<CameraComponent>();
+    auto redSquare = m_ActiveScene->CreateEntity("Red Square");
+    redSquare.AddComponent<SpriteRendererComponent>(glm::vec4(1.0f, 0.0f, 0.0f, 0.588f));
 
-    m_SecondaryCamera = m_ActiveScene->CreateEntity("Secondary Camera");
-    m_SecondaryCamera.AddComponent<CameraComponent>();
+    auto blueSquare = m_ActiveScene->CreateEntity("Blue Square");
+    blueSquare.AddComponent<SpriteRendererComponent>(glm::vec4(0.0f, 0.0f, 1.0f, 0.588f));
+    auto& blueSquareTransform = blueSquare.GetComponent<TransformComponent>();
+    blueSquareTransform.Translation = { 0.7f, 0.0f, -0.4f };
+
+    auto primaryCamera = m_ActiveScene->CreateEntity("Main Camera");
+    primaryCamera.AddComponent<CameraComponent>();
+
+    auto secondaryCamera = m_ActiveScene->CreateEntity("Secondary Camera");
+    secondaryCamera.AddComponent<CameraComponent>();
 
     class CameraController : public ScriptableEntity
     {
     public:
         void OnCreate()
         {
-            printf("PrimaryCamera::CamereController::OnCreate\n");
+            printf("CamereController::OnCreate\n");
         }
 
         void OnDestroy()
@@ -51,23 +61,25 @@ void EditorLayer::OnAttach()
 
         void OnUpdate(Timestep ts)
         {
-            auto& transform = GetComponent<TransformComponent>().Transform;
+            auto& position = GetComponent<TransformComponent>().Translation;
             float speed = 5.0f;
 
             if (Input::IsKeyPressed(Key::A))
-                transform[3][0] += speed * ts;
+                position.x -= speed * ts;
             else if (Input::IsKeyPressed(Key::D))
-                transform[3][0] -= speed * ts;
+                position.x += speed * ts;
 
             if (Input::IsKeyPressed(Key::W))
-                transform[3][1] -= speed * ts;
+                position.y += speed * ts;
             else if (Input::IsKeyPressed(Key::S))
-                transform[3][1] += speed * ts;
+                position.y -= speed * ts;
         }
     };
 
-    m_PrimaryCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-    m_SecondaryCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+    primaryCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+    secondaryCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+    m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
 }
 
@@ -94,7 +106,6 @@ void EditorLayer::OnUpdate(Timestep timestep)
 
     if(m_ViewportFocused)
 	    m_CameraController.OnUpdate(timestep);
-
 
 	// Render
 	Renderer2D::ResetStats();
@@ -160,11 +171,16 @@ void EditorLayer::OnImGuiRender()
 
     // Submit the DockSpace
     ImGuiIO& io = ImGui::GetIO();
+    ImGuiStyle& style = ImGui::GetStyle();
+    float minWinSizeX = style.WindowMinSize.x;
+    style.WindowMinSize.x = 150.0f;
     if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
     {
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
     }
+
+    style.WindowMinSize.x = minWinSizeX;
 
     if (ImGui::BeginMenuBar())
     {
@@ -181,79 +197,20 @@ void EditorLayer::OnImGuiRender()
         ImGui::EndMenuBar();
     }
 
+    m_SceneHierarchyPanel.OnImGuiRender();
 
     Renderer2D::Statistics stats = Renderer2D::GetStats();
-    ImGui::Begin("Renderer 2D Stats");
+
+    ImGui::Begin("Stats:");
+    ImGui::Text("Renderer 2D Stats:");
+    ImGui::Separator();
     ImGui::Text("Draw Calls: %d", stats.DrawCalls);
     ImGui::Text("Quad Count: %d", stats.QuadCount);
     ImGui::Text("Vertices Count: %d", stats.GetTotalVertexCount());
     ImGui::Text("Indices Count: %d", stats.GetTotalIndexCount());
-
-    if(m_SquareEntity)
-    {
-        ImGui::Separator();
-        auto& name = m_SquareEntity.GetComponent<TagComponent>().Tag;
-        ImGui::Text(name.c_str());
-
-        ImGui::DragFloat2("Position", &squarePosition[0]);
-        ImGui::SliderFloat("Rotation", &squareRotation, -360.0f, 360.0f);
-        ImGui::DragFloat2("Size", &squareSize[0]);
-
-        glm::mat4& squareTransform = m_SquareEntity.GetComponent<TransformComponent>().Transform;
-        squareTransform = glm::translate(glm::mat4(1.0f), { squarePosition.x, squarePosition.y, 0.0f })
-                          * glm::rotate (glm::mat4(1.0f), glm::radians(squareRotation), {0.0f, 0.0f, 1.0f})
-                          * glm::scale  (glm::mat4(1.0f), glm::vec3(squareSize.x, squareSize.y, 1.0f));
-
-        auto& squareColor = m_SquareEntity.GetComponent<SpriteRendererComponent>().Color;
-        ImGui::ColorEdit4("Color", &squareColor[0]);
-        ImGui::Separator();
-    }
-
-    if (m_PrimaryCamera)
-    {
-        ImGui::Separator();
-        auto& name = m_PrimaryCamera.GetComponent<TagComponent>().Tag;
-        ImGui::Text(name.c_str());
-
-        ImGui::DragFloat2("Camera Position", &primaryCameraPosition[0]);
-        ImGui::SliderFloat("Camera Rotation", &primaryCameraRotation, -360.0f, 360.0f);
-        ImGui::DragFloat("Camera Size", &primaryCameraSize, 0.05f, 0.001f, 100.0f);
-
-        //glm::mat4& primaryCameraTransform = m_PrimaryCamera.GetComponent<TransformComponent>().Transform;
-        //primaryCameraTransform = glm::translate(glm::mat4(1.0f), { primaryCameraPosition.x, primaryCameraPosition.y, 0.0f })
-        //    * glm::rotate(glm::mat4(1.0f), glm::radians(primaryCameraRotation), { 0.0f, 0.0f, 1.0f })
-        //    * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f));
-
-        ImGui::Checkbox("Primary", &m_IsPrimaryCameraPrimary);
-
-        m_PrimaryCamera.GetComponent<CameraComponent>().Primary = m_IsPrimaryCameraPrimary;
-        m_SecondaryCamera.GetComponent<CameraComponent>().Primary = !m_IsPrimaryCameraPrimary;
-        m_PrimaryCamera.GetComponent<CameraComponent>().Camera.SetOrthographicSize(primaryCameraSize);
-
-        ImGui::Separator();
-    }
-
-    if (m_SecondaryCamera)
-    {
-        ImGui::Separator();
-        auto& name = m_SecondaryCamera.GetComponent<TagComponent>().Tag;
-        ImGui::Text(name.c_str());
-
-        ImGui::DragFloat2("Cam Position", &secondaryCameraPosition[0]);
-        ImGui::SliderFloat("Cam Rotation", &secondaryCameraRotation, -360.0f, 360.0f);
-        ImGui::DragFloat("Cam Size", &secondaryCameraSize, 0.05f, 0.001f, 100.0f);
-
-        m_SecondaryCamera.GetComponent<CameraComponent>().Camera.SetOrthographicSize(secondaryCameraSize);
-
-        //glm::mat4& secondaryCameraTransform = m_SecondaryCamera.GetComponent<TransformComponent>().Transform;
-        //secondaryCameraTransform = glm::translate(glm::mat4(1.0f), { secondaryCameraPosition.x, secondaryCameraPosition.y, 0.0f })
-        //    * glm::rotate(glm::mat4(1.0f), glm::radians(secondaryCameraRotation), { 0.0f, 0.0f, 1.0f })
-        //    * glm::scale(glm::mat4(1.0f), glm::vec3(1.0f));
-
-        ImGui::Separator();
-    }
-
-
+    ImGui::Separator();
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    ImGui::Separator();
     ImGui::End();
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });

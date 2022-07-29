@@ -27,6 +27,11 @@ namespace Odd
         return entity;
     }
 
+    void Scene::DestroyEntity(Entity entity)
+    {
+        m_Registry.destroy(entity);
+    }
+
     void Scene::OnUpdate(Timestep ts)
     {
         // Update Scripts
@@ -48,7 +53,7 @@ namespace Odd
 
         // Render Sprites
         SceneCamera* mainCamera = nullptr;
-        glm::mat4* mainCameratransform = nullptr;
+        glm::mat4 mainCameratransform { 0.0f };
         {
             auto view = m_Registry.view<TransformComponent, CameraComponent>();
             for (auto entity : view)
@@ -58,8 +63,7 @@ namespace Odd
                 if (camera.Primary)
                 {
                     mainCamera = &camera.Camera;
-                    //DEBUG_CORE_WARN("Projection Matrix: {0}", glm::to_string(mainCamera->GetProjection()));
-                    mainCameratransform = &transform.Transform;
+                    mainCameratransform = transform.GetTransform();
                     break;
                 }
             }
@@ -67,12 +71,12 @@ namespace Odd
 
         if (mainCamera)
         {
-            Renderer2D::BeginScene(*mainCamera, *mainCameratransform);
+            Renderer2D::BeginScene(*mainCamera, mainCameratransform);
             auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
             for (auto entity : group)
             {
                 auto [transform, spriteRenderer] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-                Renderer2D::DrawQuad(transform, spriteRenderer.Color);
+                Renderer2D::DrawQuad(transform.GetTransform(), spriteRenderer.Color);
             }
             Renderer2D::EndScene();
         }
@@ -96,4 +100,11 @@ namespace Odd
         }
     }
 
+    void Scene::OnComponentAdded(Entity entity)
+    {
+        if (entity.HasComponent<CameraComponent>())
+        {
+            entity.GetComponent<CameraComponent>().Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+        }
+    }
 }
