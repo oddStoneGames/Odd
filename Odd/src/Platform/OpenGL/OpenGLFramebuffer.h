@@ -13,7 +13,7 @@ namespace Odd
 		virtual void Unbind() override;
 		virtual void Resize(const uint32_t width, const uint32_t height) override;
 		virtual uint32_t GetColorAttachmentRendererID() const override { return m_ColorAttachment; }
-		virtual const FramebufferSpecification& GetSpedcification() const override { return m_Specification; }
+		virtual const FramebufferSpecification& GetSpecification() const override { return m_Specification; }
 
 		void Invalidate();
 	private:

@@ -28,6 +28,9 @@
     <Filter Include="src\Odd\Renderer">
       <UniqueIdentifier>{D9FDBFA9-C5F6-DEFB-EE28-C480DA80BE07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Odd\Scene">
+      <UniqueIdentifier>{301C6DF3-9CDC-E829-6517-32A7D1962D06}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
@@ -147,6 +150,9 @@
     <ClInclude Include="src\Odd\Renderer\VertexArray.h">
       <Filter>src\Odd\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Odd\Scene\Scene.h">
+      <Filter>src\Odd\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
@@ -177,6 +183,11 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Odd\Scene\Components.h" />
+    <ClInclude Include="src\Odd\Scene\Entity.h" />
+    <ClInclude Include="src\Odd\Renderer\Camera.h" />
+    <ClInclude Include="src\Odd\Scene\SceneCamera.h" />
+    <ClInclude Include="src\Odd\Scene\ScriptableEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Odd\Core\Application.cpp">
@@ -236,6 +247,9 @@
     <ClCompile Include="src\Odd\Renderer\VertexArray.cpp">
       <Filter>src\Odd\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Odd\Scene\Scene.cpp">
+      <Filter>src\Odd\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -269,5 +283,6 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Odd\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>

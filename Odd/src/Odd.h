@@ -13,6 +13,12 @@
 #include "Odd/OrthographicCameraController.h"
 #include "glm.hpp"
 
+#include "Odd/Scene/Scene.h"
+#include "Odd/Scene/Entity.h"
+#include "Odd/Scene/ScriptableEntity.h"
+#include "Odd/Scene/Components.h"
+
+
 #include "Odd/ImGui/ImGuiLayer.h"
 
 //----Renderer-----------------------------

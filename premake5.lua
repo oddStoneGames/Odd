@@ -44,7 +44,8 @@ project "Odd"
         "Odd/vendor/Glad/include",
         "Odd/vendor/ImGui/include",
         "Odd/vendor/glm",
-        "Odd/vendor/stb_image"
+        "Odd/vendor/stb_image",
+        "Odd/vendor/entt/include"
     }
 
     links
@@ -102,7 +103,8 @@ project "Odd-Editor"
     {
         "Odd/vendor",
         "Odd/src",
-        "Odd/vendor/glm"
+        "Odd/vendor/glm",
+        "Odd/vendor/entt/include"
     }
 
     links
@@ -155,7 +157,8 @@ project "Sandbox"
     {
         "Odd/vendor",
         "Odd/src",
-        "Odd/vendor/glm"
+        "Odd/vendor/glm",
+        "Odd/vendor/entt/include"
     }
 
     links

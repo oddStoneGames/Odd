@@ -19,22 +19,29 @@ namespace Odd
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 
-		Ref<Shader>       m_SquareShader;
-		Ref<VertexArray>  m_SquareVAO;
-		Ref<Texture>		m_SquareTexture;
-		Ref<Texture>		m_Square5Texture;
+		Entity m_SquareEntity;
+
+		Entity m_PrimaryCamera, m_SecondaryCamera;
+		bool m_IsPrimaryCameraPrimary = true;
+
+		glm::vec2 primaryCameraPosition{ 0.0f, 0.0f };
+		float	  primaryCameraRotation = 0.0f;
+		float	  primaryCameraSize = 10.0f;
+
+		glm::vec2 secondaryCameraPosition{ 0.0f, 0.0f };
+		float	  secondaryCameraRotation = 0.0f;
+		float	  secondaryCameraSize = 100.0f;
+
+		Ref<Scene> m_ActiveScene;
+
 		Ref<Texture2D>	m_SpriteSheet;
-		Ref<SubTexture2D>	m_RedPlane, m_YellowPlane, m_GreenPlane;
-		Ref<FrameBuffer>  m_FrameBuffer;
+		Ref<SubTexture2D> m_RedPlane, m_YellowPlane, m_GreenPlane;
+		Ref<FrameBuffer> m_FrameBuffer;
 
-		glm::vec4 m_Square1Color = glm::vec4(0.873f, 1.000f, 0.284f, 1.000f);
-		glm::vec4 m_Square3Color = glm::vec4(0.000f, 0.515f, 0.515f, 1.000f);
-		glm::vec4 m_Square4Color = glm::vec4(0.239f, 0.463f, 0.220f, 0.400f);
-		float m_Square4TilingFactor = 2.0f;
-		float m_Square5TilingFactor = 2.0f;
+		glm::vec2 squarePosition{ 0.0f, -4.41f };
+		float squareRotation = 0.0f;
+		glm::vec2 squareSize{14.0f, 8.0f};
 
-		float m_Square5Depth = -0.1f;
-		float m_Square5Rotation = 45.0f;
 		OrthographicCameraController m_CameraController;
 	};
 }

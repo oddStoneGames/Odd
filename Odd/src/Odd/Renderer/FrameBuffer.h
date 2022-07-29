@@ -22,7 +22,7 @@ namespace Odd
 		virtual void Resize(const uint32_t width, const uint32_t height) = 0;
 
 		virtual uint32_t GetColorAttachmentRendererID() const = 0;
-		virtual const FramebufferSpecification& GetSpedcification() const = 0;
+		virtual const FramebufferSpecification& GetSpecification() const = 0;
 
 		static Ref<FrameBuffer> Create(const FramebufferSpecification& specs);
 	};
