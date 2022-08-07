@@ -1,0 +1,47 @@
+Scene: 3DCube
+Entities:
+  - Entity: 1232343434
+    TagComponent:
+      Tag: Top
+    TransformComponent:
+      Translation: [0, 0.5, 0]
+      Rotation: [1.57079637, 0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.157706857, 0.555736721, 0.627906978, 1]
+  - Entity: 1232343434
+    TagComponent:
+      Tag: Left
+    TransformComponent:
+      Translation: [-0.349999994, 0, 0.349999994]
+      Rotation: [0, -0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.18503651, 0.652797997, 0.737254918, 1]
+  - Entity: 1232343434
+    TagComponent:
+      Tag: Right
+    TransformComponent:
+      Translation: [0.354999989, 0, 0.349999994]
+      Rotation: [0, 0.785398185, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.108266048, 0.381956249, 0.431372553, 1]
+  - Entity: 1232343434
+    TagComponent:
+      Tag: Main Camera
+    TransformComponent:
+      Translation: [0, 1.10000002, 3.5]
+      Rotation: [-0.34906584, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 45.7999992
+        PerspectiveNearClip: 0.00999999978
+        PerspectiveFarClip: 1000
+        OrthographicSize: 10
+        OrthographicNearClip: -1
+        OrthographicFarClip: 1
+      Primary: true
+      FixedAspectRatio: false

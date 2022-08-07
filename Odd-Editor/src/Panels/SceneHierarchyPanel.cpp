@@ -15,6 +15,7 @@ namespace Odd
 	void SceneHierarchyPanel::SetContext(const Ref<Scene>& scene)
 	{
 		m_Context = scene;
+		m_SelectionContext = {};
 	}
 	
 	void SceneHierarchyPanel::OnImGuiRender()
@@ -215,7 +216,7 @@ namespace Odd
 		if (ImGui::BeginPopup("AddComponent"))
 		{
 			if (ImGui::MenuItem("Camera"))
-			{
+			{ 
 				m_SelectionContext.AddComponent<CameraComponent>();
 				ImGui::CloseCurrentPopup();
 			}

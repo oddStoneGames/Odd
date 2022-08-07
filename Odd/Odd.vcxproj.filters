@@ -31,6 +31,9 @@
     <Filter Include="src\Odd\Scene">
       <UniqueIdentifier>{301C6DF3-9CDC-E829-6517-32A7D1962D06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Odd\Utils">
+      <UniqueIdentifier>{73B09AF3-DF70-162A-A8AB-5FA7142B5B06}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
@@ -114,6 +117,9 @@
     <ClInclude Include="src\Odd\Renderer\Buffer.h">
       <Filter>src\Odd\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Odd\Renderer\Camera.h">
+      <Filter>src\Odd\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Odd\Renderer\FrameBuffer.h">
       <Filter>src\Odd\Renderer</Filter>
     </ClInclude>
@@ -150,8 +156,26 @@
     <ClInclude Include="src\Odd\Renderer\VertexArray.h">
       <Filter>src\Odd\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Odd\Scene\Components.h">
+      <Filter>src\Odd\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Scene\Entity.h">
+      <Filter>src\Odd\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\Odd\Scene\Scene.h">
       <Filter>src\Odd\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Scene\SceneCamera.h">
+      <Filter>src\Odd\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Scene\SceneSerializer.h">
+      <Filter>src\Odd\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Scene\ScriptableEntity.h">
+      <Filter>src\Odd\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Odd\Utils\PlatformUtils.h">
+      <Filter>src\Odd\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
@@ -183,11 +207,8 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Odd\Scene\Components.h" />
-    <ClInclude Include="src\Odd\Scene\Entity.h" />
-    <ClInclude Include="src\Odd\Renderer\Camera.h" />
-    <ClInclude Include="src\Odd\Scene\SceneCamera.h" />
-    <ClInclude Include="src\Odd\Scene\ScriptableEntity.h" />
+    <ClInclude Include="src\Odd\Math\Math.h" />
+    <ClInclude Include="src\Odd\Renderer\EditorCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Odd\Core\Application.cpp">
@@ -250,6 +271,12 @@
     <ClCompile Include="src\Odd\Scene\Scene.cpp">
       <Filter>src\Odd\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Odd\Scene\SceneCamera.cpp">
+      <Filter>src\Odd\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Odd\Scene\SceneSerializer.cpp">
+      <Filter>src\Odd\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -274,6 +301,9 @@
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsPlatformUtils.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
@@ -283,6 +313,7 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Odd\Scene\SceneCamera.cpp" />
+    <ClCompile Include="src\Odd\Math\Math.cpp" />
+    <ClCompile Include="src\Odd\Renderer\EditorCamera.cpp" />
   </ItemGroup>
 </Project>

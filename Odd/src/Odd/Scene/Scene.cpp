@@ -29,10 +29,23 @@ namespace Odd
 
     void Scene::DestroyEntity(Entity entity)
     {
+        DEBUG_CORE_WARN("Destroying {0}!", entity.GetComponent<TagComponent>().Tag.c_str());
         m_Registry.destroy(entity);
     }
 
-    void Scene::OnUpdate(Timestep ts)
+    void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
+    {
+        Renderer2D::BeginScene(camera);
+        auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+        for (auto entity : group)
+        {
+            auto [transform, spriteRenderer] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+            Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer, (uint32_t)entity);
+        }
+        Renderer2D::EndScene();
+    }
+
+    void Scene::OnUpdateRuntime(Timestep ts)
     {
         // Update Scripts
         {
@@ -98,6 +111,19 @@ namespace Odd
                 cameraComponent.Camera.SetViewportSize(width, height);
             }
         }
+    }
+
+    Entity Scene::GetPrimaryCameraEntity()
+    {
+        auto view = m_Registry.view<CameraComponent>();
+        for (auto entity : view)
+        {
+            const auto& camera = view.get<CameraComponent>(entity);
+            if (camera.Primary)
+                return Entity(entity, this);
+        }
+
+        return {};
     }
 
     void Scene::OnComponentAdded(Entity entity)

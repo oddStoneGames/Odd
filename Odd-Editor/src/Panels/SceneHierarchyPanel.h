@@ -16,6 +16,8 @@ namespace Odd
 
 		void SetContext(const Ref<Scene>& scene);
 
+		void SetSelectedEntity(Entity entity) { m_SelectionContext = entity; }
+		Entity GetSelectedEntity() const { return m_SelectionContext; }
 		void OnImGuiRender();
 	private:
 		void DrawEntityNode(Entity entity);

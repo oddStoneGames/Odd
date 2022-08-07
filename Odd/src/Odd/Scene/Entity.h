@@ -16,7 +16,7 @@ namespace Odd
 		T& AddComponent(Args&&... args)
 		{
 			if (HasComponent<T>())
-				DEBUG_CORE_ERROR("Entity already has component!");
+				DEBUG_CORE_ERROR("already has {0} component!", typeid(T).name());
 			T& component = m_Scene->m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
 			m_Scene->OnComponentAdded(*this);
 			return component;

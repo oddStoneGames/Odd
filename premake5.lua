@@ -14,6 +14,8 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-x64"
 include "Odd/vendor/GLFW"
 include "Odd/vendor/Glad"
 include "Odd/vendor/ImGui"
+include "Odd/vendor/ImGuizmo"
+include "Odd/vendor/yaml-cpp"
 
 project "Odd"
     location "Odd"
@@ -43,9 +45,11 @@ project "Odd"
         "Odd/vendor/GLFW/include",
         "Odd/vendor/Glad/include",
         "Odd/vendor/ImGui/include",
+        "Odd/vendor/yaml-cpp/include",
         "Odd/vendor/glm",
         "Odd/vendor/stb_image",
-        "Odd/vendor/entt/include"
+        "Odd/vendor/entt/include",
+        "Odd/vendor/ImGuizmo"
     }
 
     links
@@ -53,6 +57,8 @@ project "Odd"
         "GLFW",
         "Glad",
         "ImGui",
+        "ImGuizmo",
+        "yaml-cpp",
         "opengl32.lib"
     }
 
@@ -104,7 +110,8 @@ project "Odd-Editor"
         "Odd/vendor",
         "Odd/src",
         "Odd/vendor/glm",
-        "Odd/vendor/entt/include"
+        "Odd/vendor/entt/include",
+        "Odd/vendor/ImGuizmo"
     }
 
     links

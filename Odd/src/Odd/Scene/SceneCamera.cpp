@@ -17,20 +17,18 @@ namespace Odd
 
 	void SceneCamera::SetPerspective(float fov, float nearClip, float farClip)
 	{
-		m_ProjectionType = ProjectionType::Perspective;
 		m_PerspectiveFOV = fov;
 		m_PerspectiveNear = nearClip;
 		m_PerspectiveFar = farClip;
-		CalculateProjection();
+		if(m_AspectRatio > 0) CalculateProjection();
 	}
 
 	void SceneCamera::SetOrthographic(float size, float nearClip, float farClip)
 	{
-		m_ProjectionType = ProjectionType::Orthographic;
 		m_OrthographicSize = size;
 		m_OrthographicNear = nearClip;
 		m_OrthographicFar = farClip;
-		CalculateProjection();
+		if (m_AspectRatio > 0) CalculateProjection();
 	}
 
 	void SceneCamera::CalculateProjection()

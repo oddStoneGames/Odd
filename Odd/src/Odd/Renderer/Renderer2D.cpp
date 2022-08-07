@@ -2,10 +2,9 @@
 #include "Renderer2D.h"
 #include "VertexArray.h"
 #include "Shader.h"
-#include "glm/gtc/matrix_transform.hpp"
 #include "RenderCommand.h"
 
-#include "glm/gtx/string_cast.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 namespace Odd
 {
@@ -16,6 +15,9 @@ namespace Odd
 		glm::vec2 TexCoord;
 		float TexIndex;
 		float TilingFactor;
+
+		// Editor-only
+		int EntityID = -1;
 	};
 
 	struct Renderer2DData
@@ -64,7 +66,8 @@ namespace Odd
 				{ Odd::ShaderDataType::Float4, "a_Color"},
 				{ Odd::ShaderDataType::Float2, "a_TexCoord"},
 				{ Odd::ShaderDataType::Float, "a_TexIndex"},
-				{ Odd::ShaderDataType::Float, "a_TilingFactor"}
+				{ Odd::ShaderDataType::Float, "a_TilingFactor"},
+				{ Odd::ShaderDataType::Int,   "a_EntityID"}
 			});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
@@ -97,7 +100,7 @@ namespace Odd
 		uint32_t whiteTextureData = 0xffffffff;
 		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
-		int32_t samplers[32];
+		int32_t samplers[s_Data.MaxTextureSlots];
 		for (uint32_t i = 0; i < s_Data.MaxTextureSlots; i++)
 			samplers[i] = i;
 
@@ -125,51 +128,68 @@ namespace Odd
 	void Renderer2D::Shutdown()
 	{
 		ODD_PROFILE_FUNCTION();
+
+		delete[] s_Data.QuadVertexBufferBase;
 	}
 	
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
 		ODD_PROFILE_FUNCTION();
 
-		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-		s_Data.TextureSlotIndex = 1;
-
-		DEBUG_CORE_WARN("View Projection Matrix: {0}", glm::to_string(camera.GetViewProjectionMatrix()));
-
 		s_Data.QuadTextureShader->Bind();
 		s_Data.QuadTextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		StartBatch();
+	}
+
+	void Renderer2D::BeginScene(const EditorCamera& camera)
+	{
+		ODD_PROFILE_FUNCTION();
+
+		glm::mat4 viewProj = camera.GetViewProjection();
+
+		s_Data.QuadTextureShader->Bind();
+		s_Data.QuadTextureShader->SetMat4("u_ViewProjection", viewProj);
+
+		StartBatch();
 	}
 
 	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
 	{
 		ODD_PROFILE_FUNCTION();
 
-		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-		s_Data.TextureSlotIndex = 1;
-
 		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
 
 		s_Data.QuadTextureShader->Bind();
 		s_Data.QuadTextureShader->SetMat4("u_ViewProjection", viewProj);
+
+		StartBatch();
 	}
 	
 	void Renderer2D::EndScene()
 	{
 		ODD_PROFILE_FUNCTION();
 
-		uint32_t dataSize = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase;
-		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
-
 		Flush();
+	}
+
+	void Renderer2D::StartBatch()
+	{
+		s_Data.QuadIndexCount = 0;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextureSlotIndex = 1;
 	}
 
 	void Renderer2D::Flush()
 	{
+		if (s_Data.QuadIndexCount == 0)
+			return; // Nothing to draw
+
 		ODD_PROFILE_FUNCTION();
+
+		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
+		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
 		// Bind Vertex Array.
 		s_Data.QuadVertexArray->Bind();
@@ -177,9 +197,7 @@ namespace Odd
 		s_Data.QuadTextureShader->Bind();
 
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
-		{
 			s_Data.TextureSlots[i]->Bind(i);
-		}
 
 		RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 		s_Data.Stats.DrawCalls++;
@@ -191,14 +209,10 @@ namespace Odd
 
 	}
 
-	void Renderer2D::FlushAndReset()
+	void Renderer2D::NextBatch()
 	{
-		EndScene();
-
-		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-		s_Data.TextureSlotIndex = 1;
+		Flush();
+		StartBatch();
 	}
 
 	#pragma region Draw Quad
@@ -218,10 +232,10 @@ namespace Odd
 		DrawQuad(transform, color);
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4 color)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4 color, int entityID)
 	{
 		if (s_Data.QuadIndexCount >= s_Data.MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		const float textureIndex = 0.0f; // White Texture
 		const float tilingFactor = 1.0f;
@@ -233,6 +247,7 @@ namespace Odd
 			s_Data.QuadVertexBufferPtr->TexCoord = s_Data.QuadTexCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -258,10 +273,10 @@ namespace Odd
 		DrawQuad(transform, texture, tilingFactor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture> texture, const float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture> texture, const float tilingFactor, int entityID)
 	{
 		if (s_Data.QuadIndexCount >= s_Data.MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -288,6 +303,7 @@ namespace Odd
 			s_Data.QuadVertexBufferPtr->TexCoord = s_Data.QuadTexCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -313,10 +329,10 @@ namespace Odd
 		DrawQuad(transform, subtexture, tilingFactor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D> subtexture, const float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<SubTexture2D> subtexture, const float tilingFactor, int entityID)
 	{
 		if (s_Data.QuadIndexCount >= s_Data.MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		const glm::vec2* texCoords = subtexture->GetTexCoords();
 		const Ref<Texture2D> texture = subtexture->GetTexture();
@@ -345,6 +361,7 @@ namespace Odd
 			s_Data.QuadVertexBufferPtr->TexCoord = texCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -370,10 +387,10 @@ namespace Odd
 		DrawQuad(transform, color, texture, tilingFactor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4 color, const Ref<Texture> texture, const float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4 color, const Ref<Texture> texture, const float tilingFactor, int entityID)
 	{
 		if (s_Data.QuadIndexCount >= s_Data.MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		float textureIndex = 0.0f;
 		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
@@ -398,6 +415,7 @@ namespace Odd
 			s_Data.QuadVertexBufferPtr->TexCoord = s_Data.QuadTexCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -423,10 +441,10 @@ namespace Odd
 		DrawQuad(transform, color, subtexture, tilingFactor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4 color, const Ref<SubTexture2D> subtexture, const float tilingFactor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4 color, const Ref<SubTexture2D> subtexture, const float tilingFactor, int entityID)
 	{
 		if (s_Data.QuadIndexCount >= s_Data.MaxIndices)
-			FlushAndReset();
+			NextBatch();
 
 		const glm::vec2* texCoords = subtexture->GetTexCoords();
 		const Ref<Texture2D> texture = subtexture->GetTexture();
@@ -453,6 +471,7 @@ namespace Odd
 			s_Data.QuadVertexBufferPtr->TexCoord = texCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->EntityID = entityID;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -555,6 +574,11 @@ namespace Odd
 		DrawQuad(transform, color, subtexture, tilingFactor);
 	}
 
+	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, uint32_t entityID)
+	{
+		DrawQuad(transform, src.Color, entityID);
+	}
+
 	#pragma endregion
 
 	#pragma endregion
@@ -568,5 +592,4 @@ namespace Odd
 	{
 		memset(&s_Data.Stats, 0, sizeof(Statistics));
 	}
-
 }
