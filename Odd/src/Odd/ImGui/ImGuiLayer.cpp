@@ -111,7 +111,8 @@ namespace Odd {
 
 	void ImGuiLayer::OnImGuiRender()
 	{
-		
+		//bool showWindow = true;
+		//ImGui::ShowDemoWindow(&showWindow);
 	}
 
 	void ImGuiLayer::SetDarkThemeColors()

@@ -2,6 +2,7 @@
 
 #include "Panels/SceneHierarchyPanel.h"
 #include "Odd/Renderer/EditorCamera.h"
+#include "Panels/ContentBrowserPanel.h"
 #include "Odd.h"
 
 namespace Odd
@@ -43,5 +44,6 @@ namespace Odd
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 	};
 }

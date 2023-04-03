@@ -186,6 +186,7 @@ void EditorLayer::OnImGuiRender()
     }
 
     m_SceneHierarchyPanel.OnImGuiRender();
+    m_ContentBrowserPanel.OnImGuiRender();
 
     Renderer2D::Statistics stats = Renderer2D::GetStats();
 

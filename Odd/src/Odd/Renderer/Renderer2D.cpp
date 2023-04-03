@@ -2,6 +2,7 @@
 #include "Renderer2D.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "UniformBuffer.h"
 #include "RenderCommand.h"
 
 #include "glm/gtc/matrix_transform.hpp"
@@ -43,6 +44,13 @@ namespace Odd
 		glm::vec2 QuadTexCoords[4];
 
 		Renderer2D::Statistics Stats;
+
+		struct CameraData
+		{
+			glm::mat4 ViewProjection;
+		};
+		CameraData CameraBuffer;
+		Ref<UniformBuffer> CameraUniformBuffer;
 	};
 
 	static Renderer2DData s_Data;
@@ -121,6 +129,8 @@ namespace Odd
 		s_Data.QuadTexCoords[2] = { 1.0f, 1.0f };
 		s_Data.QuadTexCoords[3] = { 0.0f, 1.0f };
 
+		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
+
 		#pragma endregion
 
 	}
@@ -146,10 +156,8 @@ namespace Odd
 	{
 		ODD_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetViewProjection();
-
-		s_Data.QuadTextureShader->Bind();
-		s_Data.QuadTextureShader->SetMat4("u_ViewProjection", viewProj);
+		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
 		StartBatch();
 	}
@@ -158,10 +166,8 @@ namespace Odd
 	{
 		ODD_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
-
-		s_Data.QuadTextureShader->Bind();
-		s_Data.QuadTextureShader->SetMat4("u_ViewProjection", viewProj);
+		s_Data.CameraBuffer.ViewProjection = camera.GetProjection() * glm::inverse(transform);
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
 		StartBatch();
 	}
