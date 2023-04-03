@@ -64,9 +64,9 @@ Odd.sln
 ## Controls
 
 For moving around the viewport:  
-- Pan: Left Alt + Left Mouse Button
-- Rotate: Left Alt + Middle Mouse Button
-- Move: Left Alt + Right Mouse Button
+- Rotate: Left Alt + Left Mouse Button
+- Move: Left Alt + Middle Mouse Button
+- Pan: Left Alt + Right Mouse Button
 
 For Accessing gizmos on selected entity:
 - Translate: W
@@ -75,7 +75,7 @@ For Accessing gizmos on selected entity:
 
 ## Snapshots
 
-![Snap3 - 7th August, 2022](Snaps/Snap3%20-%207th%20August%2C%202022.png)
+![Snap4 - 3rd April, 2023](Snaps/Snap4%20-%203rd%20April%2C%202023.png)
 
 ## License 
  

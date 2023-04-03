@@ -1,5 +1,5 @@
 workspace "Odd"
-    startproject "Sandbox"
+    startproject "Odd-Editor"
     architecture "x64"
 
     configurations
