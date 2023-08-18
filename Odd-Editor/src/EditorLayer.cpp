@@ -9,103 +9,104 @@
 
 namespace Odd
 {
+    extern const std::filesystem::path g_AssetsPath;
 
-EditorLayer::EditorLayer() : Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f, true)
-{
+    EditorLayer::EditorLayer() : Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f, true)
+    {
 
-}
+    }
 
-void EditorLayer::OnAttach()
-{
-	ODD_PROFILE_FUNCTION();
-	m_SpriteSheet = Texture2D::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/textures/planes.png");
+    void EditorLayer::OnAttach()
+    {
+	    ODD_PROFILE_FUNCTION();
+	    m_SpriteSheet = Texture2D::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/textures/planes.png");
 
-	m_RedPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet,   { 1, 2 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
-	m_YellowPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet,{ 0, 3 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
-	m_GreenPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 3 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
+	    m_RedPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet,   { 1, 2 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
+	    m_YellowPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet,{ 0, 3 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
+	    m_GreenPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 3 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
 
-	m_CameraController.SetZoomLevel(5.0f);
+	    m_CameraController.SetZoomLevel(5.0f);
 
-    FramebufferSpecification spec;
-    spec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
-    spec.Width = 1280.0f;
-    spec.Height = 720.0f;
-    m_FrameBuffer = FrameBuffer::Create(spec);
+        FramebufferSpecification spec;
+        spec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
+        spec.Width = 1280.0f;
+        spec.Height = 720.0f;
+        m_FrameBuffer = FrameBuffer::Create(spec);
 
-    m_ActiveScene = CreateRef<Scene>();
+        m_ActiveScene = CreateRef<Scene>();
 
-    m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+        m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
-    m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     
-    //// Open This Scene as the Default One.
-    //SceneSerializer serializer(m_ActiveScene);
-    //m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-    //serializer.Deserialize("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Scenes/3DCube.odd");
+        //// Open This Scene as the Default One.
+        //SceneSerializer serializer(m_ActiveScene);
+        //m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+        //serializer.Deserialize("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Scenes/3DCube.odd");
 
-}
-
-void EditorLayer::OnDetach()
-{
-	ODD_PROFILE_FUNCTION();
-}
-
-void EditorLayer::OnUpdate(Timestep timestep)
-{
-	// Update
-	ODD_PROFILE_FUNCTION();
-
-    // Resize
-    if (FramebufferSpecification spec = m_FrameBuffer->GetSpecification();
-        m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
-        (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
-    {
-        m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-        m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
-        m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
-        m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
     }
 
-    if (m_ViewportFocused)
-        m_CameraController.OnUpdate(timestep);
+    void EditorLayer::OnDetach()
+    {
+	    ODD_PROFILE_FUNCTION();
+    }
+
+    void EditorLayer::OnUpdate(Timestep timestep)
+    {
+	    // Update
+	    ODD_PROFILE_FUNCTION();
+
+        // Resize
+        if (FramebufferSpecification spec = m_FrameBuffer->GetSpecification();
+            m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
+            (spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
+        {
+            m_FrameBuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+            m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
+            m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
+            m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+        }
+
+        if (m_ViewportFocused)
+            m_CameraController.OnUpdate(timestep);
         
-    m_EditorCamera.OnUpdate(timestep);
+        m_EditorCamera.OnUpdate(timestep);
 
-	// Render
-	Renderer2D::ResetStats();
-    m_FrameBuffer->Bind();
-	RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
-	RenderCommand::Clear();
+	    // Render
+	    Renderer2D::ResetStats();
+        m_FrameBuffer->Bind();
+	    RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+	    RenderCommand::Clear();
 
-    // Clear our entity ID attachment to -1
-    m_FrameBuffer->ClearColorAttachment(1, -1);
+        // Clear our entity ID attachment to -1
+        m_FrameBuffer->ClearColorAttachment(1, -1);
 
-    // Update Scene Editor
-    m_ActiveScene->OnUpdateEditor(timestep, m_EditorCamera);
+        // Update Scene Editor
+        m_ActiveScene->OnUpdateEditor(timestep, m_EditorCamera);
 
-    auto [mx, my] = ImGui::GetMousePos();
-    mx -= m_ViewportBounds[0].x;
-    my -= m_ViewportBounds[0].y;
-    glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
-    my = viewportSize.y - my;
-    int mouseX = (int)mx;
-    int mouseY = (int)my;
+        auto [mx, my] = ImGui::GetMousePos();
+        mx -= m_ViewportBounds[0].x;
+        my -= m_ViewportBounds[0].y;
+        glm::vec2 viewportSize = m_ViewportBounds[1] - m_ViewportBounds[0];
+        my = viewportSize.y - my;
+        int mouseX = (int)mx;
+        int mouseY = (int)my;
 
-    if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
-    {
-        int pixelData = m_FrameBuffer->ReadPixel(1, mouseX, mouseY);
-        m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
+        if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+        {
+            int pixelData = m_FrameBuffer->ReadPixel(1, mouseX, mouseY);
+            m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
+        }
+
+	    //Renderer2D::DrawQuad({ -1.5f, 0.0f, 0.3f }, { 1.0f, 0.829f }, m_RedPlane);
+	    //Renderer2D::DrawQuad({  0.0f, 0.0f, 0.3f }, { 1.0f, 0.829f }, m_YellowPlane);
+	    //Renderer2D::DrawQuad({  1.5f, 0.0f, 0.3f }, { 1.0f, 0.829f }, m_GreenPlane);
+	
+        m_FrameBuffer->Unbind();
     }
 
-	//Renderer2D::DrawQuad({ -1.5f, 0.0f, 0.3f }, { 1.0f, 0.829f }, m_RedPlane);
-	//Renderer2D::DrawQuad({  0.0f, 0.0f, 0.3f }, { 1.0f, 0.829f }, m_YellowPlane);
-	//Renderer2D::DrawQuad({  1.5f, 0.0f, 0.3f }, { 1.0f, 0.829f }, m_GreenPlane);
-	
-    m_FrameBuffer->Unbind();
-}
-
-void EditorLayer::OnImGuiRender()
-{
+    void EditorLayer::OnImGuiRender()
+    {
 	ODD_PROFILE_FUNCTION();
 
     static bool p_open = true;
@@ -225,7 +226,18 @@ void EditorLayer::OnImGuiRender()
     m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
     uint32_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
-    ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+    ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+        {
+            const wchar_t* path = (const wchar_t*)payload->Data;
+            OpenScene(std::filesystem::path(g_AssetsPath) / path);
+        }
+
+        ImGui::EndDragDropTarget();
+    }
 
     // Gizmos
     Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -344,13 +356,18 @@ void EditorLayer::OnImGuiRender()
         std::string filePath = FileDialogs::OpenFile("Odd Scene (*.odd)\0*.odd\0");
         if (!filePath.empty())
         {
-            m_ActiveScene = CreateRef<Scene>();
-            m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-            m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-            SceneSerializer serializer(m_ActiveScene);
-            serializer.Deserialize(filePath);
+            OpenScene(filePath);
         }
+    }
+
+    void EditorLayer::OpenScene(const std::filesystem::path& path)
+    {
+        m_ActiveScene = CreateRef<Scene>();
+        m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+        SceneSerializer serializer(m_ActiveScene);
+        serializer.Deserialize(path.string());
     }
 
     void EditorLayer::SaveSceneAs()

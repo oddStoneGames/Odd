@@ -4,10 +4,10 @@
 namespace Odd
 {
 	// To be changed when we have multiple projects!
-	const std::filesystem::path s_AssetsPath = "D:/OddStoneGames/Odd/Odd-Editor/src/Assets";
+	extern const std::filesystem::path g_AssetsPath = "D:/OddStoneGames/Odd/Odd-Editor/src/Assets";
 
 	ContentBrowserPanel::ContentBrowserPanel() 
-		: m_CurrentDirectory(s_AssetsPath) 
+		: m_CurrentDirectory(g_AssetsPath) 
 	{
 		m_DirectoryIcon = Texture2D::Create("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Icons/DirectoryIcon.png");
 		m_FileIcon = Texture2D::Create("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Icons/FileIcon.png");
@@ -17,7 +17,7 @@ namespace Odd
 	{
 		ImGui::Begin("Content Browser");
 
-		if (m_CurrentDirectory != s_AssetsPath)
+		if (m_CurrentDirectory != g_AssetsPath)
 		{
 			if (ImGui::Button("<-"))
 				m_CurrentDirectory = m_CurrentDirectory.parent_path();
@@ -38,12 +38,21 @@ namespace Odd
 		{
 			const auto& path = directoryEntry.path();
 			
-			auto relativePath = std::filesystem::relative(path, s_AssetsPath);
+			auto relativePath = std::filesystem::relative(path, g_AssetsPath);
 			std::string filenameString = relativePath.filename().string();
+			ImGui::PushID(filenameString.c_str());
 
 			Ref<Texture2D> icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0,0,0,0 });
 			ImGui::ImageButton((ImTextureID)icon->GetRendererID(), { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+
+			if (ImGui::BeginDragDropSource())
+			{
+				const wchar_t* itemPath = relativePath.c_str();
+				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t), ImGuiCond_Once);
+				ImGui::EndDragDropSource();
+			}
+
 			ImGui::PopStyleColor();
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
@@ -54,6 +63,8 @@ namespace Odd
 			ImGui::TextWrapped(filenameString.c_str());
 
 			ImGui::NextColumn();
+
+			ImGui::PopID();
 		}
 
 		ImGui::Columns(1);

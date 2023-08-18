@@ -22,6 +22,7 @@ namespace Odd
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 		void NewScene();
 		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
 		void SaveSceneAs();
 	private:
 		bool m_ViewportFocused = false, m_ViewportHovered = false;
