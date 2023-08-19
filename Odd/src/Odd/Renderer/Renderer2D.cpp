@@ -582,7 +582,10 @@ namespace Odd
 
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, uint32_t entityID)
 	{
-		DrawQuad(transform, src.Color, entityID);
+		if (src.Texture)
+			DrawQuad(transform, src.Color, src.Texture, src.TilingFactor, entityID);
+		else
+			DrawQuad(transform, src.Color, entityID);
 	}
 
 	#pragma endregion

@@ -1,12 +1,17 @@
 #include "SceneHierarchyPanel.h"
+#include "Odd/Renderer/Texture.h"
 
 #include <ImGui/include/imgui.h>
 #include <ImGui/include/imgui_internal.h>
 
 #include "glm/gtc/type_ptr.hpp"
 
+#include <filesystem>
+
 namespace Odd
 {
+	extern const std::filesystem::path g_AssetsPath;
+
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& scene)
 	{
 		SetContext(scene);
@@ -304,6 +309,19 @@ namespace Odd
 
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 		{
+			ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path texturePath = std::filesystem::path(g_AssetsPath) / path;
+					component.Texture = Texture2D::Create(texturePath.string());
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 1000.0f);
 			ImGui::ColorEdit4("Color", &component.Color[0]);
 		});
 
