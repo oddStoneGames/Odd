@@ -1,0 +1,3 @@
+[submodule "Odd/vendor/Box2D"]
+	path = Odd/vendor/Box2D
+	url = https://github.com/oddStoneGames/box2d.git

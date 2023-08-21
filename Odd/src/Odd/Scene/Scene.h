@@ -4,6 +4,8 @@
 #include "Odd/Renderer/EditorCamera.h"
 #include "Odd/Core/Timestep.h"
 
+class b2World;
+
 namespace Odd
 {
 	class Entity;
@@ -17,6 +19,9 @@ namespace Odd
 		Entity CreateEntity(const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
 
+		void OnRuntimeStart();
+		void OnRuntimeStop();
+
 		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 		void OnUpdateRuntime(Timestep ts);		
 		void OnViewportResize(uint32_t width, uint32_t height);
@@ -28,6 +33,8 @@ namespace Odd
 	private:
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
+
+		b2World* m_Physics2DWorld = nullptr;
 
 		friend class Entity;
 		friend class SceneSerializer;

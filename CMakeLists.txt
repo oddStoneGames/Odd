@@ -8,40 +8,45 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # ODD ENGINE
 project(Odd)
 
-# OPENGL
-set(OpenGL_GL_PREFERENCE GLVND)
-find_package(OpenGL REQUIRED)
-list(APPEND INCLUDES ${OPENGL_INCLUDE_DIR})
-list(APPEND LIBS ${OPENGL_LIBRARIES})
+# BOX 2D
+add_subdirectory(Odd/vendor/Box2D)
+list(APPEND INCLUDES Odd/vendor/Box2D/include)
+list(APPEND LIBS box2d)
 
-# GLFW
-add_subdirectory(Odd/vendor/GLFW)
-list(APPEND LIBS glfw)
+# ENTT
+list(APPEND INCLUDES Odd/vendor/entt/include)
 
 # GLAD
 add_subdirectory(Odd/vendor/Glad)
 list(APPEND LIBS glad)
 
-# IMGUI
-add_subdirectory(Odd/vendor/ImGui)
-list(APPEND LIBS imgui)
+# GLFW
+add_subdirectory(Odd/vendor/GLFW)
+list(APPEND LIBS glfw)
 
 # GLM
 list(APPEND INCLUDES Odd/vendor/glm)
 
-# STB_IMAGE
-list(APPEND INCLUDES Odd/vendor/stb_image)
+# IMGUI
+add_subdirectory(Odd/vendor/ImGui)
+list(APPEND LIBS imgui)
 
 # IMGUIZMO
 add_subdirectory(Odd/vendor/ImGuizmo)
 list(APPEND INCLUDES Odd/vendor/ImGuizmo)
 list(APPEND LIBS imguizmo)
 
+# OPENGL
+set(OpenGL_GL_PREFERENCE GLVND)
+find_package(OpenGL REQUIRED)
+list(APPEND INCLUDES ${OPENGL_INCLUDE_DIR})
+list(APPEND LIBS ${OPENGL_LIBRARIES})
+
 # SPDLOG
 list(APPEND INCLUDES Odd/vendor)
 
-# ENTT
-list(APPEND INCLUDES Odd/vendor/entt/include)
+# STB_IMAGE
+list(APPEND INCLUDES Odd/vendor/stb_image)
 
 # YAML-CPP
 add_subdirectory(Odd/vendor/yaml-cpp)
