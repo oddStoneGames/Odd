@@ -40,8 +40,6 @@ namespace Odd
         m_ActiveScene = CreateRef<Scene>();
 
         m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
-
-        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     
         //// Open This Scene as the Default One.
         //SceneSerializer serializer(m_ActiveScene);
@@ -367,7 +365,20 @@ namespace Odd
             // File Shortcuts
             case Key::N: if (control) NewScene(); break;
             case Key::O: if (control) OpenScene(); break;
-            case Key::S: if (control && shift) SaveSceneAs(); break;
+            case Key::S: 
+            {
+                if (control) 
+                {
+                    if (shift)
+                        SaveSceneAs();
+                    else
+                        SaveScene();
+                }
+                break;
+            }
+
+            // Scene Commands
+            case Key::D: if (control) OnDuplicateEntity(); break;
 
             // Gizmos
             case Key::Q: m_GizmoType = -1; break;
@@ -394,6 +405,8 @@ namespace Odd
         m_ActiveScene = CreateRef<Scene>();
         m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
         m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+        m_EditorScenePath = std::filesystem::path();
     }
 
     void EditorLayer::OpenScene()
@@ -425,7 +438,18 @@ namespace Odd
             m_SceneHierarchyPanel.SetContext(m_EditorScene);
 
             m_ActiveScene = m_EditorScene;
+            m_EditorScenePath = path;
         }
+    }
+
+    void EditorLayer::SaveScene()
+    {
+        if (m_SceneState != SceneState::Edit) return;
+
+        if (!m_EditorScenePath.empty())
+            SerializeScene(m_ActiveScene, m_EditorScenePath);
+        else
+            SaveSceneAs();
     }
 
     void EditorLayer::SaveSceneAs()
@@ -433,9 +457,16 @@ namespace Odd
         std::string filePath = FileDialogs::SaveFile("Odd Scene(*.odd)\0*.odd\0");
         if (!filePath.empty())
         {
-            SceneSerializer serializer(m_ActiveScene);
-            serializer.Serialize(filePath);
+            SerializeScene(m_ActiveScene, filePath);
+
+            m_EditorScenePath = filePath;
         }
+    }
+
+    void EditorLayer::SerializeScene(Ref<Scene> scene, const std::filesystem::path& path)
+    {
+        SceneSerializer serializer(scene);
+        serializer.Serialize(path.string());
     }
 
     void EditorLayer::OnScenePlay()
@@ -444,6 +475,8 @@ namespace Odd
 
         m_ActiveScene = Scene::Copy(m_EditorScene);
         m_ActiveScene->OnRuntimeStart();
+
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
 
     void EditorLayer::OnSceneStop()
@@ -452,6 +485,19 @@ namespace Odd
 
         m_ActiveScene->OnRuntimeStop();
         m_ActiveScene = m_EditorScene;
+
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+    }
+
+    void EditorLayer::OnDuplicateEntity()
+    {
+        if (m_SceneState != SceneState::Edit) return;
+
+        Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+        if (selectedEntity)
+        {
+            m_EditorScene->DuplicateEntity(selectedEntity);
+        }
     }
 
 }

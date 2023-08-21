@@ -49,6 +49,13 @@ namespace Odd
         }
     }
 
+    template<typename Component>
+    static void CopyComponentIfExists(Entity dst, Entity src)
+    {
+        if (src.HasComponent<Component>())
+            dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
+    }
+
     Ref<Scene> Scene::Copy(Ref<Scene> other)
     {
         Ref<Scene> newScene = CreateRef<Scene>();
@@ -251,6 +258,19 @@ namespace Odd
                 cameraComponent.Camera.SetViewportSize(width, height);
             }
         }
+    }
+
+    void Scene::DuplicateEntity(Entity entity)
+    {
+        Entity newEntity = CreateEntity(entity.GetName());
+
+        // Copy Components (Except IDComponent & TagComponent)
+        CopyComponentIfExists<TransformComponent>(newEntity, entity);
+        CopyComponentIfExists<SpriteRendererComponent>(newEntity, entity);
+        CopyComponentIfExists<CameraComponent>(newEntity, entity);
+        CopyComponentIfExists<NativeScriptComponent>(newEntity, entity);
+        CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
+        CopyComponentIfExists<BoxCollider2DComponent>(newEntity, entity);
     }
 
     Entity Scene::GetPrimaryCameraEntity()

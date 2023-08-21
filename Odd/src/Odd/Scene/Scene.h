@@ -31,6 +31,8 @@ namespace Odd
 		void OnUpdateRuntime(Timestep ts);		
 		void OnViewportResize(uint32_t width, uint32_t height);
 
+		void DuplicateEntity(Entity entity);
+
 		Entity GetPrimaryCameraEntity();
 
 	private:
