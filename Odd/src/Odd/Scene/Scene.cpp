@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Entity.h"
 #include "Components.h"
+#include "ScriptableEntity.h"
 #include "Odd/Renderer/Renderer2D.h"
 
 #include "box2d/b2_world.h"
@@ -23,6 +24,7 @@ namespace Odd
         DEBUG_CORE_ERROR("Unknown body type.");
         return b2_staticBody;
     }
+
     Scene::Scene()
     {
         
@@ -35,8 +37,14 @@ namespace Odd
 
     Entity Scene::CreateEntity(const std::string& name)
     {
+        return CreateEntityWithUUID(UUID(), name);
+    }
+
+    Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
+    {
         Entity entity = { m_Registry.create(), this };
 
+        entity.AddComponent<IDComponent>(uuid);
         auto& tag = entity.AddComponent<TagComponent>(name);
         tag.Tag = name.empty() ? "Entity" : name;
 

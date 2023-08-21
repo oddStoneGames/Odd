@@ -65,6 +65,7 @@ endif()
 # SET SOURCE FILES
 set(SOURCE_FILES Odd/src/Odd/Core/Application.cpp Odd/src/Odd/Core/Application.h Odd/src/Odd/Core/Core.h Odd/src/Odd/Core/EntryPoint.h Odd/src/Odd/Core/Layer.cpp Odd/src/Odd/Core/Layer.h
                  Odd/src/Odd/Core/LayerStack.cpp Odd/src/Odd/Core/LayerStack.h Odd/src/Odd/Core/Log.cpp Odd/src/Odd/Core/Log.h Odd/src/Odd/Core/Timestep.h Odd/src/Odd/Core/Window.h
+                 Odd/src/Odd/Core/UUID.h Odd/src/Odd/Core/UUID.cpp
                  Odd/src/Odd/Debug/Instrumentor.h
                  Odd/src/Odd/Events/ApplicationEvent.h Odd/src/Odd/Events/Event.h Odd/src/Odd/Events/KeyEvent.h Odd/src/Odd/Events/MouseEvent.h
                  Odd/src/Odd/ImGui/Windows/imgui_impl_glfw.cpp Odd/src/Odd/ImGui/Windows/imgui_impl_glfw.h Odd/src/Odd/ImGui/Windows/imgui_impl_opengl3.cpp Odd/src/Odd/ImGui/Windows/imgui_impl_opengl3.h

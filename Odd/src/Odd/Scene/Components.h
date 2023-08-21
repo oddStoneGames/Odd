@@ -2,7 +2,8 @@
 
 #include "Odd/Scene/SceneCamera.h"
 #include "Odd/Renderer/Texture.h"
-#include "ScriptableEntity.h"
+#include "Odd/Core/UUID.h"
+
 #include "glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -10,9 +11,18 @@
 
 namespace Odd
 {
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent& other) = default;
+	};
+
 	struct TagComponent
 	{
 		std::string Tag;
+
 		TagComponent() = default;
 		TagComponent(const TagComponent& other) : Tag(other.Tag) {}
 		TagComponent(const std::string& tag) : Tag(tag) {}
@@ -57,6 +67,8 @@ namespace Odd
 		CameraComponent(const CameraComponent& other) = default;
 	};
 
+	// Forward Declaration
+	class ScriptableEntity;
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;

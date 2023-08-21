@@ -1,8 +1,10 @@
 #pragma once
 
-#include "entt.hpp"
+#include "Odd/Core/UUID.h"
 #include "Odd/Renderer/EditorCamera.h"
 #include "Odd/Core/Timestep.h"
+
+#include "entt.hpp"
 
 class b2World;
 
@@ -17,6 +19,7 @@ namespace Odd
 		~Scene();
 
 		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
 
 		void OnRuntimeStart();

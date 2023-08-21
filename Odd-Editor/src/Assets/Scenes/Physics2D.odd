@@ -1,6 +1,6 @@
 Scene: Physics2D
 Entities:
-  - Entity: 1232343434
+  - Entity: 1648983602803035920
     TagComponent:
       Tag: Static Box
     TransformComponent:
@@ -19,7 +19,7 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 1232343434
+  - Entity: 5535337884686132380
     TagComponent:
       Tag: Dynamic Box
     TransformComponent:
@@ -38,7 +38,7 @@ Entities:
       Friction: 0.5
       Restitution: 0.469999999
       RestitutionThreshold: 0.5
-  - Entity: 1232343434
+  - Entity: 16253112553985697886
     TagComponent:
       Tag: Main Camera
     TransformComponent:

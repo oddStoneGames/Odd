@@ -137,8 +137,14 @@ namespace Odd
 
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
+		if (!entity.HasComponent<IDComponent>())
+		{
+			DEBUG_CORE_ERROR("Entity does not have an UUID.");
+			return;
+		}
+
 		out << YAML::BeginMap;	// Entity
-		out << YAML::Key << "Entity" << YAML::Value << "1232343434"; // TODO: Entity ID
+		out << YAML::Key << "Entity" << YAML::Value << entity.GetUUID();
 
 		if (entity.HasComponent<TagComponent>())
 		{
@@ -276,14 +282,14 @@ namespace Odd
 		{
 			for (auto entity : entities)
 			{
-				uint64_t uuid = entity["Entity"].as<uint64_t>();	// TODO
+				uint64_t uuid = entity["Entity"].as<uint64_t>();
 
 				std::string name;
 				auto tagComponent = entity["TagComponent"];
 				if (tagComponent)
 					name = tagComponent["Tag"].as<std::string>();
 
-				Entity deserializedEntity = m_Scene->CreateEntity(name);
+				Entity deserializedEntity = m_Scene->CreateEntityWithUUID(uuid, name);
 
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)
