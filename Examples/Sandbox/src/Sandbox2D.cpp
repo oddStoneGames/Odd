@@ -10,9 +10,9 @@ Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f
 void Sandbox2D::OnAttach()
 {
 	ODD_PROFILE_FUNCTION();
-	m_SquareTexture = Odd::Texture2D::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/textures/Logo.jpg");
-	m_Square5Texture = Odd::Texture2D::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/textures/Background.png");
-	m_SpriteSheet = Odd::Texture2D::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/textures/planes.png");
+	m_SquareTexture = Odd::Texture2D::Create(PROJECT_DIR"src/textures/Logo.jpg");
+	m_Square5Texture = Odd::Texture2D::Create(PROJECT_DIR"src/textures/Background.png");
+	m_SpriteSheet = Odd::Texture2D::Create(PROJECT_DIR"src/textures/planes.png");
 
 	m_RedPlane = Odd::SubTexture2D::CreateFromCoords(m_SpriteSheet,   { 1, 2 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
 	m_YellowPlane = Odd::SubTexture2D::CreateFromCoords(m_SpriteSheet,{ 0, 3 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });

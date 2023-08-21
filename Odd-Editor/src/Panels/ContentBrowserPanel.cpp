@@ -4,13 +4,13 @@
 namespace Odd
 {
 	// To be changed when we have multiple projects!
-	extern const std::filesystem::path g_AssetsPath = "D:/OddStoneGames/Odd/Odd-Editor/src/Assets";
+	extern const std::filesystem::path g_AssetsPath = PROJECT_DIR"src/Assets";
 
 	ContentBrowserPanel::ContentBrowserPanel() 
 		: m_CurrentDirectory(g_AssetsPath) 
 	{
-		m_DirectoryIcon = Texture2D::Create("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Icons/DirectoryIcon.png");
-		m_FileIcon = Texture2D::Create("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Icons/FileIcon.png");
+		m_DirectoryIcon = Texture2D::Create(PROJECT_DIR"src/Assets/Icons/DirectoryIcon.png");
+		m_FileIcon = Texture2D::Create(PROJECT_DIR"src/Assets/Icons/FileIcon.png");
 	}
 
 	void ContentBrowserPanel::OnImGuiRender()

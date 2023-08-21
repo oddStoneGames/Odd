@@ -20,10 +20,10 @@ namespace Odd
     {
 	    ODD_PROFILE_FUNCTION();
 
-        m_IconPlay = Texture2D::Create("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Icons/PlayButton.png");
-        m_IconStop = Texture2D::Create("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Icons/StopButton.png");
+        m_IconPlay = Texture2D::Create(PROJECT_DIR"src/Assets/Icons/PlayButton.png");
+        m_IconStop = Texture2D::Create(PROJECT_DIR"src/Assets/Icons/StopButton.png");
 
-	    m_SpriteSheet = Texture2D::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/textures/planes.png");
+	    m_SpriteSheet = Texture2D::Create(PROJECT_DIR"../Examples/Sandbox/src/textures/planes.png");
 
 	    m_RedPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet,   { 1, 2 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
 	    m_YellowPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet,{ 0, 3 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
@@ -46,7 +46,7 @@ namespace Odd
         //// Open This Scene as the Default One.
         //SceneSerializer serializer(m_ActiveScene);
         //m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-        //serializer.Deserialize("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Scenes/3DCube.odd");
+        //serializer.Deserialize(PROJECT_DIR"src/Assets/Scenes/3DCube.odd");
 
     }
 

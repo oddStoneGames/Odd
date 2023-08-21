@@ -114,12 +114,12 @@ private:
 
 		#pragma region Shader Initialization
 
-		m_TriangleShader = Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultTriangle.glsl");
+		m_TriangleShader = Odd::Shader::Create(PROJECT_DIR"src/Shaders/DefaultTriangle.glsl");
 
 		m_TriangleShader->Bind();
 		m_TriangleShader->SetInt("baseColorTexture", 0);
 
-		m_Texture = Odd::Texture2D::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/textures/Logo.png");
+		m_Texture = Odd::Texture2D::Create(PROJECT_DIR"src/textures/Logo.png");
 
 		#pragma endregion
 
@@ -177,7 +177,7 @@ private:
 
 		#pragma region Shader Initialization
 
-		m_SquareShader = Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/DefaultSquare.glsl");
+		m_SquareShader = Odd::Shader::Create(PROJECT_DIR"src/Shaders/DefaultSquare.glsl");
 
 		m_SquareShader->Bind();
 		m_SquareShader->SetInt("baseColorTexture", 0);
