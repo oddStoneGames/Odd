@@ -36,6 +36,8 @@ namespace Odd {
 		io.Fonts->AddFontFromFileTTF("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Fonts/Ubuntu/Ubuntu-Bold.ttf", 14.0f);
 		io.FontDefault = io.Fonts->AddFontFromFileTTF("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Fonts/Ubuntu/Ubuntu-Regular.ttf", 14.0f);
 
+		io.IniFilename = PROJECT_DIR"../imgui_template.ini";
+
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
 		//ImGui::StyleColorsClassic();

@@ -7,7 +7,7 @@
 
 namespace Odd {
 
-	class ODD_API LayerStack
+	class LayerStack
 	{
 	public:
 		LayerStack();

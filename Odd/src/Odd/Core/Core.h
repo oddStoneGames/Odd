@@ -2,20 +2,6 @@
 
 #include <memory>
 
-#ifdef ODD_PLATFORM_WINDOWS
-#if ODD_DYNAMIC_LINK
-	#ifdef ODD_BUILD_DLL
-		#define ODD_API _declspec(dllexport)
-	#else 
-		#define ODD_API _declspec(dllimport)
-	#endif // OD_BUILD_DLL
-#else
-	#define ODD_API
-#endif
-#else 
-	#error Odd Engine Only Supports Windows
-#endif
-
 #define LEFTSHIFTBIT(x) (1 << x)
 
 #define BIND_EVENT_FUNC(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }

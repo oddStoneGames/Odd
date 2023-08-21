@@ -22,7 +22,7 @@ namespace Odd
 	};
 
 	// Interface representing a desktop system based Window
-	class ODD_API Window
+	class Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event& e)>;

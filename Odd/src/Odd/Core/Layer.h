@@ -7,7 +7,7 @@
 
 namespace Odd {
 
-	class ODD_API Layer
+	class Layer
 	{
 	public:
 		Layer(const std::string& name = "Layer");

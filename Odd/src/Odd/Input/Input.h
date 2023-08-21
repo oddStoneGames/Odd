@@ -3,7 +3,7 @@
 #include "Odd/Core/Core.h"
 
 namespace Odd {
-	class ODD_API Input
+	class Input
 	{
 	public:
 		static bool IsKeyPressed(int keycode);

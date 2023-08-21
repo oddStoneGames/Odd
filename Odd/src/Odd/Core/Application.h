@@ -10,7 +10,7 @@
 
 namespace Odd
 {
-	class ODD_API Application
+	class Application
 	{
 		public:
 			Application(const std::string& name = "Odd App");

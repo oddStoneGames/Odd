@@ -7,7 +7,7 @@
 
 namespace Odd
 {
-	class ODD_API Log
+	class Log
 	{
 		public:
 			static void Init();
