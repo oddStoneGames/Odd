@@ -33,7 +33,7 @@ namespace Odd
 
 		const float GetAspectRatio() const { return m_AspectRatio; }
 
-		void SetProjectionType(ProjectionType type) { m_ProjectionType = type; CalculateProjection(); }
+		void SetProjectionType(ProjectionType type) { m_ProjectionType = type; }
 		const ProjectionType GetProjectionType() const { return m_ProjectionType; }
 	private:
 		void CalculateProjection();

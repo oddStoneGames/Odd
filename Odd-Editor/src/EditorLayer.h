@@ -38,7 +38,9 @@ namespace Odd
 		int m_GizmoType = -1;
 
 		EditorCamera m_EditorCamera;
+
 		Ref<Scene> m_ActiveScene;
+		Ref<Scene> m_EditorScene;
 
 		Entity m_HoveredEntity;
 

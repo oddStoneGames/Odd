@@ -12,7 +12,7 @@ namespace Odd
 	void SceneCamera::SetViewportSize(uint32_t width, uint32_t height)
 	{
 		m_AspectRatio = (float) width / (float) height;
-		CalculateProjection();
+		if (m_AspectRatio > 0) CalculateProjection();
 	}
 
 	void SceneCamera::SetPerspective(float fov, float nearClip, float farClip)
