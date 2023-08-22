@@ -178,6 +178,11 @@ namespace Odd
 			if(src.Texture && std::filesystem::exists(src.Texture->GetPath()))
 			{
 				out << YAML::Key << "TexturePath" << YAML::Value << src.Texture->GetPath();
+
+				// Save Subtexture parameters to create subtextures on deserialization.
+				out << YAML::Key << "SubtextureCoords" << YAML::Value << src.SubtextureCoords;
+				out << YAML::Key << "SubtextureCellSize" << YAML::Value << src.SubtextureCellSize;
+				out << YAML::Key << "SubtextureSpriteSize" << YAML::Value << src.SubtextureSpriteSize;
 			}
 			out << YAML::Key << "Color" << YAML::Value << src.Color;
 			out << YAML::Key << "TilingFactor" << YAML::Value << src.TilingFactor;
@@ -333,7 +338,26 @@ namespace Odd
 					auto& src = deserializedEntity.AddComponent<SpriteRendererComponent>();
 					
 					if (spriteRendererComponent["TexturePath"])
+					{
 						src.Texture = Texture2D::Create(spriteRendererComponent["TexturePath"].as<std::string>());
+
+						// Read Subtexture data.
+						auto& subtextureCoords = spriteRendererComponent["SubtextureCoords"].as<glm::vec2>();
+						auto& subtextureCellSize = spriteRendererComponent["SubtextureCellSize"].as<glm::vec2>();
+						auto& subtextureSpriteSize = spriteRendererComponent["SubtextureSpriteSize"].as<glm::vec2>();
+
+						if (subtextureCellSize.x > 0.0f && subtextureCellSize.y > 0.0f &&
+							subtextureSpriteSize.x > 0.0f && subtextureSpriteSize.y > 0.0f)
+						{
+							// Create Subtexture only if the values are valid.
+							src.SubtextureCoords = subtextureCoords;
+							src.SubtextureCellSize = subtextureCellSize;
+							src.SubtextureSpriteSize = subtextureSpriteSize;
+
+							src.Subtexture = SubTexture2D::CreateFromCoords(src.Texture, src.SubtextureCoords, src.SubtextureCellSize, src.SubtextureSpriteSize);
+						}
+					}
+						
 					src.Color = spriteRendererComponent["Color"].as<glm::vec4>();
 					src.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();
 				}

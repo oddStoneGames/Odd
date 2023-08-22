@@ -388,7 +388,6 @@ Entities:
       Rotation: [0, 0, 0.17453292]
       Scale: [0.999958754, 0.999958754, 1]
     SpriteRendererComponent:
-      TexturePath: D:/OddStoneGames/Odd/Odd-Editor/src/Assets\Icons\FileIcon.png
       Color: [0.0713899508, 0.382708371, 0.465116262, 1]
       TilingFactor: 1
     Rigidbody2DComponent:

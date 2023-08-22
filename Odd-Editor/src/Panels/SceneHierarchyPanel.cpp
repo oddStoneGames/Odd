@@ -1,5 +1,6 @@
 #include "SceneHierarchyPanel.h"
 #include "Odd/Renderer/Texture.h"
+#include "Odd/Renderer/SubTexture2D.h"
 
 #include <ImGui/include/imgui.h>
 #include <ImGui/include/imgui_internal.h>
@@ -307,7 +308,12 @@ namespace Odd
 
 		DrawComponent<SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 		{
-			ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
+			ImGui::Text("Texture");
+			ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f - 30.0f);
+			auto textureID = component.Texture ? component.Texture->GetRendererID() : 0;
+			ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2(60.0f, 60.0f), ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 			if (ImGui::BeginDragDropTarget())
 			{
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
@@ -319,6 +325,20 @@ namespace Odd
 				}
 
 				ImGui::EndDragDropTarget();
+			}
+			if (component.Texture)
+			{
+				// Only show subtexture data when there is an existing texture.
+				ImGui::DragFloat2("Subtexture Coordinates", &component.SubtextureCoords[0], 0.01f, 0.0f);
+				ImGui::DragFloat2("Subtexture Cell Size", &component.SubtextureCellSize[0], 0.01f, 0.0f);
+				ImGui::DragFloat2("Subtexture Sprite Size", &component.SubtextureSpriteSize[0], 0.01f, 0.0f);
+
+				if (component.SubtextureCellSize.x > 0.0f && component.SubtextureCellSize.y > 0.0f &&
+					component.SubtextureSpriteSize.x > 0.0f && component.SubtextureSpriteSize.y > 0.0f)
+				{
+					// Create Subtexture only if the values are valid.
+					component.Subtexture = SubTexture2D::CreateFromCoords(component.Texture, component.SubtextureCoords, component.SubtextureCellSize, component.SubtextureSpriteSize);
+				}
 			}
 			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 1000.0f);
 			ImGui::ColorEdit4("Color", &component.Color[0]);

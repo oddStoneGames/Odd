@@ -2,6 +2,7 @@
 
 #include "Odd/Scene/SceneCamera.h"
 #include "Odd/Renderer/Texture.h"
+#include "Odd/Renderer/Subtexture2D.h"
 #include "Odd/Core/UUID.h"
 
 #include "glm.hpp"
@@ -51,6 +52,13 @@ namespace Odd
 	{
 		glm::vec4 Color{ 1.0f };
 		Ref<Texture2D> Texture;
+		
+		// SubTexture Data
+		Ref<SubTexture2D> Subtexture;
+		glm::vec2 SubtextureCoords = {0.0f, 0.0f};
+		glm::vec2 SubtextureCellSize = { 0.0f, 0.0f };
+		glm::vec2 SubtextureSpriteSize = { 1.0f, 1.0f };
+
 		float TilingFactor = 1.0f;
 
 		SpriteRendererComponent() = default;
@@ -73,7 +81,7 @@ namespace Odd
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
-		std::filesystem::path Path = std::filesystem::path();
+		std::string Path = {};
 
 		ScriptableEntity* (*InstantiateScript)();
 		void (*DestroyScript)(NativeScriptComponent*);

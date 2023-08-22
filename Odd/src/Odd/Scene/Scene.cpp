@@ -94,6 +94,15 @@ namespace Odd
                 // Get Destination Texture Path
                 auto& dstComponent = dstSceneRegistry.get<SpriteRendererComponent>(dstEnttID);
                 dstComponent.Texture = Texture2D::Create(component.Texture->GetPath());
+
+                if (component.Subtexture)
+                {
+                    // Copy & Create Subtexture.
+                    dstComponent.SubtextureCoords = component.SubtextureCoords;
+                    dstComponent.SubtextureCellSize = component.SubtextureCellSize;
+                    dstComponent.SubtextureSpriteSize = component.SubtextureSpriteSize;
+                    dstComponent.Subtexture = SubTexture2D::CreateFromCoords(dstComponent.Texture, dstComponent.SubtextureCoords, dstComponent.SubtextureCellSize, dstComponent.SubtextureSpriteSize);
+                }
             }
         }
 
@@ -302,6 +311,15 @@ namespace Odd
             {
                 auto& dstComponent = newEntity.GetComponent<SpriteRendererComponent>();
                 dstComponent.Texture = Texture2D::Create(srcComponent.Texture->GetPath());
+
+                if (srcComponent.Subtexture)
+                {
+                    // Copy & Create Subtexture.
+                    dstComponent.SubtextureCoords = srcComponent.SubtextureCoords;
+                    dstComponent.SubtextureCellSize = srcComponent.SubtextureCellSize;
+                    dstComponent.SubtextureSpriteSize = srcComponent.SubtextureSpriteSize;
+                    dstComponent.Subtexture = SubTexture2D::CreateFromCoords(dstComponent.Texture, dstComponent.SubtextureCoords, dstComponent.SubtextureCellSize, dstComponent.SubtextureSpriteSize);
+                }
             }
         }
 

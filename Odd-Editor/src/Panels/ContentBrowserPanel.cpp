@@ -4,7 +4,7 @@
 namespace Odd
 {
 	// To be changed when we have multiple projects!
-	extern const std::filesystem::path g_AssetsPath = PROJECT_DIR"src/Assets";
+	extern const std::filesystem::path g_AssetsPath = PROJECT_DIR"SandboxProject";
 
 	ContentBrowserPanel::ContentBrowserPanel() 
 		: m_CurrentDirectory(g_AssetsPath) 

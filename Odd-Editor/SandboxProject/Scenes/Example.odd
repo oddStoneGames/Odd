@@ -47,6 +47,9 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       TexturePath: D:/OddStoneGames/Odd/Odd-Editor/src/Assets\Icons\FileIcon.png
+      SubtextureCoords: [0, 0]
+      SubtextureCellSize: [0, 0]
+      SubtextureSpriteSize: [1, 1]
       Color: [1, 0, 0, 0.588]
       TilingFactor: 1
   - Entity: 17195554958431287932

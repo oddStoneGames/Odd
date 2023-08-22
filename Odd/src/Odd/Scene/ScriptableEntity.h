@@ -16,7 +16,6 @@ namespace Odd
 	protected:
 		virtual void OnCreate() {}
 		virtual void OnDestroy() {}
-		virtual void OnEditor() {}
 		virtual void OnUpdate(Timestep ts) {}
 	private:
 		Entity m_Entity;

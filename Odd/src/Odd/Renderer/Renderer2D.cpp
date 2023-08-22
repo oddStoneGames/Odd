@@ -111,8 +111,8 @@ namespace Odd
 		int32_t samplers[s_Data.MaxTextureSlots];
 		for (uint32_t i = 0; i < s_Data.MaxTextureSlots; i++)
 			samplers[i] = i;
-
-		s_Data.QuadTextureShader = Odd::Shader::Create("D:/OddStoneGames/Odd/Examples/Sandbox/src/Shaders/TextureQuad.glsl");
+		
+		s_Data.QuadTextureShader = Odd::Shader::Create(PROJECT_DIR"src/Shaders/TextureQuad.glsl");
 		s_Data.QuadTextureShader->Bind();
 		s_Data.QuadTextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
 
@@ -583,9 +583,16 @@ namespace Odd
 	void Renderer2D::DrawSprite(const glm::mat4& transform, SpriteRendererComponent& src, uint32_t entityID)
 	{
 		if (src.Texture)
-			DrawQuad(transform, src.Color, src.Texture, src.TilingFactor, entityID);
+		{
+			if (src.Subtexture)	 // Draw Subtexture
+				DrawQuad(transform, src.Color, src.Subtexture, src.TilingFactor, entityID);
+			else
+				DrawQuad(transform, src.Color, src.Texture, src.TilingFactor, entityID);
+		}
 		else
+		{
 			DrawQuad(transform, src.Color, entityID);
+		}
 	}
 
 	#pragma endregion
