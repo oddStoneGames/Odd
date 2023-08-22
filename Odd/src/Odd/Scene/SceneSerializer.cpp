@@ -174,8 +174,14 @@ namespace Odd
 			out << YAML::BeginMap;	//SpriteRendererComponent
 
 			auto& src = entity.GetComponent<SpriteRendererComponent>();
+		
+			if(src.Texture && std::filesystem::exists(src.Texture->GetPath()))
+			{
+				out << YAML::Key << "TexturePath" << YAML::Value << src.Texture->GetPath();
+			}
 			out << YAML::Key << "Color" << YAML::Value << src.Color;
-			out << YAML::EndMap;
+			out << YAML::Key << "TilingFactor" << YAML::Value << src.TilingFactor;
+			out << YAML::EndMap;	//SpriteRendererComponent
 		}
 
 		if (entity.HasComponent<Rigidbody2DComponent>())
@@ -325,8 +331,11 @@ namespace Odd
 				if (spriteRendererComponent)
 				{
 					auto& src = deserializedEntity.AddComponent<SpriteRendererComponent>();
-
+					
+					if (spriteRendererComponent["TexturePath"])
+						src.Texture = Texture2D::Create(spriteRendererComponent["TexturePath"].as<std::string>());
 					src.Color = spriteRendererComponent["Color"].as<glm::vec4>();
+					src.TilingFactor = spriteRendererComponent["TilingFactor"].as<float>();
 				}
 
 				auto rigidbody2DComponent = entity["Rigidbody2DComponent"];

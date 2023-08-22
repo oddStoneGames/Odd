@@ -78,7 +78,25 @@ namespace Odd
 
         // Copy Components (Except IDComponent & TagComponent)
         CopyComponent<TransformComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
-        CopyComponent<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+
+        // TODO: Temporary fix for getting the same textures in runtime, change later.
+        auto view = srcSceneRegistry.view<SpriteRendererComponent>();
+        for (auto e : view)
+        {
+            UUID uuid = srcSceneRegistry.get<IDComponent>(e).ID;
+            entt::entity dstEnttID = enttMap.at(uuid);
+
+            auto& component = srcSceneRegistry.get<SpriteRendererComponent>(e);
+            dstSceneRegistry.emplace_or_replace<SpriteRendererComponent>(dstEnttID, component);
+
+            if (component.Texture && std::filesystem::exists(component.Texture->GetPath()))
+            {
+                // Get Destination Texture Path
+                auto& dstComponent = dstSceneRegistry.get<SpriteRendererComponent>(dstEnttID);
+                dstComponent.Texture = Texture2D::Create(component.Texture->GetPath());
+            }
+        }
+
         CopyComponent<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<NativeScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
@@ -112,6 +130,7 @@ namespace Odd
 
     void Scene::OnRuntimeStart()
     {
+        // Initialize Physics2D World
         m_Physics2DWorld = new b2World({ 0.0f, -9.8f });
 
         auto view = m_Registry.view <Rigidbody2DComponent>();
@@ -148,6 +167,20 @@ namespace Odd
                 bc2d.RuntimeFixture = fixture;
             }
         }
+
+        // Create Scripts
+        {
+            ODD_PROFILE_SCOPE("NativeScripts::OnCreate()");
+            m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+            {
+                if (!nsc.Instance)
+                {
+                    nsc.Instance = nsc.InstantiateScript();
+                    nsc.Instance->m_Entity = Entity{ entity, this };
+                    nsc.Instance->OnCreate();
+                }
+            });
+        }
     }
 
     void Scene::OnRuntimeStop()
@@ -172,17 +205,10 @@ namespace Odd
     {
         // Update Scripts
         {
+            ODD_PROFILE_SCOPE("NativeScripts::OnUpdate()");
             m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
             {
-                // TODO: Move to OnScenePlay
-                if (!nsc.Instance)
-                {
-                    nsc.InstantiateFunction();
-                    nsc.Instance->m_Entity = Entity{ entity, this };
-                    nsc.OnCreateFunction(nsc.Instance);
-                }
-
-                nsc.OnUpdateFunction(nsc.Instance, ts);
+                nsc.Instance->OnUpdate(ts);
             });
         }
 
@@ -236,7 +262,7 @@ namespace Odd
             for (auto entity : group)
             {
                 auto [transform, spriteRenderer] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-                Renderer2D::DrawQuad(transform.GetTransform(), spriteRenderer.Color);
+                Renderer2D::DrawSprite(transform.GetTransform(), spriteRenderer, (int)entity);
             }
             Renderer2D::EndScene();
         }
@@ -267,6 +293,18 @@ namespace Odd
         // Copy Components (Except IDComponent & TagComponent)
         CopyComponentIfExists<TransformComponent>(newEntity, entity);
         CopyComponentIfExists<SpriteRendererComponent>(newEntity, entity);
+        
+        // TODO: Temporary, change later
+        if (entity.HasComponent<SpriteRendererComponent>())
+        {
+            auto& srcComponent = entity.GetComponent<SpriteRendererComponent>();
+            if (srcComponent.Texture && std::filesystem::exists(srcComponent.Texture->GetPath()))
+            {
+                auto& dstComponent = newEntity.GetComponent<SpriteRendererComponent>();
+                dstComponent.Texture = Texture2D::Create(srcComponent.Texture->GetPath());
+            }
+        }
+
         CopyComponentIfExists<CameraComponent>(newEntity, entity);
         CopyComponentIfExists<NativeScriptComponent>(newEntity, entity);
         CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);

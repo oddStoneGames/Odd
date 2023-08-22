@@ -8,6 +8,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "glm/gtx/quaternion.hpp"
+#include <filesystem>
 
 namespace Odd
 {
@@ -72,23 +73,16 @@ namespace Odd
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
+		std::filesystem::path Path = std::filesystem::path();
 
-		std::function<void()> InstantiateFunction;
-		std::function<void()> DestroyInstanceFunction;
-		
-		void(* OnCreateFunction)(ScriptableEntity*) = nullptr;
-		void(* OnDestroyFunction)(ScriptableEntity*) = nullptr;
-		void(* OnUpdateFunction)(ScriptableEntity*, Timestep) = nullptr;
+		ScriptableEntity* (*InstantiateScript)();
+		void (*DestroyScript)(NativeScriptComponent*);
 
 		template<typename T>
 		void Bind()
 		{
-			InstantiateFunction = [&]() { Instance = new T(); };
-			DestroyInstanceFunction = [&]() { delete (T*)Instance; Instance = nullptr; };
-			
-			OnCreateFunction = [](ScriptableEntity* instance) { static_cast<T*>(instance)->OnCreate(); };
-			OnDestroyFunction = [](ScriptableEntity* instance) { static_cast<T*>(instance)->OnDestroy(); };
-			OnUpdateFunction = [](ScriptableEntity* instance, Timestep ts) { static_cast<T*>(instance)->OnUpdate(ts); };
+			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
 		}
 	};
 

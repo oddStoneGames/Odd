@@ -62,6 +62,7 @@ namespace Odd
 
 		m_InternalFormat = internalFormat;
 		m_Format = dataFormat;
+		m_Path = path;
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D()

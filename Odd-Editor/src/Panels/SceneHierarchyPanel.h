@@ -22,6 +22,9 @@ namespace Odd
 	private:
 		void DrawEntityNode(Entity entity);
 		void DrawComponents(Entity entity);
+
+		template<typename T>
+		void DisplayAddComponentEntry(const std::string& entryName, bool allowMultipleComponents = false);
 	private:
 		Ref<Scene> m_Context;
 		Entity m_SelectionContext;

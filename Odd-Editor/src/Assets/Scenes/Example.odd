@@ -27,6 +27,7 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [0, 0, 1, 0.588]
+      TilingFactor: 1
   - Entity: 726277382620162356
     TagComponent:
       Tag: Green Square
@@ -36,15 +37,18 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [0, 1, 0, 0.588]
+      TilingFactor: 1
   - Entity: 5711054123100107254
     TagComponent:
       Tag: Red Square
     TransformComponent:
-      Translation: [0, 0, 0]
+      Translation: [-3.7252903e-09, 0, 0]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteRendererComponent:
+      TexturePath: D:/OddStoneGames/Odd/Odd-Editor/src/Assets\Icons\FileIcon.png
       Color: [1, 0, 0, 0.588]
+      TilingFactor: 1
   - Entity: 17195554958431287932
     TagComponent:
       Tag: Main Camera
