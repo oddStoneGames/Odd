@@ -132,7 +132,9 @@ project(Odd-Editor)
 # SET SOURCE FILES
 set(SOURCE_FILES Odd-Editor/src/Panels/ContentBrowserPanel.cpp Odd-Editor/src/Panels/ContentBrowserPanel.h 
                  Odd-Editor/src/Panels/SceneHierarchyPanel.cpp Odd-Editor/src/Panels/SceneHierarchyPanel.h
-                 Odd-Editor/src/EditorLayer.cpp Odd-Editor/src/EditorLayer.h Odd-Editor/src/OddEditorApp.cpp)
+                 Odd-Editor/src/EditorLayer.cpp Odd-Editor/src/EditorLayer.h Odd-Editor/src/OddEditorApp.cpp
+                 Odd-Editor/SandboxProject/Scripts/PlayerController.cpp Odd-Editor/SandboxProject/Scripts/PlayerController.h
+                 Odd-Editor/SandboxProject/Scripts/FollowPlayer.cpp Odd-Editor/SandboxProject/Scripts/FollowPlayer.h)
 
 # BUILD EXECUTABLE
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})

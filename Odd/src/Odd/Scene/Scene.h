@@ -22,6 +22,7 @@ namespace Odd
 
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
+		Entity GetEntityByName(const std::string& name);
 		void DestroyEntity(Entity entity);
 
 		void OnRuntimeStart();
@@ -35,6 +36,7 @@ namespace Odd
 
 		Entity GetPrimaryCameraEntity();
 
+		b2World* GetPhysics2DWorld() const { return m_Physics2DWorld; }
 	private:
 		void OnComponentAdded(Entity entity);
 	private:

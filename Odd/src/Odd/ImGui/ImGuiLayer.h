@@ -5,7 +5,8 @@
 #include "Odd/Events/MouseEvent.h"
 #include "Odd/Events/ApplicationEvent.h"
 
-namespace Odd {
+namespace Odd 
+{
 
 	class ImGuiLayer : public Layer
 	{

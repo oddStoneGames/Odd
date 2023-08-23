@@ -239,6 +239,13 @@ namespace Odd
 			out << YAML::EndMap;	//CameraComponent
 		}
 
+		if (entity.HasComponent<NativeScriptComponent>())
+		{
+			out << YAML::Key << "NativeScriptComponent";
+			out << YAML::BeginMap;	//NativeScriptComponent
+			out << YAML::EndMap;	//NativeScriptComponent
+		}
+
 		out << YAML::EndMap;	// Entity
 	}
 
@@ -382,6 +389,12 @@ namespace Odd
 					bc2d.Friction = boxCollider2DComponent["Friction"].as<float>();
 					bc2d.Restitution = boxCollider2DComponent["Restitution"].as<float>();
 					bc2d.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
+				}
+
+				auto nativeScriptComponent = entity["NativeScriptComponent"];
+				if (nativeScriptComponent)
+				{
+					auto& nsc = deserializedEntity.AddComponent<NativeScriptComponent>();
 				}
 			}
 		}

@@ -15,6 +15,15 @@ namespace Odd
 		Entity(entt::entity handle, Scene* scene) : m_EntityHandle(handle), m_Scene(scene) {}
 		Entity(const Entity& other) = default;
 
+		// Returns the Entity of given name in this scene.
+		Entity GetEntityByName(const std::string& name)
+		{
+			return m_Scene->GetEntityByName(name);
+		}
+
+		// Returns the scene this entity belongs to.
+		Scene* GetScene() const { return m_Scene; }
+
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{

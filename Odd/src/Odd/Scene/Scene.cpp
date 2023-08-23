@@ -5,6 +5,10 @@
 #include "ScriptableEntity.h"
 #include "Odd/Renderer/Renderer2D.h"
 
+// TODO: Temporary architecture, change later.
+#include "../../../../Odd-Editor/SandboxProject/Scripts/PlayerController.h"
+#include "../../../../Odd-Editor/SandboxProject/Scripts/FollowPlayer.h"
+
 #include "box2d/b2_world.h"
 #include "box2d/b2_body.h"
 #include "box2d/b2_fixture.h"
@@ -131,6 +135,20 @@ namespace Odd
         return entity;
     }
 
+    Entity Scene::GetEntityByName(const std::string& name)
+    {
+        auto view = m_Registry.view<TagComponent>();
+        for (auto e : view)
+        {
+            Entity entity = { e, this };
+
+            if (entity.GetName() == name)
+                return entity;
+        }
+
+        return Entity();
+    }
+
     void Scene::DestroyEntity(Entity entity)
     {
         DEBUG_CORE_WARN("Destroying {0}!", entity.GetComponent<TagComponent>().Tag.c_str());
@@ -180,12 +198,25 @@ namespace Odd
         // Create Scripts
         {
             ODD_PROFILE_SCOPE("NativeScripts::OnCreate()");
-            m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+            m_Registry.view<NativeScriptComponent>().each([=](auto e, auto& nsc)
             {
                 if (!nsc.Instance)
                 {
+                    Entity entity = { e, this };
+                    auto& tagComponent = entity.GetComponent<TagComponent>();
+
+                    // TODO: Temporary, change later.
+                    if (tagComponent.Tag.compare("Player") == 0)
+                    {
+                        nsc.Bind<PlayerController>();
+                    }
+                    else if (tagComponent.Tag.compare("Main Camera") == 0)
+                    {
+                        nsc.Bind<FollowPlayer>();
+                    }
+                    
                     nsc.Instance = nsc.InstantiateScript();
-                    nsc.Instance->m_Entity = Entity{ entity, this };
+                    nsc.Instance->m_Entity = entity;
                     nsc.Instance->OnCreate();
                 }
             });

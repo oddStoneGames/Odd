@@ -229,6 +229,7 @@ namespace Odd
 			DisplayAddComponentEntry<SpriteRendererComponent>("Sprite Renderer");
 			DisplayAddComponentEntry<Rigidbody2DComponent>("Rigidbody 2D");
 			DisplayAddComponentEntry<BoxCollider2DComponent>("Box Collider 2D");
+			DisplayAddComponentEntry<NativeScriptComponent>("Native Script");
 			
 			ImGui::EndPopup();
 		}
@@ -328,10 +329,18 @@ namespace Odd
 			}
 			if (component.Texture)
 			{
+				ImGui::NewLine();
+				ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x * 0.5f - 45.0f);
+
+				// Load a bigger font
+				ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[1]);
+				ImGui::Text("Subtexture");
+				ImGui::PopFont();
+
 				// Only show subtexture data when there is an existing texture.
-				ImGui::DragFloat2("Subtexture Coordinates", &component.SubtextureCoords[0], 0.01f, 0.0f);
-				ImGui::DragFloat2("Subtexture Cell Size", &component.SubtextureCellSize[0], 0.01f, 0.0f);
-				ImGui::DragFloat2("Subtexture Sprite Size", &component.SubtextureSpriteSize[0], 0.01f, 0.0f);
+				ImGui::DragFloat2("Coordinates", &component.SubtextureCoords[0], 0.01f, 0.0f);
+				ImGui::DragFloat2("Cell Size", &component.SubtextureCellSize[0], 0.01f, 0.0f);
+				ImGui::DragFloat2("Sprite Size", &component.SubtextureSpriteSize[0], 0.01f, 0.0f);
 
 				if (component.SubtextureCellSize.x > 0.0f && component.SubtextureCellSize.y > 0.0f &&
 					component.SubtextureSpriteSize.x > 0.0f && component.SubtextureSpriteSize.y > 0.0f)
@@ -339,6 +348,7 @@ namespace Odd
 					// Create Subtexture only if the values are valid.
 					component.Subtexture = SubTexture2D::CreateFromCoords(component.Texture, component.SubtextureCoords, component.SubtextureCellSize, component.SubtextureSpriteSize);
 				}
+				ImGui::NewLine();
 			}
 			ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 1000.0f);
 			ImGui::ColorEdit4("Color", &component.Color[0]);
@@ -377,6 +387,11 @@ namespace Odd
 			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
+		});
+
+		DrawComponent<NativeScriptComponent>("Native Script", entity, [](auto& component)
+		{
+
 		});
 	}
 

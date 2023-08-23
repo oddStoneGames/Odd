@@ -12,8 +12,8 @@
 
 #include "Odd/Renderer/Renderer.h"
 
-namespace Odd {
-
+namespace Odd 
+{
 	ImGuiLayer::ImGuiLayer(): Layer("ImGuiLayer") {}
 	
 	ImGuiLayer::~ImGuiLayer() {}
@@ -33,8 +33,10 @@ namespace Odd {
 		//io.ConfigViewportsNoAutoMerge = true;
 		//io.ConfigViewportsNoTaskBarIcon = true;
 
-		io.Fonts->AddFontFromFileTTF("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Fonts/Ubuntu/Ubuntu-Bold.ttf", 14.0f);
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("D:/OddStoneGames/Odd/Odd-Editor/src/Assets/Fonts/Ubuntu/Ubuntu-Regular.ttf", 14.0f);
+		io.Fonts->AddFontFromFileTTF(PROJECT_DIR"../Odd-Editor/src/Assets/Fonts/Ubuntu/Ubuntu-Bold.ttf", 14.0f);
+		// Larger Font
+		io.Fonts->AddFontFromFileTTF(PROJECT_DIR"../Odd-Editor/src/Assets/Fonts/Ubuntu/Ubuntu-Bold.ttf", 24.0f);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF(PROJECT_DIR"../Odd-Editor/src/Assets/Fonts/Ubuntu/Ubuntu-Regular.ttf", 14.0f);
 
 		io.IniFilename = PROJECT_DIR"../imgui_template.ini";
 

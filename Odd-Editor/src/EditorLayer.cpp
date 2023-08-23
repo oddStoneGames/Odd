@@ -40,12 +40,6 @@ namespace Odd
         m_ActiveScene = CreateRef<Scene>();
 
         m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
-    
-        //// Open This Scene as the Default One.
-        //SceneSerializer serializer(m_ActiveScene);
-        //m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-        //serializer.Deserialize(PROJECT_DIR"src/Assets/Scenes/3DCube.odd");
-
     }
 
     void EditorLayer::OnDetach()

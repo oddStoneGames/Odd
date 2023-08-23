@@ -4,12 +4,15 @@
 #include "Odd/Renderer/Texture.h"
 #include "Odd/Renderer/Subtexture2D.h"
 #include "Odd/Core/UUID.h"
+#include "Odd/Core/Log.h"
 
 #include "glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "glm/gtx/quaternion.hpp"
 #include <filesystem>
+
+#include "box2d/b2_body.h"
 
 namespace Odd
 {
@@ -81,7 +84,6 @@ namespace Odd
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
-		std::string Path = {};
 
 		ScriptableEntity* (*InstantiateScript)();
 		void (*DestroyScript)(NativeScriptComponent*);
@@ -103,6 +105,138 @@ namespace Odd
 
 		// Storage for runtime
 		void* RuntimeBody = nullptr;
+
+		// Returns this Rigidbody2D's Position.
+		glm::vec2 GetPosition()
+		{
+			if (RuntimeBody == nullptr)
+			{
+				DEBUG_CORE_ERROR("Runtime Body null.");
+				return glm::vec2(0.0f);
+			}
+
+			b2Body* body = (b2Body*)RuntimeBody;
+			b2Vec2 pos = body->GetPosition();
+
+			return { pos.x, pos.y };
+		}
+
+		// Returns this Rigidbody2D's Linear Velocity.
+		glm::vec2 GetLinearVelocity()
+		{
+			if (RuntimeBody == nullptr)
+			{
+				DEBUG_CORE_ERROR("Runtime Body null.");
+				return glm::vec2(0.0f);
+			}
+
+			b2Body* body = (b2Body*)RuntimeBody;
+			b2Vec2 linearVelocity = body->GetLinearVelocity();
+
+			return { linearVelocity.x, linearVelocity.y };
+		}
+
+		// Set this Rigidbody2D's Linear Velocity.
+		void SetLinearVelocity(const glm::vec2& linearVelocity)
+		{
+			if (RuntimeBody == nullptr)
+			{
+				DEBUG_CORE_ERROR("Runtime Body null.");
+				return;
+			}
+
+			b2Body* body = (b2Body*)RuntimeBody;
+			b2Vec2 b2linearVelocity = b2Vec2(linearVelocity.x, linearVelocity.y);
+			body->SetLinearVelocity(b2linearVelocity);
+
+			return;
+		}
+
+		// Returns this Rigidbody2D's Angular Velocity.
+		float GetAngularVelocity()
+		{
+			if (RuntimeBody == nullptr)
+			{
+				DEBUG_CORE_ERROR("Runtime Body null.");
+				return 0.0f;
+			}
+
+			b2Body* body = (b2Body*)RuntimeBody;
+			return body->GetAngularVelocity();
+		}
+
+		// Set this Rigidbody2D's Angular Velocity.
+		void SetAngulrVelocity(const float angularVelocity)
+		{
+			if (RuntimeBody == nullptr)
+			{
+				DEBUG_CORE_ERROR("Runtime Body null.");
+				return;
+			}
+
+			b2Body* body = (b2Body*)RuntimeBody;
+			body->SetAngularVelocity(angularVelocity);
+
+			return;
+		}
+
+		void ApplyForce(const glm::vec2& force, const glm::vec2& point)
+		{
+			if (RuntimeBody == nullptr)
+			{
+				DEBUG_CORE_ERROR("Runtime Body null.");
+				return;
+			}
+
+			b2Body* body = (b2Body*)RuntimeBody;
+			b2Vec2 b2force = b2Vec2(force.x, force.y);
+			b2Vec2 b2point = b2Vec2(point.x, point.y);
+			
+			body->ApplyForce(b2force, b2point, true);
+		}
+
+		void ApplyForceToCenter(const glm::vec2& force)
+		{
+			if (RuntimeBody == nullptr)
+			{
+				DEBUG_CORE_ERROR("Runtime Body null.");
+				return;
+			}
+
+			b2Body* body = (b2Body*)RuntimeBody;
+			b2Vec2 b2force = b2Vec2(force.x, force.y);
+
+			body->ApplyForceToCenter(b2force, true);
+		}
+
+		void ApplyLinearImpulse(const glm::vec2& impulse, const glm::vec2& point)
+		{
+			if (RuntimeBody == nullptr)
+			{
+				DEBUG_CORE_ERROR("Runtime Body null.");
+				return;
+			}
+
+			b2Body* body = (b2Body*)RuntimeBody;
+			b2Vec2 b2impulse = b2Vec2(impulse.x, impulse.y);
+			b2Vec2 b2point = b2Vec2(point.x, point.y);
+
+			body->ApplyLinearImpulse(b2impulse, b2point, true);
+		}
+
+		void ApplyLinearImpulseToCenter(const glm::vec2& impulse)
+		{
+			if (RuntimeBody == nullptr)
+			{
+				DEBUG_CORE_ERROR("Runtime Body null.");
+				return;
+			}
+
+			b2Body* body = (b2Body*)RuntimeBody;
+			b2Vec2 b2impulse = b2Vec2(impulse.x, impulse.y);
+
+			body->ApplyLinearImpulseToCenter(b2impulse, true);
+		}
 
 		Rigidbody2DComponent() = default;
 		Rigidbody2DComponent(const Rigidbody2DComponent&) = default;

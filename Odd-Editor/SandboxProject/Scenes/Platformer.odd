@@ -1,13 +1,31 @@
 Scene: Platformer
 Entities:
+  - Entity: 9520743714351187615
+    TagComponent:
+      Tag: Stars
+    TransformComponent:
+      Translation: [0, 1.63999999, -1]
+      Rotation: [0, 0, 0]
+      Scale: [9, 1.10000002, 1]
+    SpriteRendererComponent:
+      TexturePath: D:/OddStoneGames/Odd/Odd-Editor/SandboxProject\Textures\stars.png
+      SubtextureCoords: [0, 0]
+      SubtextureCellSize: [0, 0]
+      SubtextureSpriteSize: [1, 1]
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
   - Entity: 3103649624372977893
     TagComponent:
-      Tag: Test
+      Tag: Pumpkin
     TransformComponent:
       Translation: [5.21666861, 0.45738709, -0.000122071244]
-      Rotation: [0, 0, 0.72431165]
-      Scale: [0.100000001, 0.100000001, 0.100000001]
+      Rotation: [0, 0, 1.57079637]
+      Scale: [0.0999997705, 0.0999997705, 0.100000001]
     SpriteRendererComponent:
+      TexturePath: D:/OddStoneGames/Odd/Odd-Editor/SandboxProject\Textures\pumpkin.png
+      SubtextureCoords: [0, 0]
+      SubtextureCellSize: [0, 0]
+      SubtextureSpriteSize: [1, 1]
       Color: [1, 1, 1, 1]
       TilingFactor: 1
     Rigidbody2DComponent:
@@ -17,9 +35,9 @@ Entities:
       Offset: [0, 0]
       Size: [0.5, 0.5]
       Density: 1
-      Friction: 0.5
+      Friction: 1
       Restitution: 0
-      RestitutionThreshold: 0.5
+      RestitutionThreshold: 0
   - Entity: 1402296475416408946
     TagComponent:
       Tag: Collider 3
@@ -66,12 +84,16 @@ Entities:
       RestitutionThreshold: 0.5
   - Entity: 11111275393361896200
     TagComponent:
-      Tag: Test
+      Tag: Pumpkin
     TransformComponent:
-      Translation: [-0.140654385, 0.81837827, 0.699999988]
-      Rotation: [0, 0, 0.72431165]
+      Translation: [0.342100322, 0.977229953, 0.699999988]
+      Rotation: [0, 0, 0.785398185]
       Scale: [0.100000001, 0.100000001, 0.100000001]
     SpriteRendererComponent:
+      TexturePath: D:/OddStoneGames/Odd/Odd-Editor/SandboxProject\Textures\pumpkin.png
+      SubtextureCoords: [0, 0]
+      SubtextureCellSize: [0, 0]
+      SubtextureSpriteSize: [1, 1]
       Color: [1, 1, 1, 1]
       TilingFactor: 1
     Rigidbody2DComponent:
@@ -81,17 +103,21 @@ Entities:
       Offset: [0, 0]
       Size: [0.5, 0.5]
       Density: 1
-      Friction: 0.5
+      Friction: 1
       Restitution: 0
-      RestitutionThreshold: 0.5
+      RestitutionThreshold: 0
   - Entity: 2678440955523965039
     TagComponent:
-      Tag: Test
+      Tag: Pumpkin
     TransformComponent:
       Translation: [7.68610334, 1.49251759, -0.000121986406]
-      Rotation: [0, 0, 0.72431165]
+      Rotation: [0, 0, -3.14159226]
       Scale: [0.100000001, 0.100000001, 0.100000001]
     SpriteRendererComponent:
+      TexturePath: D:/OddStoneGames/Odd/Odd-Editor/SandboxProject\Textures\pumpkin.png
+      SubtextureCoords: [0, 0]
+      SubtextureCellSize: [0, 0]
+      SubtextureSpriteSize: [1, 1]
       Color: [1, 1, 1, 1]
       TilingFactor: 1
     Rigidbody2DComponent:
@@ -101,17 +127,21 @@ Entities:
       Offset: [0, 0]
       Size: [0.5, 0.5]
       Density: 1
-      Friction: 0.5
+      Friction: 1
       Restitution: 0
-      RestitutionThreshold: 0.5
+      RestitutionThreshold: 0
   - Entity: 3670055225015184953
     TagComponent:
-      Tag: Test
+      Tag: Pumpkin
     TransformComponent:
-      Translation: [-2.61243129, 0.327409416, -0.000122071258]
-      Rotation: [0, 0, 0.72431165]
+      Translation: [-2.61243129, 0.327409416, -0.000122071709]
+      Rotation: [0, 0, 0]
       Scale: [0.100000001, 0.100000001, 0.100000001]
     SpriteRendererComponent:
+      TexturePath: D:/OddStoneGames/Odd/Odd-Editor/SandboxProject\Textures\pumpkin.png
+      SubtextureCoords: [0, 0]
+      SubtextureCellSize: [0, 0]
+      SubtextureSpriteSize: [1, 1]
       Color: [1, 1, 1, 1]
       TilingFactor: 1
     Rigidbody2DComponent:
@@ -121,9 +151,9 @@ Entities:
       Offset: [0, 0]
       Size: [0.5, 0.5]
       Density: 1
-      Friction: 0.5
+      Friction: 1
       Restitution: 0
-      RestitutionThreshold: 0.5
+      RestitutionThreshold: 0
   - Entity: 4271001323380172224
     TagComponent:
       Tag: Collider 2
@@ -206,29 +236,17 @@ Entities:
         PerspectiveNearClip: 0.00999999978
         PerspectiveFarClip: 1000
         OrthographicSize: 4.5
-        OrthographicNearClip: -1
-        OrthographicFarClip: 1
+        OrthographicNearClip: -2
+        OrthographicFarClip: 2
       Primary: true
       FixedAspectRatio: false
-  - Entity: 9520743714351187615
-    TagComponent:
-      Tag: Stars
-    TransformComponent:
-      Translation: [0, 1.63999999, 0]
-      Rotation: [0, 0, 0]
-      Scale: [9, 1.10000002, 1]
-    SpriteRendererComponent:
-      TexturePath: D:/OddStoneGames/Odd/Odd-Editor/SandboxProject\Textures\stars.png
-      SubtextureCoords: [0, 0]
-      SubtextureCellSize: [0, 0]
-      SubtextureSpriteSize: [1, 1]
-      Color: [1, 1, 1, 1]
-      TilingFactor: 1
+    NativeScriptComponent:
+      {}
   - Entity: 9817806020746392783
     TagComponent:
       Tag: Player
     TransformComponent:
-      Translation: [-0.190374345, 0.319612533, 0]
+      Translation: [-0.180431336, 0.415224075, 1]
       Rotation: [0, 0, 0]
       Scale: [0.5, 0.5, 1]
     SpriteRendererComponent:
@@ -238,13 +256,25 @@ Entities:
       SubtextureSpriteSize: [1, 1]
       Color: [1, 1, 1, 1]
       TilingFactor: 1
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: true
+    BoxCollider2DComponent:
+      Offset: [0, 0]
+      Size: [0.349999994, 0.5]
+      Density: 1
+      Friction: 1
+      Restitution: 0
+      RestitutionThreshold: 0
+    NativeScriptComponent:
+      {}
   - Entity: 9724926344620382055
     TagComponent:
       Tag: Platform 3
     TransformComponent:
       Translation: [3.14231849, -1.03681779, -0.499938965]
-      Rotation: [0, 0, 0]
-      Scale: [2, 1.79999995, 1]
+      Rotation: [0, -0.000746564474, 0]
+      Scale: [1.99999976, 1.79999995, 0.999999881]
     SpriteRendererComponent:
       TexturePath: D:/OddStoneGames/Odd/Odd-Editor/SandboxProject\Textures\platform2.png
       SubtextureCoords: [0, 0]
@@ -308,12 +338,16 @@ Entities:
       RestitutionThreshold: 0.5
   - Entity: 10223504413582224485
     TagComponent:
-      Tag: Test
+      Tag: Pumpkin
     TransformComponent:
-      Translation: [3.04291439, 0.255291492, -0.000122071244]
-      Rotation: [0, 0, 0.72431165]
+      Translation: [3.24761105, 0.357641727, -0.000122071244]
+      Rotation: [0, 0, -0.785398245]
       Scale: [0.100000001, 0.100000001, 0.100000001]
     SpriteRendererComponent:
+      TexturePath: D:/OddStoneGames/Odd/Odd-Editor/SandboxProject\Textures\pumpkin.png
+      SubtextureCoords: [0, 0]
+      SubtextureCellSize: [0, 0]
+      SubtextureSpriteSize: [1, 1]
       Color: [1, 1, 1, 1]
       TilingFactor: 1
     Rigidbody2DComponent:

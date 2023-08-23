@@ -96,5 +96,9 @@ void main()
 	}
 
 	Color = texColor;
+
+	if(Color.a == 0.0f)
+		discard;
+
 	Color2 = v_EntityID;
 }

@@ -17,8 +17,8 @@ namespace Odd
 		virtual void OnCreate() {}
 		virtual void OnDestroy() {}
 		virtual void OnUpdate(Timestep ts) {}
-	private:
 		Entity m_Entity;
+	private:
 		friend class Scene;
 	};
 }
