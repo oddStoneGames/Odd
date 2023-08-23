@@ -36,6 +36,16 @@ add_subdirectory(Odd/vendor/ImGuizmo)
 list(APPEND INCLUDES Odd/vendor/ImGuizmo)
 list(APPEND LIBS imguizmo)
 
+# LIBSNDFILE
+add_subdirectory(Odd/vendor/libsndfile)
+list(APPEND INCLUDES Odd/vendor/libsndfile/include)
+list(APPEND LIBS sndfile)
+
+# OPENAL
+add_subdirectory(Odd/vendor/OpenAL)
+list(APPEND INCLUDES Odd/vendor/OpenAL)
+list(APPEND LIBS Odd/vendor/OpenAL/Debug/${OPENALLIBNAME})
+
 # OPENGL
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
@@ -47,6 +57,11 @@ list(APPEND INCLUDES Odd/vendor)
 
 # STB_IMAGE
 list(APPEND INCLUDES Odd/vendor/stb_image)
+
+if(WIN32)
+    # WINMM
+    list(APPEND LIBS winmm)
+endif()
 
 # YAML-CPP
 add_subdirectory(Odd/vendor/yaml-cpp)
@@ -83,6 +98,7 @@ set(SOURCE_FILES Odd/src/Odd/Core/Application.cpp Odd/src/Odd/Core/Application.h
                  Odd/src/Platform/OpenGL/OpenGLRendererAPI.cpp Odd/src/Platform/OpenGL/OpenGLRendererAPI.h Odd/src/Platform/OpenGL/OpenGLShader.cpp Odd/src/Platform/OpenGL/OpenGLShader.h Odd/src/Platform/OpenGL/OpenGLTexture.cpp Odd/src/Platform/OpenGL/OpenGLTexture.h
                  Odd/src/Platform/OpenGL/OpenGLUniformBuffer.cpp Odd/src/Platform/OpenGL/OpenGLUniformBuffer.h Odd/src/Platform/OpenGL/OpenGLVertexArray.cpp Odd/src/Platform/OpenGL/OpenGLVertexArray.h
                  Odd/src/Platform/Windows/WindowsInput.cpp Odd/src/Platform/Windows/WindowsPlatformUtils.cpp Odd/src/Platform/Windows/WindowsWindow.cpp Odd/src/Platform/Windows/WindowsWindow.h
+                 Odd/src/Odd/Audio/Audio.cpp Odd/src/Odd/Audio/Audio.h Odd/src/Odd/Audio/AudioSource.cpp Odd/src/Odd/Audio/AudioSource.h Odd/src/Odd/Audio/AudioListener.cpp Odd/src/Odd/Audio/AudioListener.h
                  Odd/src/Odd.h
                  Odd/vendor/stb_image/stb_image.cpp Odd/vendor/stb_image/stb_image.h)
 
@@ -93,7 +109,7 @@ add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 target_precompile_headers(${PROJECT_NAME} PRIVATE Odd/src/oddpch.h)
 
 # COMPILE DEFINITIONS
-target_compile_definitions(${PROJECT_NAME} PRIVATE PROJECT_DIR="${PROJECT_SOURCE_DIR}/Odd/" PRIVATE ${COMPILE_DEFS} PRIVATE GLFW_INCLUDE_NONE)
+target_compile_definitions(${PROJECT_NAME} PRIVATE PROJECT_DIR="${PROJECT_SOURCE_DIR}/Odd/" PRIVATE ${COMPILE_DEFS} PRIVATE GLFW_INCLUDE_NONE PRIVATE AL_LIBTYPE_STATIC)
 
 # INCLUDE DIRECTORIES
 list(APPEND INCLUDES Odd/src)

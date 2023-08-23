@@ -4,6 +4,7 @@
 #include "GLFW/glfw3.h"
 #include "Odd/Input/Input.h"
 #include "Odd/Renderer/Renderer.h"
+#include "Odd/Audio/Audio.h"
 
 namespace Odd
 {
@@ -19,18 +20,24 @@ namespace Odd
 		}
 		s_Instance = this;
 
-		//Initialize Logger.
+		// Initialize Logger
 		Odd::Log::Init();
 		m_Window = Window::Create(WindowProps(name));
 		m_Window->SetEventCallback(BIND_EVENT_FUNC(Application::OnEvent));
 		
+		// Intialize Renderer
 		Renderer::Init();
+
+		// Intialize Audio Engine
+		Audio::Init();
 
 		PushOverlay(m_ImGuiLayer);
 	}
 	Application::~Application()
 	{
+		// Shutdown
 		Renderer::Shutdown();
+		Audio::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* layer)

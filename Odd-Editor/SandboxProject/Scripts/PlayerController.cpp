@@ -98,13 +98,16 @@ bool PlayerController::IsGrounded(b2World* world, b2Fixture* playerFixture)
 	groundAABB.upperBound = playerAABB.lowerBound + b2Vec2(0.0f, 0.3f);
 
 	// Callback for QueryAABB to check for ground
-	class QueryCallback : public b2QueryCallback {
+	class QueryCallback : public b2QueryCallback
+	{
 	public:
 		bool hitGround = false;
 
-		bool ReportFixture(b2Fixture* fixture) override {
+		bool ReportFixture(b2Fixture* fixture) override
+		{
 			// Ignore the player's own fixture
-			if (fixture != playerFixture) {
+			if (fixture != playerFixture)
+			{
 				hitGround = true;
 				return false; // Stop the query after hitting the first fixture
 			}
