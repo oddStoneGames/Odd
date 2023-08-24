@@ -235,8 +235,46 @@ namespace Odd
 
 			out << YAML::Key << "Primary" << YAML::Value << cc.Primary;
 			out << YAML::Key << "FixedAspectRatio" << YAML::Value << cc.fixedAspectRatio;
+			out << YAML::Key << "ClearColor" << YAML::Value << cc.ClearColor;
 
 			out << YAML::EndMap;	//CameraComponent
+		}
+
+		if (entity.HasComponent<AudioSourceComponent>())
+		{
+			out << YAML::Key << "AudioSourceComponent";
+			out << YAML::BeginMap;	//AudioSourceComponent
+
+			auto& asc = entity.GetComponent<AudioSourceComponent>();
+
+			if (asc.AudioSource && std::filesystem::exists(asc.AudioSource->GetAudioFilePath()))
+			{
+				out << YAML::Key << "AudioPath" << YAML::Value << asc.AudioSource->GetAudioFilePath();
+			}
+			
+			out << YAML::Key << "PlayOnStart" << YAML::Value << asc.PlayOnStart;
+			out << YAML::Key << "Loop" << YAML::Value << asc.Loop;
+			out << YAML::Key << "Gain" << YAML::Value << asc.Gain;
+			out << YAML::Key << "Pitch" << YAML::Value << asc.Pitch;
+
+			out << YAML::EndMap;	//AudioSourceComponent
+		}
+
+		if (entity.HasComponent<AudioListenerComponent>())
+		{
+			out << YAML::Key << "AudioListenerComponent";
+			out << YAML::BeginMap;	//AudioListenerComponent
+
+			auto& ac = entity.GetComponent<AudioListenerComponent>();
+
+			out << YAML::Key << "PositionSameAsEntity" << YAML::Value << ac.PositionSameAsEntity;
+			out << YAML::Key << "Gain" << YAML::Value << ac.Gain;
+			out << YAML::Key << "Position" << YAML::Value << ac.Position;
+			out << YAML::Key << "Velocity" << YAML::Value << ac.Velocity;
+			out << YAML::Key << "At" << YAML::Value << ac.At;
+			out << YAML::Key << "Up" << YAML::Value << ac.Up;
+
+			out << YAML::EndMap;	//AudioListenerComponent
 		}
 
 		if (entity.HasComponent<NativeScriptComponent>())
@@ -337,6 +375,7 @@ namespace Odd
 
 					cc.Primary = cameraComponent["Primary"].as<bool>();
 					cc.fixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
+					cc.ClearColor = cameraComponent["ClearColor"].as<glm::vec4>();
 				}
 
 				auto spriteRendererComponent = entity["SpriteRendererComponent"];
@@ -389,6 +428,35 @@ namespace Odd
 					bc2d.Friction = boxCollider2DComponent["Friction"].as<float>();
 					bc2d.Restitution = boxCollider2DComponent["Restitution"].as<float>();
 					bc2d.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
+				}
+
+				auto audioSourceComponent = entity["AudioSourceComponent"];
+				if (audioSourceComponent)
+				{
+					auto& asc = deserializedEntity.AddComponent<AudioSourceComponent>();
+
+					if (audioSourceComponent["AudioPath"])
+					{
+						asc.AudioSource = AudioSource::Create(audioSourceComponent["AudioPath"].as<std::string>());
+					}
+
+					asc.PlayOnStart = audioSourceComponent["PlayOnStart"].as<bool>();
+					asc.Loop = audioSourceComponent["Loop"].as<bool>();
+					asc.Gain = audioSourceComponent["Gain"].as<float>();
+					asc.Pitch = audioSourceComponent["Pitch"].as<float>();
+				}
+
+				auto audioListenerComponent = entity["AudioListenerComponent"];
+				if (audioListenerComponent)
+				{
+					auto& ac = deserializedEntity.AddComponent<AudioListenerComponent>();
+
+					ac.PositionSameAsEntity = audioListenerComponent["PositionSameAsEntity"].as<bool>();
+					ac.Gain = audioListenerComponent["Gain"].as<float>();
+					ac.Position = audioListenerComponent["Position"].as<glm::vec3>();
+					ac.Velocity = audioListenerComponent["Velocity"].as<glm::vec3>();
+					ac.At = audioListenerComponent["At"].as<glm::vec3>();
+					ac.Up = audioListenerComponent["Up"].as<glm::vec3>();
 				}
 
 				auto nativeScriptComponent = entity["NativeScriptComponent"];

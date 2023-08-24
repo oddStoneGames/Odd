@@ -15,6 +15,9 @@ void PlayerController::OnCreate()
 	m_BoxCollider2d = &GetComponent<BoxCollider2DComponent>();
 	m_PhysicsWorld = m_Entity.GetScene()->GetPhysics2DWorld();
 
+	if(HasComponent<AudioSourceComponent>())
+		m_AudioSourceComponent = &GetComponent<AudioSourceComponent>();
+
 	// Create Textures for subtexturing.
 	m_MoveSprite = Texture2D::Create(m_MoveSpriteSheetPath);
 	m_JumpSprite = Texture2D::Create(m_JumpSpriteSheetPath);
@@ -76,6 +79,10 @@ void PlayerController::OnUpdate(Timestep ts)
 			m_TimeSinceLastJump = 0.0f;
 			m_JumpInput = true;
 			m_FirstJump = false;
+
+			//Play Jump Sound!
+			if(m_AudioSourceComponent)
+				m_AudioSourceComponent->Play();
 		}
 	}
 

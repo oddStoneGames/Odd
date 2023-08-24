@@ -240,6 +240,20 @@ Entities:
         OrthographicFarClip: 2
       Primary: true
       FixedAspectRatio: false
+      ClearColor: [0.0651162863, 0.0651162863, 0.0651162863, 1]
+    AudioSourceComponent:
+      AudioPath: D:/OddStoneGames/Odd/Odd-Editor/SandboxProject\Sounds\background.wav
+      PlayOnStart: true
+      Loop: true
+      Gain: 1
+      Pitch: 1
+    AudioListenerComponent:
+      PositionSameAsEntity: true
+      Gain: 1
+      Position: [0, 0, 0]
+      Velocity: [0, 0, 0]
+      At: [0, 0, -1]
+      Up: [0, 1, 0]
     NativeScriptComponent:
       {}
   - Entity: 9817806020746392783
@@ -266,6 +280,12 @@ Entities:
       Friction: 1
       Restitution: 0
       RestitutionThreshold: 0
+    AudioSourceComponent:
+      AudioPath: D:/OddStoneGames/Odd/Odd-Editor/SandboxProject\Sounds\jump.wav
+      PlayOnStart: false
+      Loop: false
+      Gain: 1
+      Pitch: 1
     NativeScriptComponent:
       {}
   - Entity: 9724926344620382055

@@ -5,6 +5,8 @@
 #include "Odd/Renderer/Subtexture2D.h"
 #include "Odd/Core/UUID.h"
 #include "Odd/Core/Log.h"
+#include "Odd/Audio/AudioSource.h"
+#include "Odd/Audio/AudioListener.h"
 
 #include "glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -65,7 +67,22 @@ namespace Odd
 		float TilingFactor = 1.0f;
 
 		SpriteRendererComponent() = default;
-		SpriteRendererComponent(const SpriteRendererComponent& other) : Color(other.Color) {}
+		SpriteRendererComponent(const SpriteRendererComponent& other) 
+			: Color(other.Color), TilingFactor(other.TilingFactor), 
+			SubtextureCoords(other.SubtextureCoords), SubtextureCellSize(other.SubtextureCellSize), 
+			SubtextureSpriteSize(other.SubtextureSpriteSize)
+		{
+			if (other.Texture && std::filesystem::exists(other.Texture->GetPath()))
+			{
+				Texture = Texture2D::Create(other.Texture->GetPath());
+
+				if (other.Subtexture)
+				{
+					// Copy & Create Subtexture.
+					Subtexture = SubTexture2D::CreateFromCoords(Texture, SubtextureCoords, SubtextureCellSize, SubtextureSpriteSize);
+				}
+			}
+		}
 		SpriteRendererComponent(const glm::vec4& color) : Color(color) {}
 	};
 
@@ -74,6 +91,7 @@ namespace Odd
 		SceneCamera Camera;
 		bool Primary = true;
 		bool fixedAspectRatio = false;
+		glm::vec4 ClearColor{ 0.1f, 0.1f, 0.1f, 1.0f };
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent& other) = default;
@@ -257,5 +275,101 @@ namespace Odd
 
 		BoxCollider2DComponent() = default;
 		BoxCollider2DComponent(const BoxCollider2DComponent&) = default;
+	};
+
+	struct AudioSourceComponent
+	{
+		Ref<AudioSource> AudioSource;
+
+		bool PlayOnStart = true;
+		bool Loop = false;
+		float Gain = 1.0f;
+		float Pitch = 1.0f;
+
+		AudioSourceComponent() = default;
+		AudioSourceComponent(const AudioSourceComponent& other) 
+			: PlayOnStart(other.PlayOnStart), Loop(other.Loop), Gain(other.Gain), Pitch(other.Pitch)
+		{
+			if (other.AudioSource)
+			{
+				AudioSource = AudioSource::Create(other.AudioSource->GetAudioFilePath());
+
+				// Register Audio Source Attribute changes.
+				AudioSource->SetLoop(Loop);
+				AudioSource->SetGain(Gain);
+				AudioSource->SetPitch(Pitch);
+			}
+		}
+		
+		// Play the currently bound audio from this audio source.
+		void Play()
+		{
+			if (AudioSource)
+			{
+				// Register Audio Source Attribute changes.
+				AudioSource->SetLoop(Loop);
+				AudioSource->SetGain(Gain);
+				AudioSource->SetPitch(Pitch);
+
+				AudioSource->Play();
+			}
+		}
+
+		// Pause the currently playing audio bound to this audio source.
+		void Pause()
+		{
+			if (AudioSource)
+				AudioSource->Pause();
+		}
+
+		// Stop the currently playing audio bound to this audio source.
+		void Stop()
+		{
+			if (AudioSource)
+				AudioSource->Stop();
+		}
+
+		// Register Audio Source Attribute changes.
+		void PushAttributeChanges()
+		{
+			if (AudioSource)
+			{
+				AudioSource->SetLoop(Loop);
+				AudioSource->SetGain(Gain);
+				AudioSource->SetPitch(Pitch);
+			}
+		}
+	};
+
+	struct AudioListenerComponent
+	{
+		// If True, then this audio listener will have the same
+		// positional attributes as the transform component.
+		bool PositionSameAsEntity = true;
+		
+		// Master Gain
+		float Gain = 1.0f;
+		glm::vec3 Position{ 0.0f, 0.0f, 0.0f };
+		glm::vec3 Velocity{ 0.0f, 0.0f, 0.0f };
+
+		// Orientation
+		glm::vec3 At{ 0.0f, 0.0f, -1.0f };
+		glm::vec3 Up{ 0.0f, 1.0f,  0.0f };
+
+		AudioListenerComponent() = default;
+		AudioListenerComponent(const AudioListenerComponent& other)
+			: PositionSameAsEntity(other.PositionSameAsEntity), Gain(other.Gain), Position(other.Position),
+			Velocity(other.Velocity), At(other.At), Up(other.Up)
+		{
+			PushAttributeChanges(Position);
+		}
+
+		void PushAttributeChanges(const glm::vec3& position)
+		{
+			AudioListener::SetGain(Gain);
+			AudioListener::SetPosition(position);
+			AudioListener::SetVelocity(Velocity);
+			AudioListener::SetOrientation(At, Up);
+		}
 	};
 }

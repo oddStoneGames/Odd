@@ -35,3 +35,8 @@
 
 #include "Odd/Renderer/OrthographicCamera.h"
 //-----------------------------------------
+
+//----Audio--------------------------------
+#include "Odd/Audio/AudioSource.h"
+#include "Odd/Audio/AudioListener.h"
+//-----------------------------------------

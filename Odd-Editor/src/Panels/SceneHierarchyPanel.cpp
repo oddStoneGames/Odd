@@ -230,6 +230,8 @@ namespace Odd
 			DisplayAddComponentEntry<Rigidbody2DComponent>("Rigidbody 2D");
 			DisplayAddComponentEntry<BoxCollider2DComponent>("Box Collider 2D");
 			DisplayAddComponentEntry<NativeScriptComponent>("Native Script");
+			DisplayAddComponentEntry<AudioSourceComponent>("Audio Source");
+			DisplayAddComponentEntry<AudioListenerComponent>("Audio Listener");
 			
 			ImGui::EndPopup();
 		}
@@ -253,6 +255,7 @@ namespace Odd
 			auto& camera = component.Camera;
 
 			ImGui::Checkbox("Primary", &component.Primary);
+			ImGui::ColorEdit4("Clear Color", &component.ClearColor[0]);
 
 			const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
 			const char* currentProjectionTypeString = projectionTypeStrings[(int)camera.GetProjectionType()];
@@ -387,6 +390,62 @@ namespace Odd
 			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
+		});
+
+		DrawComponent<AudioSourceComponent>("Audio Source", entity, [](auto& component)
+		{
+			ImGui::Text("Audio");
+			ImVec2 contentRegionAvailable = ImGui::GetContentRegionAvail();
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f - 150.0f);
+			
+			std::string audioFileName = "None";
+			if (component.AudioSource)
+			{
+				std::filesystem::path audioFilePath = component.AudioSource->GetAudioFilePath();
+				audioFileName = audioFilePath.filename().string();
+			}
+			
+			ImGui::InputText("##AudioFilePath", audioFileName.data(), sizeof(audioFileName), ImGuiInputTextFlags_ReadOnly);
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path audioFilePath = std::filesystem::path(g_AssetsPath) / path;
+					std::string audioFilePathString = audioFilePath.string();
+					component.AudioSource = AudioSource::Create(audioFilePathString);
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+			ImGui::NewLine();
+			ImGui::Checkbox("Play On Start", &component.PlayOnStart);
+			ImGui::Checkbox("Loop", &component.Loop);
+			ImGui::DragFloat("Gain", &component.Gain, 0.01f, 0.0f);
+			ImGui::DragFloat("Pitch", &component.Pitch, 0.01f, 0.0f);
+
+			// Push the changes.
+			component.PushAttributeChanges();
+		});
+
+		DrawComponent<AudioListenerComponent>("Audio Listener", entity, [](auto& component)
+		{
+			ImGui::Checkbox("Position Same as Transform: ", &component.PositionSameAsEntity);
+			if (!component.PositionSameAsEntity)
+				ImGui::DragFloat3("Position", &component.Position[0], 0.01f);
+			ImGui::DragFloat3("Velocity", &component.Velocity[0], 0.01f);
+
+			ImGui::NewLine();
+			ImGui::SetCursorPosX(ImGui::GetWindowContentRegionMax().x * 0.5f - 45.0f);
+
+			// Load a bigger font
+			ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[1]);
+			ImGui::Text("Orientation");
+			ImGui::PopFont();
+
+			ImGui::DragFloat3("At", &component.At[0], 0.01f);
+			ImGui::DragFloat3("Up", &component.Up[0], 0.01f);
 		});
 
 		DrawComponent<NativeScriptComponent>("Native Script", entity, [](auto& component)

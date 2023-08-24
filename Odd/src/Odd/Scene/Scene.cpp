@@ -82,38 +82,13 @@ namespace Odd
 
         // Copy Components (Except IDComponent & TagComponent)
         CopyComponent<TransformComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
-
-        // TODO: Temporary fix for getting the same textures in runtime, change later.
-        auto view = srcSceneRegistry.view<SpriteRendererComponent>();
-        for (auto e : view)
-        {
-            UUID uuid = srcSceneRegistry.get<IDComponent>(e).ID;
-            entt::entity dstEnttID = enttMap.at(uuid);
-
-            auto& component = srcSceneRegistry.get<SpriteRendererComponent>(e);
-            dstSceneRegistry.emplace_or_replace<SpriteRendererComponent>(dstEnttID, component);
-
-            if (component.Texture && std::filesystem::exists(component.Texture->GetPath()))
-            {
-                // Get Destination Texture Path
-                auto& dstComponent = dstSceneRegistry.get<SpriteRendererComponent>(dstEnttID);
-                dstComponent.Texture = Texture2D::Create(component.Texture->GetPath());
-
-                if (component.Subtexture)
-                {
-                    // Copy & Create Subtexture.
-                    dstComponent.SubtextureCoords = component.SubtextureCoords;
-                    dstComponent.SubtextureCellSize = component.SubtextureCellSize;
-                    dstComponent.SubtextureSpriteSize = component.SubtextureSpriteSize;
-                    dstComponent.Subtexture = SubTexture2D::CreateFromCoords(dstComponent.Texture, dstComponent.SubtextureCoords, dstComponent.SubtextureCellSize, dstComponent.SubtextureSpriteSize);
-                }
-            }
-        }
-
+        CopyComponent<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<NativeScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<AudioSourceComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<AudioListenerComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 
         return newScene;
     }
@@ -221,6 +196,33 @@ namespace Odd
                 }
             });
         }
+
+        // Set the attributes of the audio listener because there is no other authority managing it.
+        auto transformAudioListenerView = m_Registry.view<TransformComponent, AudioListenerComponent>();
+        for (auto entity : transformAudioListenerView)
+        {
+            auto [transform, audioListener] = transformAudioListenerView.get<TransformComponent, AudioListenerComponent>(entity);
+
+            // Set the Audio Listener Position to the transform's position.
+            audioListener.PushAttributeChanges(audioListener.PositionSameAsEntity ? transform.Translation : audioListener.Position);
+        }
+
+        // Play the Audio Sources that are set to play on start!
+        auto transformAudioView = m_Registry.view<TransformComponent, AudioSourceComponent>();
+        for (auto entity : transformAudioView)
+        {
+            auto [transform, audioSource] = transformAudioView.get<TransformComponent, AudioSourceComponent>(entity);
+
+            // Set the Audio Source Position to the transform's position.
+            if (audioSource.AudioSource)
+            {
+                audioSource.AudioSource->SetPosition(transform.Translation);
+
+                // Play on start.
+                if (audioSource.PlayOnStart)
+                    audioSource.Play();
+            }
+        }
     }
 
     void Scene::OnRuntimeStop()
@@ -243,6 +245,27 @@ namespace Odd
 
     void Scene::OnUpdateRuntime(Timestep ts)
     {
+        // Update the attributes of the audio listener because there is no other authority managing it.
+        auto transformAudioListenerView = m_Registry.view<TransformComponent, AudioListenerComponent>();
+        for (auto entity : transformAudioListenerView)
+        {
+            auto [transform, audioListener] = transformAudioListenerView.get<TransformComponent, AudioListenerComponent>(entity);
+
+            // Set the Audio Listener Position to the transform's position.
+            audioListener.PushAttributeChanges(audioListener.PositionSameAsEntity ? transform.Translation : audioListener.Position);
+        }
+
+        // Update the position of the audio sources to be same as its transform's position.
+        auto transformAudioView = m_Registry.view<TransformComponent, AudioSourceComponent>();
+        for (auto entity : transformAudioView)
+        {
+            auto [transform, audioSource] = transformAudioView.get<TransformComponent, AudioSourceComponent>(entity);
+
+            // Set the Audio Source Position to the transform's position.
+            if (audioSource.AudioSource)
+                audioSource.AudioSource->SetPosition(transform.Translation);
+        }
+
         // Update Scripts
         {
             ODD_PROFILE_SCOPE("NativeScripts::OnUpdate()");
@@ -333,31 +356,12 @@ namespace Odd
         // Copy Components (Except IDComponent & TagComponent)
         CopyComponentIfExists<TransformComponent>(newEntity, entity);
         CopyComponentIfExists<SpriteRendererComponent>(newEntity, entity);
-        
-        // TODO: Temporary, change later
-        if (entity.HasComponent<SpriteRendererComponent>())
-        {
-            auto& srcComponent = entity.GetComponent<SpriteRendererComponent>();
-            if (srcComponent.Texture && std::filesystem::exists(srcComponent.Texture->GetPath()))
-            {
-                auto& dstComponent = newEntity.GetComponent<SpriteRendererComponent>();
-                dstComponent.Texture = Texture2D::Create(srcComponent.Texture->GetPath());
-
-                if (srcComponent.Subtexture)
-                {
-                    // Copy & Create Subtexture.
-                    dstComponent.SubtextureCoords = srcComponent.SubtextureCoords;
-                    dstComponent.SubtextureCellSize = srcComponent.SubtextureCellSize;
-                    dstComponent.SubtextureSpriteSize = srcComponent.SubtextureSpriteSize;
-                    dstComponent.Subtexture = SubTexture2D::CreateFromCoords(dstComponent.Texture, dstComponent.SubtextureCoords, dstComponent.SubtextureCellSize, dstComponent.SubtextureSpriteSize);
-                }
-            }
-        }
-
         CopyComponentIfExists<CameraComponent>(newEntity, entity);
         CopyComponentIfExists<NativeScriptComponent>(newEntity, entity);
         CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
         CopyComponentIfExists<BoxCollider2DComponent>(newEntity, entity);
+        CopyComponentIfExists<AudioSourceComponent>(newEntity, entity);
+        CopyComponentIfExists<AudioListenerComponent>(newEntity, entity);
     }
 
     Entity Scene::GetPrimaryCameraEntity()

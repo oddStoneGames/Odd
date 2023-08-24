@@ -23,12 +23,6 @@ namespace Odd
         m_IconPlay = Texture2D::Create(PROJECT_DIR"src/Assets/Icons/PlayButton.png");
         m_IconStop = Texture2D::Create(PROJECT_DIR"src/Assets/Icons/StopButton.png");
 
-	    m_SpriteSheet = Texture2D::Create(PROJECT_DIR"../Examples/Sandbox/src/textures/planes.png");
-
-	    m_RedPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet,   { 1, 2 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
-	    m_YellowPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet,{ 0, 3 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
-	    m_GreenPlane = SubTexture2D::CreateFromCoords(m_SpriteSheet, { 1, 3 }, { 88.0f, 73.5f }, { 1.0f, 1.0f });
-
 	    m_CameraController.SetZoomLevel(5.0f);
 
         FramebufferSpecification spec;
@@ -66,7 +60,18 @@ namespace Odd
 	    // Render
 	    Renderer2D::ResetStats();
         m_FrameBuffer->Bind();
-	    RenderCommand::SetClearColor(glm::vec4(0.1f, 0.1f, 0.1f, 1.0f));
+
+        glm::vec4 clearColor = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
+
+        // Get the Clear color from the camera component if available.
+        if (m_ActiveScene != nullptr)
+        {
+            Entity camera = m_ActiveScene->GetPrimaryCameraEntity();
+            if (camera)
+                clearColor = camera.GetComponent<CameraComponent>().ClearColor;
+        }
+
+	    RenderCommand::SetClearColor(clearColor);
 	    RenderCommand::Clear();
 
         // Clear our entity ID attachment to -1
@@ -105,10 +110,6 @@ namespace Odd
             int pixelData = m_FrameBuffer->ReadPixel(1, mouseX, mouseY);
             m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
         }
-
-	    //Renderer2D::DrawQuad({ -1.5f, 0.0f, 0.3f }, { 1.0f, 0.829f }, m_RedPlane);
-	    //Renderer2D::DrawQuad({  0.0f, 0.0f, 0.3f }, { 1.0f, 0.829f }, m_YellowPlane);
-	    //Renderer2D::DrawQuad({  1.5f, 0.0f, 0.3f }, { 1.0f, 0.829f }, m_GreenPlane);
 	
         m_FrameBuffer->Unbind();
     }
@@ -268,14 +269,6 @@ namespace Odd
         //ImGuizmo::DrawGrid(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection), glm::value_ptr(glm::mat4(1.0f)), 100.0f);
         if (selectedEntity && m_GizmoType != -1)
         {
-
-            // Camera
-            // Runtime Camera that we get from entity.
-            // auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-            // const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-            // const glm::mat4& cameraProjection = camera.GetProjection();
-            // glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
-
             // Entity Transform
             auto& tc = selectedEntity.GetComponent<TransformComponent>();
             glm::mat4 transform = tc.GetTransform();

@@ -79,4 +79,5 @@ private:
 	SpriteRendererComponent* m_SpriteRenderer = nullptr;
 	Rigidbody2DComponent* m_Rigidbody2d = nullptr;
 	BoxCollider2DComponent* m_BoxCollider2d = nullptr;
+	AudioSourceComponent* m_AudioSourceComponent = nullptr;
 };

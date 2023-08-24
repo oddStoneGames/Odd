@@ -50,8 +50,6 @@ namespace Odd
 
 		Entity m_HoveredEntity;
 
-		Ref<Texture2D>	m_SpriteSheet;
-		Ref<SubTexture2D> m_RedPlane, m_YellowPlane, m_GreenPlane;
 		Ref<FrameBuffer> m_FrameBuffer;
 
 		glm::vec2 m_ViewportBounds[2];
