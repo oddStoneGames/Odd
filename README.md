@@ -17,7 +17,7 @@
 
 ## Introduction 
  
-This is a WIP game engine that supports 3D rendering and has a beautiful editor. It's based on Entity Component approach and uses OpenGL to render graphics.   
+This is a WIP game engine that supports 3D rendering and has a beautiful editor. It's based on Entity Component approach and uses OpenGL to render graphics. Major Thanks to [TheCherno](https://github.com/TheCherno) because this game engine is a part of my learning, and is based on TheCherno's [Hazel Game Engine Series](https://github.com/TheCherno/Hazel).
 
 ## Features
 
@@ -40,7 +40,7 @@ Prerequisites: [git](https://git-scm.com/downloads).
 Clone the repo using the following command:
 
 ```
-git clone --recurse https://github.com/oddStoneGames/Odd.git
+git clone --recursive https://github.com/oddStoneGames/Odd.git
 cd Odd
 ```
 
