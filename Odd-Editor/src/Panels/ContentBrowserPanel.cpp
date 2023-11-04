@@ -1,5 +1,7 @@
 #include "ContentBrowserPanel.h"
 #include <ImGui/include/imgui.h>
+#include <locale>
+#include <codecvt>
 
 namespace Odd
 {
@@ -48,7 +50,8 @@ namespace Odd
 
 			if (ImGui::BeginDragDropSource())
 			{
-				const wchar_t* itemPath = relativePath.c_str();
+				std::wstring wideString = string_to_wstring(relativePath.string());
+				const wchar_t* itemPath = wideString.c_str();
 				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t), ImGuiCond_Once);
 				ImGui::EndDragDropSource();
 			}
@@ -74,4 +77,11 @@ namespace Odd
 
 		ImGui::End();
 	}
+
+    std::wstring ContentBrowserPanel::string_to_wstring(const std::string &str)
+    {
+        std::wstring wstr(str.size(), L' '); // Overestimate number of code points.
+    	wstr.resize(mbstowcs(&wstr[0], str.c_str(), str.size())); // Shrink to fit.
+    	return wstr;
+    }
 }

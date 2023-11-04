@@ -210,7 +210,8 @@ namespace Odd
 
 			char buffer[256];
 			memset(buffer, 0, sizeof(buffer));
-			strcpy_s(buffer, sizeof(buffer), tag.c_str());
+			strncpy(buffer, tag.c_str(), sizeof(buffer) - 1);  // Leave space for the null terminator
+			buffer[sizeof(buffer) - 1] = '\0'; // Explicitly null-terminate
 			if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
 			{
 				tag = std::string(buffer);
@@ -400,9 +401,9 @@ namespace Odd
 			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f - 150.0f);
 			
 			std::string audioFileName = "None";
-			if (component.AudioSource)
+			if (component.audioSource)
 			{
-				std::filesystem::path audioFilePath = component.AudioSource->GetAudioFilePath();
+				std::filesystem::path audioFilePath = component.audioSource->GetAudioFilePath();
 				audioFileName = audioFilePath.filename().string();
 			}
 			
@@ -414,7 +415,7 @@ namespace Odd
 					const wchar_t* path = (const wchar_t*)payload->Data;
 					std::filesystem::path audioFilePath = std::filesystem::path(g_AssetsPath) / path;
 					std::string audioFilePathString = audioFilePath.string();
-					component.AudioSource = AudioSource::Create(audioFilePathString);
+					component.audioSource = AudioSource::Create(audioFilePathString);
 				}
 
 				ImGui::EndDragDropTarget();

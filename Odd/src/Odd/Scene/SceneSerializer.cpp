@@ -247,9 +247,9 @@ namespace Odd
 
 			auto& asc = entity.GetComponent<AudioSourceComponent>();
 
-			if (asc.AudioSource && std::filesystem::exists(asc.AudioSource->GetAudioFilePath()))
+			if (asc.audioSource && std::filesystem::exists(asc.audioSource->GetAudioFilePath()))
 			{
-				out << YAML::Key << "AudioPath" << YAML::Value << asc.AudioSource->GetAudioFilePath();
+				out << YAML::Key << "AudioPath" << YAML::Value << asc.audioSource->GetAudioFilePath();
 			}
 			
 			out << YAML::Key << "PlayOnStart" << YAML::Value << asc.PlayOnStart;
@@ -388,9 +388,9 @@ namespace Odd
 						src.Texture = Texture2D::Create(spriteRendererComponent["TexturePath"].as<std::string>());
 
 						// Read Subtexture data.
-						auto& subtextureCoords = spriteRendererComponent["SubtextureCoords"].as<glm::vec2>();
-						auto& subtextureCellSize = spriteRendererComponent["SubtextureCellSize"].as<glm::vec2>();
-						auto& subtextureSpriteSize = spriteRendererComponent["SubtextureSpriteSize"].as<glm::vec2>();
+						auto subtextureCoords = spriteRendererComponent["SubtextureCoords"].as<glm::vec2>();
+						auto subtextureCellSize = spriteRendererComponent["SubtextureCellSize"].as<glm::vec2>();
+						auto subtextureSpriteSize = spriteRendererComponent["SubtextureSpriteSize"].as<glm::vec2>();
 
 						if (subtextureCellSize.x > 0.0f && subtextureCellSize.y > 0.0f &&
 							subtextureSpriteSize.x > 0.0f && subtextureSpriteSize.y > 0.0f)
@@ -437,7 +437,7 @@ namespace Odd
 
 					if (audioSourceComponent["AudioPath"])
 					{
-						asc.AudioSource = AudioSource::Create(audioSourceComponent["AudioPath"].as<std::string>());
+						asc.audioSource = AudioSource::Create(audioSourceComponent["AudioPath"].as<std::string>());
 					}
 
 					asc.PlayOnStart = audioSourceComponent["PlayOnStart"].as<bool>();

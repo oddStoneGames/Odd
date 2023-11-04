@@ -1,9 +1,11 @@
 #Directories
 .vs/
+.vscode/
 bin/
 build/
 
 #Files
+Odd/vendor/GLFW/src/glfw_config.h
 *.sln
 *.user
 *.vcxproj

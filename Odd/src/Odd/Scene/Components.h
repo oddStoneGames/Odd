@@ -2,7 +2,7 @@
 
 #include "Odd/Scene/SceneCamera.h"
 #include "Odd/Renderer/Texture.h"
-#include "Odd/Renderer/Subtexture2D.h"
+#include "Odd/Renderer/SubTexture2D.h"
 #include "Odd/Core/UUID.h"
 #include "Odd/Core/Log.h"
 #include "Odd/Audio/AudioSource.h"
@@ -279,7 +279,7 @@ namespace Odd
 
 	struct AudioSourceComponent
 	{
-		Ref<AudioSource> AudioSource;
+		Ref<AudioSource> audioSource;
 
 		bool PlayOnStart = true;
 		bool Loop = false;
@@ -290,53 +290,53 @@ namespace Odd
 		AudioSourceComponent(const AudioSourceComponent& other) 
 			: PlayOnStart(other.PlayOnStart), Loop(other.Loop), Gain(other.Gain), Pitch(other.Pitch)
 		{
-			if (other.AudioSource)
+			if (other.audioSource)
 			{
-				AudioSource = AudioSource::Create(other.AudioSource->GetAudioFilePath());
+				audioSource = AudioSource::Create(other.audioSource->GetAudioFilePath());
 
 				// Register Audio Source Attribute changes.
-				AudioSource->SetLoop(Loop);
-				AudioSource->SetGain(Gain);
-				AudioSource->SetPitch(Pitch);
+				audioSource->SetLoop(Loop);
+				audioSource->SetGain(Gain);
+				audioSource->SetPitch(Pitch);
 			}
 		}
 		
 		// Play the currently bound audio from this audio source.
 		void Play()
 		{
-			if (AudioSource)
+			if (audioSource)
 			{
 				// Register Audio Source Attribute changes.
-				AudioSource->SetLoop(Loop);
-				AudioSource->SetGain(Gain);
-				AudioSource->SetPitch(Pitch);
+				audioSource->SetLoop(Loop);
+				audioSource->SetGain(Gain);
+				audioSource->SetPitch(Pitch);
 
-				AudioSource->Play();
+				audioSource->Play();
 			}
 		}
 
 		// Pause the currently playing audio bound to this audio source.
 		void Pause()
 		{
-			if (AudioSource)
-				AudioSource->Pause();
+			if (audioSource)
+				audioSource->Pause();
 		}
 
 		// Stop the currently playing audio bound to this audio source.
 		void Stop()
 		{
-			if (AudioSource)
-				AudioSource->Stop();
+			if (audioSource)
+				audioSource->Stop();
 		}
 
 		// Register Audio Source Attribute changes.
 		void PushAttributeChanges()
 		{
-			if (AudioSource)
+			if (audioSource)
 			{
-				AudioSource->SetLoop(Loop);
-				AudioSource->SetGain(Gain);
-				AudioSource->SetPitch(Pitch);
+				audioSource->SetLoop(Loop);
+				audioSource->SetGain(Gain);
+				audioSource->SetPitch(Pitch);
 			}
 		}
 	};

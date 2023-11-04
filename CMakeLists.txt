@@ -27,6 +27,18 @@ list(APPEND LIBS glfw)
 # GLM
 list(APPEND INCLUDES Odd/vendor/glm)
 
+# GTK+3
+# Find GTK+3 using pkg-config
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+
+# Include GTK+3 directories
+list(APPEND INCLUDES ${GTK3_INCLUDE_DIRS})
+
+# Link GTK+3 libraries
+list(APPEND LIBS ${GTK3_LIBRARIES})
+#list(APPEND COMPILE_DEFS ${GTK3_CFLAGS_OTHER})
+
 # IMGUI
 add_subdirectory(Odd/vendor/ImGui)
 list(APPEND LIBS imgui)
@@ -44,7 +56,7 @@ list(APPEND LIBS sndfile)
 # OPENAL
 add_subdirectory(Odd/vendor/OpenAL)
 list(APPEND INCLUDES Odd/vendor/OpenAL)
-list(APPEND LIBS Odd/vendor/OpenAL/Debug/${OPENALLIBNAME})
+list(APPEND LIBS OpenAL)
 
 # OPENGL
 set(OpenGL_GL_PREFERENCE GLVND)
@@ -70,15 +82,17 @@ list(APPEND LIBS yaml-cpp)
 
 # ADD EXTRA LIBRARIES BASED ON THE OPERATING SYSTEM
 if(WIN32)
-    list(APPEND gdi32 user32)
+    list(APPEND LIBS gdi32 user32)
     list(APPEND COMPILE_DEFS ODD_PLATFORM_WINDOWS)
+    list(APPEND SOURCE_FILES Odd/src/Platform/Windows/WindowsPlatformUtils.cpp)
 elseif(LINUX)
     list(APPEND LIBS X11 Xxf86vm Xrandr pthread Xi dl Xinerama Xcursor)
     list(APPEND COMPILE_DEFS ODD_PLATFORM_LINUX)
+    list(APPEND SOURCE_FILES Odd/src/Platform/Linux/LinuxPlatformUtils.cpp)
 endif()
 
 # SET SOURCE FILES
-set(SOURCE_FILES Odd/src/Odd/Core/Application.cpp Odd/src/Odd/Core/Application.h Odd/src/Odd/Core/Core.h Odd/src/Odd/Core/EntryPoint.h Odd/src/Odd/Core/Layer.cpp Odd/src/Odd/Core/Layer.h
+list(APPEND SOURCE_FILES Odd/src/Odd/Core/Application.cpp Odd/src/Odd/Core/Application.h Odd/src/Odd/Core/Core.h Odd/src/Odd/Core/EntryPoint.h Odd/src/Odd/Core/Layer.cpp Odd/src/Odd/Core/Layer.h
                  Odd/src/Odd/Core/LayerStack.cpp Odd/src/Odd/Core/LayerStack.h Odd/src/Odd/Core/Log.cpp Odd/src/Odd/Core/Log.h Odd/src/Odd/Core/Timestep.h Odd/src/Odd/Core/Window.h
                  Odd/src/Odd/Core/UUID.h Odd/src/Odd/Core/UUID.cpp
                  Odd/src/Odd/Debug/Instrumentor.h
@@ -97,7 +111,7 @@ set(SOURCE_FILES Odd/src/Odd/Core/Application.cpp Odd/src/Odd/Core/Application.h
                  Odd/src/Platform/OpenGL/OpenGLBuffer.cpp Odd/src/Platform/OpenGL/OpenGLBuffer.h Odd/src/Platform/OpenGL/OpenGLContext.cpp Odd/src/Platform/OpenGL/OpenGLContext.h Odd/src/Platform/OpenGL/OpenGLFramebuffer.cpp Odd/src/Platform/OpenGL/OpenGLFramebuffer.h
                  Odd/src/Platform/OpenGL/OpenGLRendererAPI.cpp Odd/src/Platform/OpenGL/OpenGLRendererAPI.h Odd/src/Platform/OpenGL/OpenGLShader.cpp Odd/src/Platform/OpenGL/OpenGLShader.h Odd/src/Platform/OpenGL/OpenGLTexture.cpp Odd/src/Platform/OpenGL/OpenGLTexture.h
                  Odd/src/Platform/OpenGL/OpenGLUniformBuffer.cpp Odd/src/Platform/OpenGL/OpenGLUniformBuffer.h Odd/src/Platform/OpenGL/OpenGLVertexArray.cpp Odd/src/Platform/OpenGL/OpenGLVertexArray.h
-                 Odd/src/Platform/Windows/WindowsInput.cpp Odd/src/Platform/Windows/WindowsPlatformUtils.cpp Odd/src/Platform/Windows/WindowsWindow.cpp Odd/src/Platform/Windows/WindowsWindow.h
+                 Odd/src/Platform/Common/CommonInput.cpp Odd/src/Platform/Common/CommonWindow.cpp Odd/src/Platform/Common/CommonWindow.h
                  Odd/src/Odd/Audio/Audio.cpp Odd/src/Odd/Audio/Audio.h Odd/src/Odd/Audio/AudioSource.cpp Odd/src/Odd/Audio/AudioSource.h Odd/src/Odd/Audio/AudioListener.cpp Odd/src/Odd/Audio/AudioListener.h
                  Odd/src/Odd.h
                  Odd/vendor/stb_image/stb_image.cpp Odd/vendor/stb_image/stb_image.h)
@@ -117,6 +131,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDES})
 
 # LINK LIBRARIES
 target_link_libraries(${PROJECT_NAME} PUBLIC ${LIBS})
+# target_link_directories(${PROJECT_NAME} PUBLIC ${OpenAL_Binary_DIR})
 
 
 

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <xhash>
+#include <functional>
+#include <cstdint>
 
 namespace Odd
 {

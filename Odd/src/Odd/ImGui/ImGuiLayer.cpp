@@ -7,7 +7,7 @@
 
 #include "ImGuizmo.h"
 
-#include "Glad/glad.h"
+#include <Glad/include/glad/glad.h>
 #include "GLFW/glfw3.h"
 
 #include "Odd/Renderer/Renderer.h"

@@ -1,6 +1,6 @@
-#include "WindowsWindow.h"
+#include "CommonWindow.h"
 #include "oddpch.h"
-#include "WindowsWindow.h"
+#include "CommonWindow.h"
 
 namespace Odd {
 
@@ -13,20 +13,20 @@ namespace Odd {
 
 	Scope<Window> Window::Create(const WindowProps& props)
 	{
-		return CreateScope<WindowsWindow>(props);
+		return CreateScope<CommonWindow>(props);
 	}
 
-	WindowsWindow::WindowsWindow(const WindowProps& props)
+	CommonWindow::CommonWindow(const WindowProps& props)
 	{
 		Init(props);
 	}
 
-	WindowsWindow::~WindowsWindow()
+	CommonWindow::~CommonWindow()
 	{
 		Shutdown();
 	}
 
-	void WindowsWindow::Init(const WindowProps& props)
+	void CommonWindow::Init(const WindowProps& props)
 	{
 		ODD_PROFILE_FUNCTION();
 		m_Data.Title = props.Title;
@@ -151,7 +151,7 @@ namespace Odd {
 		});
 	}
 
-	void WindowsWindow::Shutdown()
+	void CommonWindow::Shutdown()
 	{
 		ODD_PROFILE_FUNCTION();
 		glfwDestroyWindow(m_Window);
@@ -159,14 +159,14 @@ namespace Odd {
 		glfwTerminate();
 	}
 
-	void WindowsWindow::OnUpdate()
+	void CommonWindow::OnUpdate()
 	{
 		ODD_PROFILE_FUNCTION();
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}
 
-	void WindowsWindow::SetVSync(bool enabled)
+	void CommonWindow::SetVSync(bool enabled)
 	{
 		if (enabled)
 			glfwSwapInterval(1);
@@ -175,7 +175,7 @@ namespace Odd {
 		m_Data.VSync = enabled;
 	}
 
-	bool WindowsWindow::IsVSync() const
+	bool CommonWindow::IsVSync() const
 	{
 		return m_Data.VSync;
 	}

@@ -171,31 +171,31 @@ namespace Odd
         }
 
         // Create Scripts
-        {
-            ODD_PROFILE_SCOPE("NativeScripts::OnCreate()");
-            m_Registry.view<NativeScriptComponent>().each([=](auto e, auto& nsc)
-            {
-                if (!nsc.Instance)
-                {
-                    Entity entity = { e, this };
-                    auto& tagComponent = entity.GetComponent<TagComponent>();
+        // {
+        //     ODD_PROFILE_SCOPE("NativeScripts::OnCreate()");
+        //     m_Registry.view<NativeScriptComponent>().each([=](auto e, auto& nsc)
+        //     {
+        //         if (!nsc.Instance)
+        //         {
+        //             Entity entity = { e, this };
+        //             auto& tagComponent = entity.GetComponent<TagComponent>();
 
-                    // TODO: Temporary, change later.
-                    if (tagComponent.Tag.compare("Player") == 0)
-                    {
-                        nsc.Bind<PlayerController>();
-                    }
-                    else if (tagComponent.Tag.compare("Main Camera") == 0)
-                    {
-                        nsc.Bind<FollowPlayer>();
-                    }
+        //             // TODO: Temporary, change later.
+        //             if (tagComponent.Tag.compare("Player") == 0)
+        //             {
+        //                 nsc.Bind<PlayerController>();
+        //             }
+        //             else if (tagComponent.Tag.compare("Main Camera") == 0)
+        //             {
+        //                 nsc.Bind<FollowPlayer>();
+        //             }
                     
-                    nsc.Instance = nsc.InstantiateScript();
-                    nsc.Instance->m_Entity = entity;
-                    nsc.Instance->OnCreate();
-                }
-            });
-        }
+        //             nsc.Instance = nsc.InstantiateScript();
+        //             nsc.Instance->m_Entity = entity;
+        //             nsc.Instance->OnCreate();
+        //         }
+        //     });
+        // }
 
         // Set the attributes of the audio listener because there is no other authority managing it.
         auto transformAudioListenerView = m_Registry.view<TransformComponent, AudioListenerComponent>();
@@ -214,9 +214,9 @@ namespace Odd
             auto [transform, audioSource] = transformAudioView.get<TransformComponent, AudioSourceComponent>(entity);
 
             // Set the Audio Source Position to the transform's position.
-            if (audioSource.AudioSource)
+            if (audioSource.audioSource)
             {
-                audioSource.AudioSource->SetPosition(transform.Translation);
+                audioSource.audioSource->SetPosition(transform.Translation);
 
                 // Play on start.
                 if (audioSource.PlayOnStart)
@@ -262,18 +262,18 @@ namespace Odd
             auto [transform, audioSource] = transformAudioView.get<TransformComponent, AudioSourceComponent>(entity);
 
             // Set the Audio Source Position to the transform's position.
-            if (audioSource.AudioSource)
-                audioSource.AudioSource->SetPosition(transform.Translation);
+            if (audioSource.audioSource)
+                audioSource.audioSource->SetPosition(transform.Translation);
         }
 
         // Update Scripts
-        {
-            ODD_PROFILE_SCOPE("NativeScripts::OnUpdate()");
-            m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
-            {
-                nsc.Instance->OnUpdate(ts);
-            });
-        }
+        // {
+        //     ODD_PROFILE_SCOPE("NativeScripts::OnUpdate()");
+        //     m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+        //     {
+        //         nsc.Instance->OnUpdate(ts);
+        //     });
+        // }
 
         // Physics 2D
         {

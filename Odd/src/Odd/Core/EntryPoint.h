@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef ODD_PLATFORM_WINDOWS
-
 #include "Log.h"
 
 extern Odd::Application* Odd::CreateApplication();
@@ -20,5 +18,3 @@ int main(int argc, char** argv)
 	delete application;
 	ODD_PROFILE_END_SESSION();
 }
-
-#endif

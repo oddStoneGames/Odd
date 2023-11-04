@@ -11,11 +11,11 @@
 
 namespace Odd {
 
-	class WindowsWindow : public Window
+	class CommonWindow : public Window
 	{
 	public:
-		WindowsWindow(const WindowProps& props);
-		virtual ~WindowsWindow();
+		CommonWindow(const WindowProps& props);
+		virtual ~CommonWindow();
 
 		void OnUpdate() override;
 
